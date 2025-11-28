@@ -1,0 +1,207 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|c:\\users\\christian\\source\\repos\\devlearningdapperapi\\api\\api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|solutionrelative:api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|c:\\users\\christian\\source\\repos\\devlearningdapperapi\\api\\api\\controllers\\interfaces\\icareercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|solutionrelative:api\\controllers\\interfaces\\icareercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|c:\\users\\christian\\source\\repos\\devlearningdapperapi\\api\\api\\services\\interfaces\\icareerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|solutionrelative:api\\services\\interfaces\\icareerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|c:\\users\\christian\\source\\repos\\devlearningdapperapi\\api\\api\\repositories\\interfaces\\icareerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|solutionrelative:api\\repositories\\interfaces\\icareerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|c:\\users\\christian\\source\\repos\\devlearningdapperapi\\api\\api\\api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|solutionrelative:api\\api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|c:\\users\\christian\\source\\repos\\devlearningdapperapi\\api\\api\\controllers\\careercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|solutionrelative:api\\controllers\\careercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|c:\\users\\christian\\source\\repos\\devlearningdapperapi\\api\\api\\services\\careerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|solutionrelative:api\\services\\careerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|c:\\users\\christian\\source\\repos\\devlearningdapperapi\\api\\api\\repositories\\careerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|solutionrelative:api\\repositories\\careerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|c:\\users\\christian\\source\\repos\\devlearningdapperapi\\api\\api\\models\\dtos\\career\\careerresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|solutionrelative:api\\models\\dtos\\career\\careerresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|c:\\users\\christian\\source\\repos\\devlearningdapperapi\\api\\api\\models\\dtos\\career\\careerrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|solutionrelative:api\\models\\dtos\\career\\careerrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|c:\\users\\christian\\source\\repos\\devlearningdapperapi\\api\\api\\models\\career.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|API\\API.csproj|solutionrelative:api\\models\\career.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Program.cs",
+              "RelativeDocumentMoniker": "API\\Program.cs",
+              "ToolTip": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Program.cs",
+              "RelativeToolTip": "API\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T20:56:35.834Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ICareerRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Repositories\\Interfaces\\ICareerRepository.cs",
+              "RelativeDocumentMoniker": "API\\Repositories\\Interfaces\\ICareerRepository.cs",
+              "ToolTip": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Repositories\\Interfaces\\ICareerRepository.cs",
+              "RelativeToolTip": "API\\Repositories\\Interfaces\\ICareerRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T20:55:29.752Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ICareerController.cs",
+              "DocumentMoniker": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Controllers\\Interfaces\\ICareerController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\Interfaces\\ICareerController.cs",
+              "ToolTip": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Controllers\\Interfaces\\ICareerController.cs",
+              "RelativeToolTip": "API\\Controllers\\Interfaces\\ICareerController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T20:52:36.804Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CareerController.cs",
+              "DocumentMoniker": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Controllers\\CareerController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\CareerController.cs",
+              "ToolTip": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Controllers\\CareerController.cs",
+              "RelativeToolTip": "API\\Controllers\\CareerController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T20:52:19.652Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ICareerService.cs",
+              "DocumentMoniker": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Services\\Interfaces\\ICareerService.cs",
+              "RelativeDocumentMoniker": "API\\Services\\Interfaces\\ICareerService.cs",
+              "ToolTip": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Services\\Interfaces\\ICareerService.cs",
+              "RelativeToolTip": "API\\Services\\Interfaces\\ICareerService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T20:49:06.81Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CareerService.cs",
+              "DocumentMoniker": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Services\\CareerService.cs",
+              "RelativeDocumentMoniker": "API\\Services\\CareerService.cs",
+              "ToolTip": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Services\\CareerService.cs",
+              "RelativeToolTip": "API\\Services\\CareerService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T20:47:56.04Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CareerRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Repositories\\CareerRepository.cs",
+              "RelativeDocumentMoniker": "API\\Repositories\\CareerRepository.cs",
+              "ToolTip": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Repositories\\CareerRepository.cs",
+              "RelativeToolTip": "API\\Repositories\\CareerRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T20:45:24.344Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CareerResponseDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Models\\DTOs\\Career\\CareerResponseDTO.cs",
+              "RelativeDocumentMoniker": "API\\Models\\DTOs\\Career\\CareerResponseDTO.cs",
+              "ToolTip": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Models\\DTOs\\Career\\CareerResponseDTO.cs",
+              "RelativeToolTip": "API\\Models\\DTOs\\Career\\CareerResponseDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T20:43:41.704Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CareerRequestDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Models\\DTOs\\Career\\CareerRequestDTO.cs",
+              "RelativeDocumentMoniker": "API\\Models\\DTOs\\Career\\CareerRequestDTO.cs",
+              "ToolTip": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Models\\DTOs\\Career\\CareerRequestDTO.cs",
+              "RelativeToolTip": "API\\Models\\DTOs\\Career\\CareerRequestDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T20:43:17.134Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Career.cs",
+              "DocumentMoniker": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Models\\Career.cs",
+              "RelativeDocumentMoniker": "API\\Models\\Career.cs",
+              "ToolTip": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\Models\\Career.cs",
+              "RelativeToolTip": "API\\Models\\Career.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T20:42:08.868Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "API.csproj",
+              "DocumentMoniker": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\API.csproj",
+              "RelativeDocumentMoniker": "API\\API.csproj",
+              "ToolTip": "C:\\Users\\Christian\\source\\repos\\DevLearningDapperAPI\\API\\API\\API.csproj",
+              "RelativeToolTip": "API\\API.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-11-28T20:05:57.816Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
