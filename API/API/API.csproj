@@ -6,4 +6,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Interfaces\" />
+    <Folder Include="Models\DTOs\Author\" />
+    <Folder Include="Models\DTOs\Category\" />
+    <Folder Include="Models\DTOs\Course\" />
+    <Folder Include="Models\DTOs\Career\" />
+    <Folder Include="Models\DTOs\Student\" />
+    <Folder Include="Repositories\Interfaces\" />
+    <Folder Include="Services\Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.3" />
+  </ItemGroup>
+
 </Project>
