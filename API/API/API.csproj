@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -8,12 +8,20 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Interfaces\" />
+    <Folder Include="Controllers\Interfaces\" />
     <Folder Include="Models\DTOs\Author\" />
     <Folder Include="Models\DTOs\Category\" />
     <Folder Include="Models\DTOs\Course\" />
     <Folder Include="Models\DTOs\Career\" />
+    <Folder Include="Models\DTOs\Author\" />
+    <Folder Include="Models\DTOs\Career\" />
+    <Folder Include="Models\DTOs\Category\" />
+    <Folder Include="Models\DTOs\Course\" />
+    <Folder Include="Models\DTOs\Student\" />
     <Folder Include="Models\DTOs\Student\" />
     <Folder Include="Repositories\Interfaces\" />
+    <Folder Include="Repositories\Interfaces\" />
+    <Folder Include="Services\Interfaces\" />
     <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 
