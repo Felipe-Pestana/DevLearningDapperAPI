@@ -1,35 +1,158 @@
-﻿using DevLearning.Api.Data;
+﻿using Dapper;
+using DevLearning.Api.Data;
+using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos;
+using Microsoft.Data.SqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace DevLearning.Api.Repositories
 {
     public class StudentRepository
     {
-        public ConnectionDB _connectionDB;
-        public StudentRepository(ConnectionDB connectionDB)
+        private readonly SqlConnection _connection;
+        public StudentRepository(ConnectionDB connection)
         {
-            _connectionDB = connectionDB;
+            _connection = connection.GetConnection();
         }
 
-        public async Task CreateStudentAsync() 
+        public async Task CreateStudentAsync(Student student) 
         {
-            
+            try
+            {
+                var sql = @"INSERT INTO Student (Id, Name, Email, Document, Phone, BirthDate, CreateDate)
+                            VALUES (@Id, @Name, @Email, @Document, @Phone, @BirthDate, @CreateDate)";
+
+                await _connection.ExecuteAsync(sql, new 
+                {   student.Id,
+                    student.Name, 
+                    student.Email, 
+                    Document = student.Document == null ? (object)DBNull.Value : student.Document,
+                    Phone = student.Phone == null ? (object)DBNull.Value : student.Phone, 
+                    BirthDate = student.BirthDate == null ? (object)DBNull.Value : student.BirthDate, 
+                    student.CreateDate 
+                });
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace); 
+            }
         }
 
         public async Task<List<StudentResponseDto>> GetAllStudentsAsync() 
         {
-            return null;    
+            try
+            {
+                var sql = @"SELECT Id, Name, Email, Document, Phone, BirthDate, CreateDate 
+                            FROM Student";
+
+                return (await _connection.QueryAsync<StudentResponseDto>(sql)).ToList();
+
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            } 
         }
 
-        public async Task UpdateStudentAsync(Guid id) 
+        public async Task<StudentResponseDto?> GetStudentByIdAsync(Guid id)
         {
-            
+            try
+            {
+                var sql = @"SELECT Id, Name, Email, Document, Phone, BirthDate, CreateDate 
+                            FROM Student
+                            WHERE Id = @Id";
+
+                return await _connection.QueryFirstOrDefaultAsync<StudentResponseDto>(sql, new {@Id = id});
+
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
+        }
+
+        public async Task UpdateStudentAsync(Guid id, UpdateStudentDto student) 
+        {
+            try
+            {
+                var sql = @"UPDATE Student 
+                            SET Email = @Email,
+                            Document = @Document,
+                            Phone = @Phone
+                            WHERE Id = @Id";
+
+                await _connection.ExecuteAsync(sql, new 
+                    {student.Email,
+                    Document = student.Document == null ? (object)DBNull.Value : student.Document,
+                    Phone = student.Phone == null ? (object)DBNull.Value : student.Phone,
+                    @Id = id });
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
         }
 
         public async Task DeleteStudentAsync(Guid id)
         {
+            try
+            {
+                var sql = @"DELETE FROM Student
+                            WHERE Id = @Id";
 
+                await _connection.ExecuteAsync(sql, new { @Id = id });
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
         }
+
+
+
+
+           //🔹 Listar cursos de um aluno
+
+           // GET /students/{id
+           //     }/courses
+
+
+
+
+
+           // 🔹 Matricular um aluno em um curso
+                      // POST /students/{studentId
+           // }/ courses /{ courseId}
+
+           // Body deve conter:
+
+           // progress
+           // favorite
+
+
+
+           // 🔹 Atualizar progresso de um aluno
 
     }
 }

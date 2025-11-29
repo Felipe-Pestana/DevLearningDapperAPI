@@ -10,14 +10,15 @@
         public DateTime? BirthDate { get; private set; }
         public DateTime CreateDate { get; private set; }
 
-        public Student(string name, string email, string document, string phone, DateTime birthDate)
+        public Student(string name, string email, string? document, string? phone, DateTime? birthDate)
         {
+            Id = Guid.NewGuid();
             Name = name;
             Email = email;
             Document = document;
             Phone = phone;
             BirthDate = birthDate;
-            CreateDate = DateTime.Now;
+            CreateDate = DateTime.Now.Date;
         }
     }
 }
