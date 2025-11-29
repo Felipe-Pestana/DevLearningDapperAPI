@@ -128,5 +128,23 @@ namespace DevLearning.Api.Repositories
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task DeleteCourseAsync(Guid id)
+        {
+            var sql = "DELETE FROM Course WHERE Id = @Id";
+
+            try
+            {
+                await _connection.ExecuteAsync(sql, new { Id = id });
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception(sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

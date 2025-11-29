@@ -4,6 +4,7 @@ using DevLearning.Api.Repositories;
 using DevLearning.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Data.SqlClient;
+using System.Reflection.Metadata.Ecma335;
 
 namespace DevLearning.Api.Services
 {
@@ -19,6 +20,7 @@ namespace DevLearning.Api.Services
         {
             try
             {
+                //TODO: validate all data entering and check if Title and Url is unique
                 var newCourse = new Course(
                     course.Tag, course.Title, course.Summary, course.Url,
                     course.Level, course.DurationInMinutes, DateTime.Now,
@@ -67,8 +69,9 @@ namespace DevLearning.Api.Services
             try
             {
                 var oldCourse = await _courseRepository.GetCourseByIdAsync(id) ?? 
-                    throw new Exception("Course not found!");
+                    throw new Exception("Course not found!");       //TODO: return proper StatusCode(404 Not Found)
 
+                //TODO: validate all data entering from update
                 var updatedCourse = new Course(
                     oldCourse.Tag, oldCourse.Title,
                     update.Summary ?? oldCourse.Summary,
@@ -82,6 +85,21 @@ namespace DevLearning.Api.Services
                     );
 
                 await _courseRepository.UpdateCourseAsync(id, updatedCourse);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task DeleteCourseAsync(Guid id)
+        {
+            try
+            {
+                var course = await _courseRepository.GetCourseByIdAsync(id) ??
+                    throw new Exception("Course not found!");       //TODO: return proper StatusCode(404 Not Found)
+
+                await _courseRepository.DeleteCourseAsync(id);
             }
             catch (Exception ex)
             {

@@ -15,5 +15,6 @@ namespace DevLearning.Api.Repositories.Interfaces
 
         public Task UpdateCourseAsync(Guid id, Course course);
 
+        public Task DeleteCourseAsync(Guid id);
     }
 }

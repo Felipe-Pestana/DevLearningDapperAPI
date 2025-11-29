@@ -79,5 +79,20 @@ namespace DevLearning.Api.Controllers
                 return Problem(ex.Message);
             }
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCourseAsync(Guid id)
+        {
+            try
+            {
+                await _courseService.DeleteCourseAsync(id);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
     }
 }
