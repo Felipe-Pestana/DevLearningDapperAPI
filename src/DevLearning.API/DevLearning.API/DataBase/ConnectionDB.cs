@@ -6,6 +6,7 @@ namespace DevLearning.API.DataBase
     {
 
         private readonly string _connectionString;
+
         public ConnectionDB(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
