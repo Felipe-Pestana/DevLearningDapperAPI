@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\DevLearning"
   ],
-  "SelectedNode": "\\C:\\Users\\5by5 - Natalia\\source\\repos\\DevLearningDapperAPI",
+  "SelectedNode": "\\src\\DevLearning\\DevLearning.slnx",
   "PreviewInSolutionExplorer": false
 }

@@ -8,9 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Interfaces\" />
-    <Folder Include="Models\Dtos\" />
-    <Folder Include="Repositories\Interfaces\" />
-    <Folder Include="Services\Interfaces\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
   <ItemGroup>
