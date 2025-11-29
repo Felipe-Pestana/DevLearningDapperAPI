@@ -2,6 +2,7 @@
 using DevLearning.Api.Models.Dtos.Course;
 using DevLearning.Api.Repositories;
 using DevLearning.Api.Services.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Data.SqlClient;
 
 namespace DevLearning.Api.Services
@@ -42,6 +43,45 @@ namespace DevLearning.Api.Services
             catch (SqlException sqlex)
             {
                 throw new Exception(sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<CourseResponseDto?> GetCourseByIdAsync(Guid id)
+        {
+            try
+            {
+                return await _courseRepository.GetCourseByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task UpdateCourseAsync(Guid id, UpdateCourseDto update)
+        {
+            try
+            {
+                var oldCourse = await _courseRepository.GetCourseByIdAsync(id) ?? 
+                    throw new Exception("Course not found!");
+
+                var updatedCourse = new Course(
+                    oldCourse.Tag, oldCourse.Title,
+                    update.Summary ?? oldCourse.Summary,
+                    oldCourse.Url, oldCourse.Level, oldCourse.DurationInMinutes,
+                    DateTime.Now, DateTime.Now,
+                    update.Active ?? oldCourse.Active,
+                    update.Free ?? oldCourse.Free,
+                    update.Featured ?? oldCourse.Featured,
+                    oldCourse.AuthorId, oldCourse.CategoryId,
+                    update.Tags ?? oldCourse.Tags
+                    );
+
+                await _courseRepository.UpdateCourseAsync(id, updatedCourse);
             }
             catch (Exception ex)
             {

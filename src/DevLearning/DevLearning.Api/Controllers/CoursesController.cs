@@ -47,5 +47,37 @@ namespace DevLearning.Api.Controllers
                 return Problem();
             }
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CourseResponseDto?>> GetCourseByIdAsync(Guid id)
+        {
+            try
+            {
+                var course = await _courseService.GetCourseByIdAsync(id);
+                if (course is null)
+                    return NotFound("Course not found!");
+
+                return Ok(course);
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCourseAsync(Guid id, UpdateCourseDto update)
+        {
+            try
+            {
+                await _courseService.UpdateCourseAsync(id, update);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
     }
 }
