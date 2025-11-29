@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using DevLearning.API.DataBase;
 using DevLearning.API.Models;
 using DevLearning.API.Models.DTOs.Category;
 using DevLearning.API.Repositories.Interfaces;
@@ -11,7 +12,7 @@ namespace DevLearning.API.Repositories
     {
         private readonly SqlConnection _connection;
 
-        public CategoryRepository(DataBase.DbConnection connection)
+        public CategoryRepository(ConnectionDB connection)
         {
             _connection = connection.GetConnection();
         }

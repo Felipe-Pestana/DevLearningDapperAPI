@@ -12,7 +12,7 @@ namespace DevLearning.API.Repositories
     {
         public readonly SqlConnection _connection;
 
-        public AuthorRepository(DataBase.DbConnection connection)
+        public AuthorRepository(ConnectionDB connection)
         {
             _connection = connection.GetConnection();
         }
