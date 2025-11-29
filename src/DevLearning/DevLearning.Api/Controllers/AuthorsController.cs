@@ -1,4 +1,5 @@
-﻿using DevLearning.Api.Services.Interfaces;
+﻿using DevLearning.Api.Models.Dtos.Author;
+using DevLearning.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevLearning.Api.Controllers
@@ -28,7 +29,7 @@ namespace DevLearning.Api.Controllers
 
         // Get all
         [HttpGet("Author")]
-        public async Task<ActionResult> GetAllAuthorAsync()
+        public async Task<List<AuthorResponseDto>> GetAllAuthorsAsync()
         {
             throw new NotImplementedException();
         }
@@ -36,9 +37,9 @@ namespace DevLearning.Api.Controllers
 
         // Get by ID
         [HttpGet("Author/{id}")]
-        public async Task<ActionResult> GetAuthorByIdAsync(int id)
+        public async Task<ActionResult> GetAuthorByIdAsync(Guid id)
         {
-            throw new NotImplementedException(); 
+            return Ok(await _authorService.GetAuthorByIdAsync(id));
         }
 
 
@@ -52,7 +53,7 @@ namespace DevLearning.Api.Controllers
 
         // Put from author by ID
         [HttpPut("Author{id}")]
-        public async Task<ActionResult> UpdateAuthorByIdAsync(int id)
+        public async Task<ActionResult> UpdateAuthorByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -60,7 +61,7 @@ namespace DevLearning.Api.Controllers
 
         // Delete from author by ID
         [HttpDelete("Author{id}")]
-        public async Task<ActionResult> DeleteAuthorByIdAsync(int id)
+        public async Task<ActionResult> DeleteAuthorByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
