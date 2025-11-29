@@ -21,6 +21,60 @@
             Featured = featured;
         }
 
+        public Category(Guid id, string title, string url, string summary, int order, string description, bool featured)
+        {
+            Id = id;
+            Title = title;
+            Url = url;
+            Summary = summary;
+            Order = order;
+            Description = description;
+            Featured = featured;
+        }
+
         public Category() { }
+
+
+        public void SetTitle(string title)
+        {
+            if (string.IsNullOrWhiteSpace(title) || title.Length > 160)
+                throw new ArgumentException("Titulo inválido (máximo 160 caracteres).");
+
+            Title = title;
+        }
+
+        public void SetUrl(string url)
+        {
+            Url = url;
+        }
+
+        public void SetSummary(string summary)
+        {
+            if (string.IsNullOrWhiteSpace(summary) || summary.Length > 2000)
+                throw new ArgumentException("Summary inválido (máximo 2000 caracteres).");
+
+            Summary = summary;
+        }
+
+        public void SetDescription(string description)
+        {
+            if (string.IsNullOrWhiteSpace(description))
+                throw new ArgumentException("Descrição inválida.");
+
+            Description = description;
+        }
+
+        public void SetFeatured(bool featured)
+        {
+            Featured = featured;
+        }
+
+        public void SetOrder(int order)
+        {
+            if (order < 0)
+                throw new ArgumentException("Ordem deve ser >= 0.");
+
+            Order = order;
+        }
     }
 }
