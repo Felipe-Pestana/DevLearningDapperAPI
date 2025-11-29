@@ -1,12 +1,14 @@
 ﻿using Dapper;
 using DevLearning.Api.Data;
 using DevLearning.Api.Models;
+using DevLearning.Api.Models.Dtos.Course;
+using DevLearning.Api.Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
 using System.Net.WebSockets;
 
 namespace DevLearning.Api.Repositories
 {
-    public class CourseRepository
+    public class CourseRepository : ICourseRepository
     {
         private readonly SqlConnection _connection;
         public CourseRepository(ConnectionDB connection)
@@ -14,6 +16,64 @@ namespace DevLearning.Api.Repositories
             _connection = connection.GetConnection();
         }
 
-        
+        public async Task CreateCourseAsync(Course course)
+        {
+            var sql = @"INSERT INTO [Course] (
+                          [Id], [Tag], [Title], [Summary], [Url], [Level], 
+                          [DurationInMinutes], [CreateDate], [LastUpdateDate], 
+                          [Active], [Free], [Featured], 
+                          [AuthorId], [CategoryId], [Tags]
+                          )
+                        VALUES (
+                          @Id, @Tag, @Title, @Summary, @Url, @Level, 
+                          @DurationInMinutes, @CreateDate, @LastUpdateDate,
+                          @Active, @Free, @Featured,
+                          @AuthorId, @CategoryId, @Tags
+                          )";
+
+            try
+            {
+                await _connection.ExecuteAsync(
+                    sql, new
+                    {
+                        course.Id, course.Tag, course.Title, 
+                        course.Summary, course.Url, course.Level, 
+                        course.DurationInMinutes, 
+                        course.CreateDate, course.LastUpdateDate, 
+                        course.Active, course.Free, course.Featured, 
+                        course.AuthorId, course.CategoryId, course.Tags
+                    }
+                    );
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception(sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<List<CourseResponseDto>> GetAllCoursesAsync()
+        {
+            var sql = @"SELECT [Title], [Summary], [Tag], [AuthorId], [CategoryId], 
+                          [Url], [Level], [DurationInMinutes], [Active], [Free], 
+                          [Featured], [Tags]
+                        FROM [Course]";
+
+            try
+            {
+                return (await _connection.QueryAsync<CourseResponseDto>(sql)).ToList();
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception(sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

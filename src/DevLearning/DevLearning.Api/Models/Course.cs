@@ -27,6 +27,7 @@
             Guid authorId, Guid categoryId, string tags
             )
         {
+            Id = Guid.NewGuid();
             Tag = tag;
             Title = title;
             Summary = summary;
