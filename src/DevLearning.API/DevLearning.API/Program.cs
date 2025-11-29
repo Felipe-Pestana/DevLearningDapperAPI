@@ -13,18 +13,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 
-builder.Services.AddSingleton<ConnectionDB>();
+builder.Services.AddScoped<ConnectionDB>();
 
-builder.Services.AddScoped<DevLearning.API.DataBase.ConnectionDB>();
+//builder.Services.AddScoped<DevLearning.API.DataBase.ConnectionDB>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 
+builder.Services.AddScoped<AuthorRepository>();
+builder.Services.AddScoped<AuthorService>();
+
 var app = builder.Build();
-
-builder.Services.AddSingleton<AuthorRepository>();
-builder.Services.AddSingleton<AuthorService>();
-
 
 // Configure the HTTP request pipeline.
 

@@ -26,20 +26,30 @@ namespace DevLearning.API.Repositories
         }
         public async Task<AuthorResponseDTO> GetAuthorByIdAsync(Guid id)
         {
-            var sql = "SELECT Name, Title, Image, Bio, Url, Email, Type FROM [Author]";
+            var sql = "SELECT Name, Title, Image, Bio, Url, Email, Type FROM [Author] WHERE Id = @Id";
             var author = await _connection.QueryFirstOrDefaultAsync<AuthorResponseDTO>(sql, new { Id = id });
             return author;
         }
 
+        public async Task<AuthorResponseDTO> GetAuthorByEmail(string email)
+        {
+            var sql = "SELECT Name, Title, Image, Bio, Url, Email, Type FROM [Author] WHERE Email = @Email";
+            var author = await _connection.QueryFirstOrDefaultAsync<AuthorResponseDTO>(sql, new { Email = email });
+            return author;
+        }
         public async Task CreateAuthorAsync(Author author)
         {
-            var sql = @"INSERT INTO [Author] (Name, Title, Image, Bio, Url, Email, Type) 
-                        VALUES (@Name, @Title, @Image, @Bio, @Url, @Email, @Type) ";
+            var sql = @"INSERT INTO [Author] (Id, Name, Title, Image, Bio, Url, Email, Type) 
+                        VALUES (@Id, @Name, @Title, @Image, @Bio, @Url, @Email, @Type) ";
 
-            await _connection.ExecuteAsync(sql, new { author.Name, author.Title, author.Image, author.Bio, author.Url, author.Type });
+            await _connection.ExecuteAsync(sql, new { author.Id, author.Name, author.Title, author.Image, author.Bio, author.Url, author.Email, author.Type });
         }
         public async Task DeleteAuthorAsync(Guid id)
         {
+            //deletar os cursos do autor antes de deletar o autor
+            var sqlDeleteCourse = "DELETE FROM [Course] WHERE AuthorId = @Id";
+            await _connection.ExecuteAsync(sqlDeleteCourse, new { Id = id });
+
             var sql = "DELETE FROM [Author] WHERE Id = @Id";
             await _connection.ExecuteAsync(sql, new { Id = id });
         }

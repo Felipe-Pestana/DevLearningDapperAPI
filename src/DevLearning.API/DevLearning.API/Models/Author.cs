@@ -11,13 +11,14 @@
         public string Email { get; private set; }
         public bool Type { get; private set; } //Author ativo ou inativo
 
-        public Author(string name, string title, string image, string bio, string url, string email, bool type)
+        public Author(string name, string title, string image, string bio, string email, bool type)
         {
+            Id = Guid.NewGuid();
             Name = name;
             Title = title;
             Image = image;
             Bio = bio;
-            Url = url;
+            Url = $"www.devlearning/{Name}".ToLower().Replace(" ", "-");
             Email = email;
             Type = true;
         }

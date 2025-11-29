@@ -20,11 +20,27 @@ namespace DevLearning.API.Services
         {
             return await _authorRepository.GetAuthorByIdAsync(id);
         }
+
         public async Task CreateAuthorAsync(Author author)
         {
-            var newAuthor = new Author(author.Name, author.Title, author.Image, author.Bio, author.Url, author.Email, author.Type);
+            try
+            {
+                var findAuthor = await _authorRepository.GetAuthorByEmail(author.Email);
+                if (findAuthor is null)
+                {
+                    var newAuthor = new Author(author.Name, author.Title, author.Image, author.Bio, author.Email, author.Type);
+                    await _authorRepository.CreateAuthorAsync(newAuthor);
 
-            await _authorRepository.CreateAuthorAsync(newAuthor);
+                }
+                else
+                {
+                    throw new Exception("O autor já existe.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task DeleteAuthorAsync(Guid id)
