@@ -1,3 +1,4 @@
+using DevLearning.API.DataBase;
 using DevLearning.API.Repositories;
 using DevLearning.API.Repositories.Interfaces;
 using DevLearning.API.Services;
@@ -10,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<DevLearning.API.DataBase.DbConnection>();
+builder.Services.AddScoped<ConnectionDB>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 

@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\DevLearning.API",
+    "\\src\\DevLearning.API\\DevLearning.API",
+    "\\src\\DevLearning.API\\DevLearning.API\\Repositories"
+  ],
+  "SelectedNode": "\\src\\DevLearning.API\\DevLearning.API\\Repositories\\CategoryRepository.cs",
+  "PreviewInSolutionExplorer": false
+}

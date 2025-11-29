@@ -23,14 +23,19 @@ namespace DevLearning.API.Controllers
             {
                 await _categoryService.CreateCategoryAsync(categoryDto);
                 return Created();
-            }catch(Exception ex)
+            }
+            catch (ArgumentException ex)
             {
-                return StatusCode(500, $"Erro interbo: {ex.Message}");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Erro interno: {ex.Message}" });
             }
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CategoryResponseDTO>>> GetAll()
+        public async Task<ActionResult<List<CategoryResponseDTO>>> GetAllCategories()
         {
             try
             {
@@ -40,6 +45,72 @@ namespace DevLearning.API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Erro interno: {ex.Message}");
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CategoryResponseDTO>> GetById(Guid id)
+        {
+            try
+            {
+                var category = await _categoryService.GetCategoryByIdAsync(id);
+                return Ok(category);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message =  ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Erro interno: {ex.Message}" });
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateCategory(Guid id, CategoryUpdateDTO categoryDto)
+        {
+            try
+            {
+                await _categoryService.UpdateCategoryAsync(id, categoryDto);
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Erro interno: {ex.Message}" });
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCategory(Guid id)
+        {
+            try
+            {
+                await _categoryService.DeleteCategoryAsync(id);
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Erro interno: {ex.Message}" });
             }
         }
     }
