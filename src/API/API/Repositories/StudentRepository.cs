@@ -47,6 +47,22 @@ namespace API.Repositories
             return rowsAffected;
         }
 
+        public async Task EnrollingStudentInCourseAsync(StudentCourse studentCourse)
+        {
+            var sql = @"INSERT INTO StudentCourse (CourseId, StudentId, Progress, Favorite, StartDate, LastUpdateDate)
+                        VALUES (@CourseId, @StudentId, @Progress, @Favorite, @StartDate, @LastUpdateDate)";
+
+            await _connection.ExecuteAsync(sql, new
+            {
+                CourseId = studentCourse.CourseId,
+                StudentId = studentCourse.StudentId,
+                Progress = studentCourse.Progress,
+                Favorite = studentCourse.Favorite,
+                StartDate = studentCourse.StartDate,
+                LastUpdateDate = studentCourse.LastUpdateDate
+            });
+        }
+
         public async Task<List<StudentResponseDTO>> GetAllStudentsAsync()
         {
             var sql = @"SELECT Id, Name, Email, Phone, Birthdate FROM Student ORDER BY CreateDate";
@@ -75,6 +91,20 @@ namespace API.Repositories
                 Phone = student.Phone,
                 Id = id
             });
+        }
+
+        public async Task<bool> VerifyExistCourseAsync(Guid courseId)
+        {
+            var sql = @"SELECT CASE WHEN EXISTS (SELECT 1 FROM Course WHERE Id = @Id) THEN 1 ELSE 0 END";
+            var exist = await _connection.ExecuteScalarAsync<bool>(sql, new { Id = courseId });
+            return exist;
+        }
+
+        public async Task<bool> VerifyExistStudentAsync(Guid studentId)
+        {
+            var sql = @"SELECT CASE WHEN EXISTS (SELECT 1 FROM Student WHERE Id = @Id) THEN 1 ELSE 0 END";
+            var exist = await _connection.ExecuteScalarAsync<bool>(sql, new { Id = studentId });
+            return exist;
         }
     }
 }

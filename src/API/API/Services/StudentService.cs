@@ -1,5 +1,6 @@
 ﻿using API.Models;
 using API.Models.DTOs.Student;
+using API.Models.DTOs.StudentCourse;
 using API.Repositories;
 using API.Services.Interfaces;
 
@@ -31,6 +32,24 @@ namespace API.Services
         {
             var rowsAffected = await _studentRepository.DeleteStudentAsync(id);
             return rowsAffected;
+        }
+
+        public async Task EnrollingStudentInCourseAsync(Guid studentId, Guid courseId, StudentCourseRequestDTO dto)
+        {
+            if (!await _studentRepository.VerifyExistStudentAsync(studentId))
+                throw new ArgumentException("Esse estudante não existe!");
+
+            if (!await _studentRepository.VerifyExistCourseAsync(courseId))
+                throw new ArgumentException("Esse curso não existe!");
+
+            var registration = new StudentCourse(
+                courseId,
+                studentId,
+                dto.Progress,
+                dto.Favorite
+            );
+
+            await _studentRepository.EnrollingStudentInCourseAsync(registration);
         }
 
         public async Task<List<StudentResponseDTO>> GetAllStudentsAsync()

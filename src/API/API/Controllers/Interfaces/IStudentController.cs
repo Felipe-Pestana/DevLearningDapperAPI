@@ -1,4 +1,5 @@
 ﻿using API.Models.DTOs.Student;
+using API.Models.DTOs.StudentCourse;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers.Interfaces
@@ -9,5 +10,6 @@ namespace API.Controllers.Interfaces
         public Task<ActionResult<List<StudentResponseDTO>>> GetAllStudentsAsync();
         public Task<ActionResult> UpdateStudentAsync(Guid id, StudentUpdateDTO student);
         public Task<ActionResult> DeleteStudentAsync(Guid id);
+        public Task<ActionResult> EnrollingStudentInCourseAsync(Guid studentId, Guid courseId, StudentCourseRequestDTO dto);
     }
 }

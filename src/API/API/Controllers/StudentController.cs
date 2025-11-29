@@ -1,5 +1,6 @@
 ﻿using API.Controllers.Interfaces;
 using API.Models.DTOs.Student;
+using API.Models.DTOs.StudentCourse;
 using API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -62,6 +63,23 @@ namespace API.Controllers
                 return NoContent();
             else
                 return NotFound("Estudante não encontrado!");
+        }
+
+        [HttpPost("{studentId}/Course/{courseId}")]
+        public async Task<ActionResult> EnrollingStudentInCourseAsync
+        (
+            Guid studentId, Guid courseId, StudentCourseRequestDTO dto
+        )
+        {
+            try
+            {
+                await _studentService.EnrollingStudentInCourseAsync(studentId, courseId, dto);
+                return Created();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

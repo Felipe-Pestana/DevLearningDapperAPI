@@ -10,5 +10,8 @@ namespace API.Repositories.Interfaces
         public Task<StudentUpdateDTO?> SearchStudentToUpdateAsync(Guid id);
         public Task UpdateStudentAsync(Guid id, StudentUpdateDTO student);
         public Task<int> DeleteStudentAsync(Guid id);
+        public Task<bool> VerifyExistCourseAsync(Guid courseId);
+        public Task<bool> VerifyExistStudentAsync(Guid studentId);
+        public Task EnrollingStudentInCourseAsync(StudentCourse studentCourse);
     }
 }
