@@ -1,4 +1,5 @@
 ﻿
+using DevLearning.Api.Controllers.Interfaces;
 using DevLearning.Api.Models.Dtos.CareerItem;
 using DevLearningAPI.Models.Dtos.Career;
 using DevLearningAPI.Services.Interfaces; 
@@ -8,7 +9,7 @@ namespace DevLearning.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CareersController : ControllerBase
+    public class CareersController : ControllerBase, ICareerController
     {
         private readonly ICareerService _service;
 
@@ -17,8 +18,8 @@ namespace DevLearning.Api.Controllers
             _service = service;
         }
 
-        [HttpGet("BuscarCarreiras")]
-        public async Task<ActionResult> GetAll()
+        [HttpGet]
+        public async Task<ActionResult> GetAllCareer()
         {
             try
             {
@@ -31,8 +32,8 @@ namespace DevLearning.Api.Controllers
             }
         }
 
-        [HttpGet("Buscar Carreira pelo ID{id}")]
-        public async Task<ActionResult> GetById(Guid id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetCareerById(Guid id)
         {
             try
             {
@@ -49,8 +50,8 @@ namespace DevLearning.Api.Controllers
             }
         }
 
-        [HttpPost("CriarCarreira")]
-        public async Task<ActionResult> Create([FromBody] CreateCareerDTO dto)
+        [HttpPost]
+        public async Task<ActionResult> CreateCareer([FromBody] CreateCareerDTO dto)
         {
             try
             {
@@ -67,8 +68,8 @@ namespace DevLearning.Api.Controllers
             }
         }
 
-        [HttpPut("AtualizarCarreira{id}")]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateCareerDto dto)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateCareer(Guid id, [FromBody] UpdateCareerDto dto)
         {
             try
             {
@@ -89,8 +90,8 @@ namespace DevLearning.Api.Controllers
             }
         }
 
-        [HttpDelete("AlterarSituação{id}")]
-        public async Task<ActionResult> Delete(Guid id)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCareer(Guid id)
         {
             try
             {
@@ -107,7 +108,7 @@ namespace DevLearning.Api.Controllers
             }
         }
         [HttpPost("{id}/items")]
-        public async Task<ActionResult> AddItem(Guid id, [FromBody] CreateCareerItemDTO dto)
+        public async Task<ActionResult> AddItemCareer(Guid id, [FromBody] CreateCareerItemDTO dto)
         {
             try
             {
@@ -125,6 +126,28 @@ namespace DevLearning.Api.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpDelete("{careerId}/items/{courseId}")]
+        public async Task<ActionResult> RemoveItemCareer(Guid careerId, Guid courseId)
+        {
+            try
+            {
+                await _service.RemoveItemAsync(careerId, courseId);
+
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
             }
         }
     }

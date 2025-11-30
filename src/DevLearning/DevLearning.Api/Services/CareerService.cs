@@ -123,5 +123,29 @@ namespace DevLearningAPI.Services
                 throw new Exception(ex.Message);
             }
         }
+        public async Task RemoveItemAsync(Guid careerId, Guid courseId)
+        {
+            if (careerId == Guid.Empty || courseId == Guid.Empty)
+                throw new ArgumentException("IDs inválidos fornecidos.");
+
+            try
+            {
+                var existingCareer = await _careerRepository.GetByIdAsync(careerId);
+                if (existingCareer is null)
+                    throw new KeyNotFoundException("Carreira não encontrada!");
+
+                var removed = await _careerRepository.RemoveItemAsync(careerId, courseId);
+
+                if (!removed)
+                    throw new KeyNotFoundException("O curso informado não pertence a esta carreira.");
+            }
+            catch (KeyNotFoundException) { throw; } 
+            catch (ArgumentException) { throw; }    
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
