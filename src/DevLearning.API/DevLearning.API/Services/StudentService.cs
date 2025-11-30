@@ -58,20 +58,26 @@
 //            }
 //        }
 
-//        public async Task<Student> GetStudentById(string id)
-//        {
-//            try
-//            {
-//                return await _studentRepository.GetStudentById(Guid.Parse(id));
-//            } catch(Exception ex)
-//            {
-//                throw new Exception(ex.Message);    
-//            }
-//        }
+        public async Task<Student> GetStudentById(string id)
+        {
+            //try
+            //{
+            //    //return await _studentRepository.GetStudentById(Guid.Parse(id));
+            //} catch(Exception ex)
+            //{
+            //    throw new Exception(ex.Message);    
+            //}
+            throw new NotImplementedException();
+        }
 
-//        public Task UpdateStudent(StudentRequestUpdateDTO student)
-//        {
-//            throw new NotImplementedException();
-//        }
-//    }
-//}
+        public Task UpdateStudent(StudentRequestUpdateDTO student)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateStudent(StudentRequestDTO student)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

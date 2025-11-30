@@ -80,16 +80,17 @@ namespace DevLearning.API.Repositories
 
         public Task UpdateStudent(StudentRequestDTO student)
         {
-            try
-            {
+            //try
+            //{
 
-            } catch(SqlException ex)
-            {
-                throw new Exception(ex.Message);
-            } catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            //} catch(SqlException ex)
+            //{
+            //    throw new Exception(ex.Message);
+            //} catch(Exception ex)
+            //{
+            //    throw new Exception(ex.Message);
+            //}
+            throw new NotImplementedException();
         }
     }
 }
