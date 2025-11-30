@@ -19,17 +19,17 @@ builder.Services.AddSingleton<CareerRepository>();
 builder.Services.AddSingleton<CareerService>();
 
 
-builder.Services.AddScoped<ConnectionDB>();
+builder.Services.AddSingleton<ConnectionDB>();
 
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
+builder.Services.AddSingleton<ICategoryService, CategoryService>();
 
 
-builder.Services.AddScoped<AuthorRepository>();
-builder.Services.AddScoped<AuthorService>();
+builder.Services.AddSingleton<AuthorRepository>();
+builder.Services.AddSingleton<AuthorService>();
 
-builder.Services.AddScoped<StudentRepository>();
-builder.Services.AddScoped<StudentService>();
+builder.Services.AddSingleton<StudentRepository>();
+builder.Services.AddSingleton<StudentService>();
 
 
 var app = builder.Build();

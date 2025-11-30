@@ -35,7 +35,7 @@ namespace DevLearning.API.Services
             }
         }
 
-        public async Task<List<Student>> GetAllStudents()
+        public async Task<List<StudentResponseDTO>> GetAllStudents()
         {
             try
             {
@@ -57,6 +57,17 @@ namespace DevLearning.API.Services
                 throw new Exception(ex.Message);
             }
         }
+        public async Task<Student> GetStudentByEmail(string email)
+        {
+            try
+            {
+                return await _studentRepository.GetStudentByEmail(email);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
         public async Task<Student> GetStudentById(string id)
         {
@@ -69,9 +80,30 @@ namespace DevLearning.API.Services
             }
         }
 
-        public Task UpdateStudent(StudentRequestUpdateDTO student)
+        public async Task UpdateStudent(StudentRequestUpdateDTO student, string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var studentStorage = await _studentRepository.GetStudentById(Guid.Parse(id));
+                if (studentStorage is null)
+                    throw new Exception("Estudante não encontrado");
+                if (await _studentRepository.GetStudentByDocument(student.Document) is not null)
+                    throw new Exception("O documento informado já está cadastrado para outro estudante.");
+                if (student.Email is not null && await _studentRepository.GetStudentByEmail(student.Email) is not null)
+                    throw new Exception("O email informado já está cadastrado para outro estudante.");
+
+                var newStudent = new Student(
+                    student.Name is not null ? student.Name : studentStorage.Name,
+                    student.Email is not null ? student.Email : studentStorage.Email,
+                    student.Phone is not null ? student.Phone : studentStorage.Phone,
+                    student.Document is not null ? student.Document : studentStorage.Document,
+                    student.Birthdate is not null ? (DateTime)student.Birthdate : studentStorage.Birthdate
+                    );
+                await _studentRepository.UpdateStudent(newStudent, Guid.Parse(id));
+            } catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

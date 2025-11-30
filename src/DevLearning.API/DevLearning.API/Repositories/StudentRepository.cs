@@ -46,12 +46,12 @@ namespace DevLearning.API.Repositories
             }
         }
 
-        public async Task<List<Student>> GetAllStudents()
+        public async Task<List<StudentResponseDTO>> GetAllStudents()
         {
             try
             {
-                var sql = @"SELECT Id, Name, Email, Document, Phone, Birthdate, CreateDate";
-                var students = (await _connection.QueryAsync<Student>(sql)).ToList();
+                var sql = @"SELECT Id, Name, Email, Document, Phone, Birthdate, CreateDate FROM Student";
+                var students = (await _connection.QueryAsync<StudentResponseDTO>(sql)).ToList();
                 return students;
             } catch(SqlException ex)
             {
@@ -66,8 +66,8 @@ namespace DevLearning.API.Repositories
         {
             try
             {
-                var sql = @"SELECT Id, Name, Email, Document, Phone, Birthdate, CreateDate WHERE Document = @Document";
-                var student = (await _connection.QueryFirstOrDefaultAsync<Student>(sql));
+                var sql = @"SELECT Id, Name, Email, Document, Phone, Birthdate, CreateDate FROM Student WHERE Document = @Document";
+                var student = await _connection.QueryFirstOrDefaultAsync<Student>(sql, new { Document = document });
                 return student;
             } catch(SqlException ex)
             {
@@ -78,11 +78,52 @@ namespace DevLearning.API.Repositories
             }
         }
 
-        public Task UpdateStudent(StudentRequestDTO student)
+        public async Task<Student> GetStudentByEmail(string email)
         {
             try
             {
+                var sql = @"SELECT Id, Name, Email, Document, Phone, Birthdate, CreateDate FROM Student WHERE Email = @Email";
+                var student = await _connection.QueryFirstOrDefaultAsync<Student>(sql, new { Email = email });
+                return student;
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
+        public async Task<Student> GetStudentById(Guid id)
+        {
+            try
+            {
+                var sql = @"SELECT Id, Name, Email, Document, Phone, Birthdate, CreateDate FROM Student WHERE Id = @Id";
+                var student = await _connection.QueryFirstOrDefaultAsync<Student>(sql, new { Id = id });
+                return student;
+            } catch(SqlException ex)
+            {
+                throw new Exception(ex.Message);
+            } catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task UpdateStudent(Student student, Guid id)
+        {
+            try
+            {
+                var sql = @"UPDATE FROM Student SET
+                            Name = @Name,
+                            Email = @Email,
+                            Document = @Document,
+                            Phone = @Phone,
+                            Birthdate = @Birthdate
+                            WHERE Id = @id";
+                await _connection.ExecuteAsync(sql, new { Name = student.Name, Email = student.Email, Document = student.Document, Phone = student.Phone, Birthdate = student.Birthdate });
             } catch(SqlException ex)
             {
                 throw new Exception(ex.Message);
