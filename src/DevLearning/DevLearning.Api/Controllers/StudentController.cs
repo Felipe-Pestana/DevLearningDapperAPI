@@ -1,4 +1,5 @@
-﻿using DevLearning.Api.Models.Dtos;
+﻿using DevLearning.Api.Models.Dtos.Student;
+using DevLearning.Api.Models.Dtos.StudentCourse;
 using DevLearning.Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -42,12 +43,11 @@ namespace DevLearning.Api.Controllers
             try
             {
                 var students = await _service.GetAllStudentsAsync();
-                var message = "Lista Vazia!";
-
-                if (students is null)
-                    return NotFound(message);
-
                 return Ok(students);
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
@@ -56,17 +56,16 @@ namespace DevLearning.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<StudentResponseDto>>> GetStudentByIdAsync(Guid id)
+        public async Task<ActionResult<StudentResponseDto>> GetStudentByIdAsync(Guid id)
         {
             try
             {
                 var student = await _service.GetStudentByIdAsync(id);
-                var message = "Estudante não encontrado!";
-
-                if (student is null)
-                    return NotFound(message);
-
                 return Ok(student);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
@@ -77,17 +76,14 @@ namespace DevLearning.Api.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateStudentAsync(Guid id, UpdateStudentDto student)
         {
-                
-            var message = "Estudante não encontrado!";
-            var studentExist = await _service.GetStudentByIdAsync(id);
-            if (studentExist is null)
-                return NotFound(message);
-
             try
-            {                    
+            {
                 await _service.UpdateStudentAsync(id, student);
-
                 return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (ArgumentException ex)
             {
@@ -99,17 +95,17 @@ namespace DevLearning.Api.Controllers
             }
         }
 
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteStudentAsync(Guid id)
         {
-            var message = "Estudante não encontrado!";
-            var studentExist = await _service.GetStudentByIdAsync(id);
-            if (studentExist is null)
-                return NotFound(message);
-
             try
             {
                 await _service.DeleteStudentAsync(id);
                 return NoContent(); 
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
@@ -117,6 +113,23 @@ namespace DevLearning.Api.Controllers
             }
         }
 
+        [HttpPost("{studentId}/{courseId}/")]
+        public async Task<ActionResult> CreateStudentCourseAsync(Guid courseId, Guid studentId, CreateStudentCourseDto studentCourse)
+        { 
+            try
+            {
+                await _service.CreateStudentCourseAsync(courseId, studentId, studentCourse);
+                return Created();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
     }
 }

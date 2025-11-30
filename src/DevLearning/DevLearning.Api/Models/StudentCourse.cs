@@ -9,5 +9,16 @@
         public DateTime StartDate { get; private set; }
         public DateTime LastUpdateDate { get; private set; }
 
+        public StudentCourse(Guid courseId, Guid studentId, int progress, bool favorite)
+        {
+            CourseId = courseId;
+            StudentId = studentId;
+            Progress = progress;
+            Favorite = favorite;
+            StartDate = DateTime.Now;
+            LastUpdateDate = DateTime.Now;
+        }
+
+
     }
 }

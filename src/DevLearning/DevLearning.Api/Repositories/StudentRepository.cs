@@ -1,10 +1,12 @@
 ﻿using Dapper;
 using DevLearning.Api.Data;
 using DevLearning.Api.Models;
-using DevLearning.Api.Models.Dtos;
+using DevLearning.Api.Models.Dtos.Student;
+using DevLearning.Api.Models.Dtos.StudentCourse;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace DevLearning.Api.Repositories
 {
@@ -129,30 +131,108 @@ namespace DevLearning.Api.Repositories
             }
         }
 
+        public async Task CreateStudentCourseAsync(StudentCourse studentCourse) 
+        {
+            try
+            {
+                var sql = @"INSERT INTO StudentCourse(CourseId, StudentId, Progress, Favorite, StartDate, LastUpdateDate) 
+                        VALUES(@CourseId, @StudentId, @Progress, @Favorite, @StartDate, @LastUpdateDate)";
+
+                await _connection.ExecuteAsync(sql, new
+                {
+                    studentCourse.CourseId,
+                    studentCourse.StudentId,
+                    studentCourse.Progress,
+                    studentCourse.Favorite,
+                    studentCourse.StartDate,
+                    studentCourse.LastUpdateDate
+                });
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
+        }
+
+        public async Task <StudentCourse?> GetStudentCourseAsync(Guid courseId, Guid studentId) 
+        {
+            try
+            {
+                var sql = @"SELECT CourseId, StudentId, Progress, Favorite, StartDate, LastUpdateDate
+                        FROM StudentCourse 
+                        WHERE CourseId = @courseId
+                        AND StudentId = @StudentId";
+
+                return await _connection.QueryFirstOrDefaultAsync(sql, new
+                { @CourseId = courseId, @StudentId = studentId });
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
+
+        }
+
+        public async Task UpdateStudentCourseProgressAsync(Guid studentId, Guid courseId, UpdateStudentCourseDto student)
+        {
+            try
+            {
+                var sql = @"UPDATE StudentCourse 
+                            SET Progress = @Progress
+                            WHERE CourseId = @courseId
+                            AND StudentId = @StudentId";
+
+                await _connection.ExecuteAsync(sql, new
+                {
+                    student.Progress,
+                    @CourseId = courseId,
+                    @StudentId = studentId
+                });
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
+        }
+        
 
 
 
-           //🔹 Listar cursos de um aluno
-
-           // GET /students/{id
-           //     }/courses
 
 
 
 
 
-           // 🔹 Matricular um aluno em um curso
-                      // POST /students/{studentId
-           // }/ courses /{ courseId}
+        //🔹 Listar cursos de um aluno
 
-           // Body deve conter:
-
-           // progress
-           // favorite
+        // GET /students/{id
+        //     }/courses
 
 
+        //public async Task<IEnumerable<StudentResponseDto>> GetStudentCoursesAsync(Guid id) 
+        //{
 
-           // 🔹 Atualizar progresso de um aluno
+        //}
+
+
+
+
+
+
+
+
 
     }
 }
