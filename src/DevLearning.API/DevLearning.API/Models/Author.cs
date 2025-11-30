@@ -1,4 +1,6 @@
-﻿namespace DevLearning.API.Models
+﻿using DevLearning.API.Models.Enums.Author;
+
+namespace DevLearning.API.Models
 {
     public class Author
     {
@@ -9,17 +11,20 @@
         public string Bio { get; private set; }
         public string Url { get; private set; }
         public string Email { get; private set; }
-        public bool Type { get; private set; } //Author ativo ou inativo
+        public AuthorType Type { get; private set; } //Author ativo ou inativo
 
-        public Author(string name, string title, string image, string bio, string url, string email, bool type)
+        public Author(string name, string title, string image, string bio, string email)
         {
+            Id = Guid.NewGuid();
             Name = name;
             Title = title;
             Image = image;
             Bio = bio;
-            Url = url;
+            Url = $"www.devlearning.com.br/author/{Name.ToLower().Replace(" ", "-")}";
             Email = email;
-            Type = true;
+            Type = AuthorType.Ativo;
         }
+
+       
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace DevLearning.API.Models.DTOs.Author
+﻿using DevLearning.API.Models.Enums.Author;
+
+namespace DevLearning.API.Models.DTOs.Author
 {
     public class AuthorResponseDTO
     {
@@ -8,6 +10,9 @@
         public string Bio { get; set; }
         public string Url { get; set; }
         public string Email { get; set; }
-        public bool Type { get; set; } 
+        public string TypeLabel => Type.ToString();
+        public AuthorType Type { get; set; }
+
+ 
     }
 }
