@@ -1,4 +1,8 @@
 using API.Database;
+using API.Repositories;
+using API.Repositories.Interfaces;
+using API.Services;
+using API.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSingleton<DbConnectionFactory>();
+
+builder.Services.AddSingleton<ICategoryService, CategoryService>();
+builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
+
+builder.Services.AddSingleton<IAuthorService, AuthorService>();
+builder.Services.AddSingleton<IAuthorRepository, AuthorRepository>();
 
 var app = builder.Build();
 

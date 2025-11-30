@@ -1,6 +1,9 @@
-﻿namespace API.Services
+﻿using API.Services.Interfaces;
+
+namespace API.Services
 {
-    public class AuthorService
+    public class AuthorService : IAuthorService
     {
+
     }
 }

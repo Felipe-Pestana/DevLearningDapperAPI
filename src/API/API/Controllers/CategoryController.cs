@@ -19,44 +19,89 @@ namespace API.Controllers
         [HttpGet("GetAllCategoriesAsync")]
         public async Task<ActionResult<List<CategoryResponseDTO>>> GetAllCategoriesAsync()
         {
-            return Ok(await _categoryService.GetAllCategoriesAsync());
+            try
+            {
+                return Ok(await _categoryService.GetAllCategoriesAsync());
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+
+            }
         }
 
         [HttpGet("GetCategoryByIdAsync/{id}")]
         public async Task<ActionResult<CategoryResponseDTO>> GetCategoryByIdAsync(Guid id)
         {
-            return Ok(await _categoryService.GetCategoryByIdAsync(id));
+            try
+            {
+                var categoryFound = await _categoryService.GetCategoryByIdAsync(id);
+
+                if (categoryFound is null)
+                    return NotFound();
+
+                return Ok(await _categoryService.GetCategoryByIdAsync(id));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+
+            }
         }
 
         [HttpPost("CreateCategoryAsync")]
         public async Task<ActionResult> CreateCategoryAsync(CategoryRequestDTO category)
         {
-            await _categoryService.CreateCategoryAsync(category);
-            return Created();
+            try
+            {
+                await _categoryService.CreateCategoryAsync(category);
+                return Created();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+
+            }
         }
 
         [HttpPut("UpdateCategoryAsync/{id}")]
         public async Task<ActionResult> UpdateCategoryAsync(CategoryRequestDTO category, Guid id)
         {
-            var categoryFound = await _categoryService.GetCategoryByIdAsync(id);
+            try
+            {
+                var categoryFound = await _categoryService.GetCategoryByIdAsync(id);
 
-            if (categoryFound is null)
-                return NotFound();
+                if (categoryFound is null)
+                    return NotFound();
 
-            await _categoryService.UpdateCategoryAsync(category, id);
-            return NoContent();
+                await _categoryService.UpdateCategoryAsync(category, id);
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+
+            }
         }
 
         [HttpDelete("DeleteCategoryAsync/{id}")]
         public async Task<ActionResult> DeleteCategoryAsync(Guid id)
         {
-            var categoryFound = await _categoryService.GetCategoryByIdAsync(id);
+            try
+            {
+                var categoryFound = await _categoryService.GetCategoryByIdAsync(id);
 
-            if (categoryFound is null)
-                return NotFound();
+                if (categoryFound is null)
+                    return NotFound();
 
-            await _categoryService.DeleteCategoryAsync(id);
-            return NoContent();
+                await _categoryService.DeleteCategoryAsync(id);
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+
+            }
         }
     }
 }

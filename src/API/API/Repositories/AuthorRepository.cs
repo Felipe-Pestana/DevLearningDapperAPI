@@ -1,6 +1,9 @@
-﻿namespace API.Repositories
+﻿using API.Repositories.Interfaces;
+
+namespace API.Repositories
 {
-    public class AuthorRepository
+    public class AuthorRepository : IAuthorRepository
     {
+
     }
 }

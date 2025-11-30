@@ -19,7 +19,7 @@ namespace API.Repositories
         public async Task<List<CategoryResponseDTO>> GetAllCategoriesAsync()
         {
             var sqlString =
-                @"SELECT Id, Title, Url, Summary, Order, Featured 
+                @"SELECT Id, Title, Url, Summary, [Order], Description, Featured 
                 FROM Category";
 
             return (await _connection.QueryAsync<CategoryResponseDTO>(sqlString)).ToList();
@@ -28,7 +28,7 @@ namespace API.Repositories
         public async Task<CategoryResponseDTO> GetCategoryByIdAsync(Guid id)
         {
             var sqlString =
-                @"SELECT Id, Title, Url, Summary, Order, Featured 
+                @"SELECT Id, Title, Url, Summary, [Order], Description, Featured 
                 FROM Category
                 WHERE Id = @CategoryId";
 
@@ -38,19 +38,19 @@ namespace API.Repositories
         public async Task CreateCategoryAsync(Category category)
         {
             var sqlString =
-                @"INSERT INTO Category (Title, Url, Summary, Order, Featured)
-                VALUES (@Title, @Url, @Summary, @Order, @Featured)";
+                @"INSERT INTO Category (Id, Title, Url, Summary, [Order], Description, Featured)
+                VALUES (@Id, @Title, @Url, @Summary, @Order, @Description, @Featured)";
 
-            await _connection.ExecuteAsync(sqlString, new { category.Title, category.Url, category.Summary, category.Order, category.Featured});
+            await _connection.ExecuteAsync(sqlString, new { category.Id, category.Title, category.Url, category.Summary, category.Order, category.Description, category.Featured});
         }
 
         public async Task UpdateCategoryAsync(Category category, Guid id)
         {
             var sqlString =
-                @"UPDATE Category SET Title = @Title, Url = @Url, Summary = @Summary, Order = @Order, Featured = @Featured
+                @"UPDATE Category SET Title = @Title, Url = @Url, Summary = @Summary, [Order] = @Order, Description = @Description, Featured = @Featured
                 WHERE Id = @CategoryId";
 
-            await _connection.ExecuteAsync(sqlString, new {category.Title, category.Url, category.Summary, category.Order, category.Featured, CategoryId = id});
+            await _connection.ExecuteAsync(sqlString, new {category.Title, category.Url, category.Summary, category.Order, category.Description, category.Featured, CategoryId = id});
         }
 
         public async Task DeleteCategoryAsync(Guid id)

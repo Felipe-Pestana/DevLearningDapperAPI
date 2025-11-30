@@ -26,14 +26,14 @@ namespace API.Services
 
         public async Task CreateCategoryAsync(CategoryRequestDTO category)
         {
-            Category newCategory = new(category.Title, category.Url, category.Summary, category.Order, category.Featured);
+            Category newCategory = new(category.Title, category.Url, category.Summary, category.Order, category.Description, category.Featured);
 
             await _categoryRepository.CreateCategoryAsync(newCategory);
         }
 
         public async Task UpdateCategoryAsync(CategoryRequestDTO category, Guid id)
         {
-            Category newCategory = new(category.Title, category.Url, category.Summary, category.Order, category.Featured);
+            Category newCategory = new(category.Title, category.Url, category.Summary, category.Order, category.Description, category.Featured);
 
             await _categoryRepository.UpdateCategoryAsync(newCategory, id);
         }
