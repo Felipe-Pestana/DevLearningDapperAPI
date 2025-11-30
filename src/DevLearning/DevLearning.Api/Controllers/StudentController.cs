@@ -114,7 +114,7 @@ namespace DevLearning.Api.Controllers
             }
         }
 
-        [HttpPost("{studentId}/{courseId}/")]
+        [HttpPost("{studentId}/course/{courseId}/")]
         public async Task<ActionResult> CreateStudentCourseAsync(Guid courseId, Guid studentId, CreateStudentCourseDto studentCourse)
         { 
             try
@@ -132,15 +132,21 @@ namespace DevLearning.Api.Controllers
             }
         }
 
-        public async Task<StudentCourse?> GetStudentCourseAsync(Guid courseId, Guid studentId)
+        [HttpGet("{id}/courses")]
+        public async Task<ActionResult<StudentResponseDto>> GetStudentAllCoursesAsync(Guid id)
         {
             try
             {
-                return await _service.GetStudentCourseAsync(courseId, studentId);
+                var student = await _service.GetStudentAllCoursesAsync(id);
+                return Ok(student);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                return StatusCode(500, ex.Message);
             }
         }
 

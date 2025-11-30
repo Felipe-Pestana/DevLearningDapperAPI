@@ -18,9 +18,6 @@ namespace DevLearning.Api.Repositories
             _connection = connection.GetConnection();
         }
 
-
-        //TODO: VALIDAR EMAIL DUPLICIDADE
-
         public async Task CreateStudentAsync(Student student) 
         {
             try
@@ -77,6 +74,27 @@ namespace DevLearning.Api.Repositories
                             WHERE Id = @Id";
 
                 return await _connection.QueryFirstOrDefaultAsync<StudentResponseDto>(sql, new {@Id = id});
+
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
+        }
+
+        public async Task<StudentResponseDto?> GetStudentByEmailAsync(string email)
+        {
+            try
+            {
+                var sql = @"SELECT Id, Name, Email, Document, Phone, BirthDate, CreateDate 
+                            FROM Student
+                            WHERE Email = @Email";
+
+                return await _connection.QueryFirstOrDefaultAsync<StudentResponseDto>(sql, new { @Email = email });
 
             }
             catch (SqlException sqlEx)
@@ -210,32 +228,58 @@ namespace DevLearning.Api.Repositories
             }
         }
         
+        public async Task DeleteStudentCourseAsync(Guid studentId) 
+        {
+            try
+            {
+                var sql = @"DELETE FROM StudentCourse 
+                            WHERE StudentId = @StudentId";
 
+                await _connection.ExecuteAsync(sql, new { @StudentId = studentId });
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
+        }
 
+        public async Task<List<StudentResponseDto>> GetStudentAllCoursesAsync(Guid id) 
+        {
+            var sql = @"SELECT s.Name, s.Email, c.Title, c.Summary, c.DurationInMinutes, c.Active
+                FROM Student s 
+                JOIN StudentCourse sc 
+                ON s.Id = sc.StudentId 
+                JOIN Course c 
+                ON c.Id = sc.CourseId
+                WHERE s.Id = @StudentId";
 
+            try
+            {
+                var student = await _connection.QueryAsync<StudentResponseDto, Course, StudentResponseDto>(sql, (student, course) =>
+                    {
+                        student.Courses.Add(course);
+                        return student;
+                    }, new { @StudentId = id }, splitOn: "c.Id");
 
-
-
-
-
-        //🔹 Listar cursos de um aluno
-
-        // GET /students/{id
-        //     }/courses
-
-
-        //public async Task<IEnumerable<StudentResponseDto>> GetStudentCoursesAsync(Guid id) 
-        //{
-
-        //}
-
-
-
-
-
-
-
-
-
+                var groupeStudent = student.GroupBy(s => s.Id).Select(l =>
+                {
+                    var listStudent = l.First();
+                    listStudent.Courses = l.Select(s => s.Courses.Single()).ToList();
+                    return listStudent;
+                });
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
+        }
     }
 }

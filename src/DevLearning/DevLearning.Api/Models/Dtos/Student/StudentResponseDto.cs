@@ -2,12 +2,14 @@
 {
     public class StudentResponseDto
     {
-        public Guid Id { get; private set; }
-        public string Name { get; private set; }
-        public string Email { get; private set; }
-        public string? Document { get; private set; }
-        public string? Phone { get; private set; }
-        public DateTime? BirthDate { get; private set; }
-        public DateTime CreateDate { get; private set; }
+        public Guid Id { get; init; }
+        public string Name { get; init; }
+        public string Email { get; init; }
+        public string? Document { get; init; }
+        public string? Phone { get; init; }
+        public DateTime? BirthDate { get; init; }
+        public DateTime CreateDate { get; init; }
+
+        public List<Course> Courses { get; init; }
     }
 }

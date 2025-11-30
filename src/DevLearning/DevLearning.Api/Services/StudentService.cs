@@ -16,17 +16,25 @@ namespace DevLearning.Api.Services
 
         public async Task CreateStudentAsync(CreateStudentDto student)
         {
-            int number = 0;
-            bool canConvert = int.TryParse(student.Phone, out number);
 
             if (student.BirthDate >= DateTime.Now.Date)
             {
-                throw new ArgumentException("Data de nascimento não pode ser atual ou futura");
+                throw new ArgumentException("Data de nascimento não pode ser atual ou futura!");
             }
+
+            int number = 0;
+            bool canConvert = int.TryParse(student.Phone, out number);
             if (canConvert == false)
             {
                 throw new ArgumentException("Número de telefone inválido!");
             }
+
+            var emailExist = await _repository.GetStudentByEmailAsync(student.Email);
+            if (emailExist is not null) 
+            {
+                throw new ArgumentException("Email já cadastrado!");
+            }
+
             try
             {
                 var newStudent = new Student
@@ -107,8 +115,8 @@ namespace DevLearning.Api.Services
 
             try
             {
+                await _repository.DeleteStudentCourseAsync(id);
                 await _repository.DeleteStudentAsync(id);
-
             }
             catch (Exception ex)
             {
@@ -141,7 +149,6 @@ namespace DevLearning.Api.Services
             }
         }
 
-
         public async Task<StudentCourse?> GetStudentCourseAsync(Guid courseId, Guid studentId)
         {
             try
@@ -154,10 +161,7 @@ namespace DevLearning.Api.Services
             }
         }
 
-        //TRATAR - NÃO EXISTE O ESTUDANTE SOZINHO (CADASTRADO)
-        //NÃO EXISTIR O GUID DO CURSO
-        //NÃO EXISTIR RELAÇÃO ENTRE ESTUDANTE E CURSO
-
+        //TODO: NÃO EXISTIR O GUID DO CURSO
         public async Task UpdateStudentCourseProgressAsync(Guid studentId, Guid courseId, UpdateStudentCourseDto student)
         {
             var studentExist = await _repository.GetStudentByIdAsync(studentId);
@@ -166,11 +170,27 @@ namespace DevLearning.Api.Services
 
             var studentCourseExist = await _repository.GetStudentCourseAsync(courseId, studentId);
             if (studentCourseExist is null)
-                throw new KeyNotFoundException("Estudante e curso não vinculados!");
+                throw new KeyNotFoundException("Estudante não está cadastrado no curso informado!");
 
             try
             {
                 await _repository.UpdateStudentCourseProgressAsync(courseId, studentId, student);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
+        }
+
+        public async Task<List<StudentResponseDto>> GetStudentAllCoursesAsync(Guid id)
+        {
+            var studentCourse = await _repository.GetStudentAllCoursesAsync(id);
+            if (studentCourse is null)
+                throw new KeyNotFoundException("Estudante não está matriculado em nenhum curso!");
+
+            try
+            {
+                return studentCourse;
             }
             catch (Exception ex)
             {
