@@ -1,5 +1,6 @@
 ﻿using DevLearning.API.Models;
 using DevLearning.API.Models.DTOs.Author;
+using DevLearning.API.Models.Enums.Author;
 using DevLearning.API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +17,6 @@ namespace DevLearning.API.Controllers
         {
             _authorService = authorService;
         }
-
-        //Teste de funcionamento da API
-        //[HttpGet]
-        //public ActionResult HeartBeat()
-        //{
-        //    return Ok("API is running.");
-        //}
-
 
         //Listar todos os autores
         [HttpGet]
@@ -81,23 +74,52 @@ namespace DevLearning.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(204, new {error = $"Erro ao deletar autor. {ex.Message}" });
+                return StatusCode(204, new { error = $"Erro ao deletar autor. {ex.Message}" });
             }
-           }
+        }
 
         //Atualizar autor
-        [HttpPut("{id}")]
-
-        public async Task<ActionResult> UpdateAuthor(Guid id, [FromBody] UpdateAuthorDTO author)
+        // PATCH 
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> UpdatePatchAuthor(Guid id, [FromBody] UpdateAuthorParcialDTO dto)
         {
             try
             {
-                await _authorService.UpdateAuthorAsync(id, author);
-                return Ok("Autor atualizado com sucesso.");
+                await _authorService.UpdatePatchAuthorAsync(id, dto);
+                return NoContent();
             }
             catch (Exception ex)
             {
-                return StatusCode(204, new { error = $"Erro ao atualizar autor. {ex.Message}" });
+                return StatusCode(400, new { error = $"Erro ao atualizar autor. {ex.Message}" });
+            }
+        }
+
+        // PUT 
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdatePutAuthor(Guid id, [FromBody] UpdateAuthorFullDTO dto)
+        {
+            try
+            {
+                await _authorService.UpdatePutAuthorAsync(id, dto);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, new { error = $"Erro ao atualizar autor. {ex.Message}" });
+            }
+        }
+        //Type
+        [HttpPut("type/{id}")]
+        public async Task<ActionResult> UpdateType(Guid id, [FromBody] AuthorType type)
+        {
+            try
+            {
+                await _authorService.UpdateAuthorTypeAsync(id, type);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, new { error = $"Erro ao atualizar tipo do autor. {ex.Message}" });
             }
         }
     }

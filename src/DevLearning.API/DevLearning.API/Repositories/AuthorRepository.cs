@@ -2,6 +2,7 @@
 using DevLearning.API.DataBase;
 using DevLearning.API.Models;
 using DevLearning.API.Models.DTOs.Author;
+using DevLearning.API.Models.Enums.Author;
 using DevLearning.API.Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
 using System.Data.Common;
@@ -54,13 +55,98 @@ namespace DevLearning.API.Repositories
             await _connection.ExecuteAsync(sql, new { Id = id });
         }
 
-        public async Task UpdateAuthorAsync(Guid id, UpdateAuthorDTO author)
+        public async Task UpdatePatchAuthorAsync(UpdateAuthorParcialDTO author, Guid id)
         {
-            var sql = @"UPDATE [Author] 
-                        SET Name = @Name, Title = @Title, Image = @Image, Bio = @Bio, Url = @Url, Type = @Type
-                        WHERE Id = @Id";
-            await _connection.ExecuteAsync(sql, new { author.Name, author.Title, author.Image, author.Bio, author.Url, author.Type, Id = id });
+            var updates = new List<string>();
+
+            string? name = null;
+            string? title = null;
+            string? image = null;
+            string? bio = null;
+            string? url = null;
+            AuthorType? type = null;
+
+            if (!string.IsNullOrWhiteSpace(author.Name))
+            {
+                name = author.Name;
+                updates.Add("Name = @Name");
+
+                // Atualiza URL automaticamente
+                url = $"www.devlearning.com.br/author/{author.Name.ToLower().Replace(" ", "-")}";
+                updates.Add("Url = @Url");
+            }
+
+            if (!string.IsNullOrWhiteSpace(author.Title))
+            {
+                title = author.Title;
+                updates.Add("Title = @Title");
+            }
+
+            if (!string.IsNullOrWhiteSpace(author.Image))
+            {
+                image = author.Image;
+                updates.Add("Image = @Image");
+            }
+
+            if (!string.IsNullOrWhiteSpace(author.Bio))
+            {
+                bio = author.Bio;
+                updates.Add("Bio = @Bio");
+            }
+            if (author.Type.HasValue)
+            {
+                type = author.Type.Value;
+                updates.Add("Type = @Type");
+            }
+
+            // Nada para atualizar
+            if (!updates.Any())
+                return;
+
+            var sql = $"UPDATE Author SET {string.Join(", ", updates)} WHERE Id = @Id";
+
+            await _connection.ExecuteAsync(sql, new
+            {
+                Name = name,
+                Title = title,
+                Image = image,
+                Bio = bio,
+                Url = url,
+                Type = type,
+                Id = id
+            });
         }
+
+        public async Task UpdatePutAuthorAsync(UpdateAuthorFullDTO author, Guid id)
+        {
+            string url = $"www.devlearning.com.br/author/{author.Name.ToLower().Replace(" ", "-")}";
+
+            var sql = @"  UPDATE Author SET Name = @Name, Title = @Title, Image = @Image,
+                    Bio = @Bio, Url = @Url WHERE Id = @Id";
+
+            await _connection.ExecuteAsync(sql, new
+            {
+                Name = author.Name,
+                Title = author.Title,
+                Image = author.Image,
+                Bio = author.Bio,
+                Url = url,
+                Id = id
+                
+            });
+        }
+
+        public async Task UpdateAuthorTypeAsync(Guid id, AuthorType newType)
+        {
+            var sql = "UPDATE Author SET Type = @Type WHERE Id = @Id";
+
+            await _connection.ExecuteAsync(sql, new
+            {
+                Type = newType,
+                Id = id
+            });
+        }
+
 
         //public async Task GetAuthorsCourses()  ---- FAZER DEPOIS A LÓGICA PARA PEGAR OS CURSOS DE CADA AUTOR
         //{

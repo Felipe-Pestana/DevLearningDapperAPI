@@ -15,7 +15,6 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<ConnectionDB>();
 
-//builder.Services.AddScoped<DevLearning.API.DataBase.ConnectionDB>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
