@@ -9,7 +9,6 @@ namespace DevLearning.Api.Repositories
 {
     public class AuthorRepository : IAuthorRepository
     {
-
         private readonly SqlConnection _connection;
 
         public AuthorRepository(ConnectionDB connection)
@@ -23,14 +22,12 @@ namespace DevLearning.Api.Repositories
             try
             {
                 var sql = "SELECT Name, Title, Image, Bio, Url, Email, Type FROM Author";
-                
                 return (await _connection.QueryAsync<AuthorResponseDto>(sql)).ToList();
             }
             catch (SqlException ex)
             {
                 throw new Exception("Erro ao consultar o banco de dados", ex);
             }
-
         }
 
 
@@ -38,11 +35,11 @@ namespace DevLearning.Api.Repositories
         {
             try
             {
-                var sql = @"INSERT INTO Author FROM (Id, Name, Title, Image, Bio, Url, Email, Type) 
-                            VALUES (@Name, @Title, @Image, Type)";
+                var sql = @"INSERT INTO Author (Id, Name, Title, Image, Bio, Url, Email, Type) 
+                            VALUES (@Id, @Name, @Title, @Image, @Bio, @Url, @Email, @Type)";
 
                 await _connection.ExecuteAsync(sql, new { author.Id, author.Name, author.Title, author.Image, author.Bio, 
-                                                    author.Url, author.Email, author.Type });                
+                                                Url = author.Url == null ? (object)DBNull.Value : author.Url, author.Email, author.Type });                
             }
             catch (SqlException ex)
             {
@@ -65,7 +62,22 @@ namespace DevLearning.Api.Repositories
             {
                 throw new Exception("Erro ao consultar o banco de dados", ex);
             }
+        }
 
+
+        public async Task<AuthorResponseDto> GetAuthorByEmailAsync(string email)
+        {
+            try
+            {
+                var sql = @"SELECT Name, Title, Image, Bio, Url, Email, Type 
+                        FROM Author WHERE Email = @Email";
+
+                return (await _connection.QueryFirstOrDefaultAsync<AuthorResponseDto>(sql, new { Email = email }))!;
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Erro ao consultar o banco de dados", ex);
+            }
         }
 
 
@@ -73,17 +85,13 @@ namespace DevLearning.Api.Repositories
         {
             try
             {
-                var sql = @"UPDATE Author SET Name = @Name, Title = @Title, Image = Image, 
-                            Bio = @Bio, Url = @Url, Email = @Email, Type = @Type WHERE Id = @Id";
-
-                await _connection.ExecuteAsync(sql, new { author.Name, author.Title, author.Image,
-                    author.Bio, author.Url, author.Email, author.Type, Id = id});
+                var sql = @"UPDATE Author SET Title = @Title, Image = Image, Bio = @Bio, Url = @Url, Type = @Type WHERE Id = @Id";
+                await _connection.ExecuteAsync(sql, new { author.Title, author.Image, author.Bio, author.Url, author.Type, Id = id});
             }
             catch (SqlException ex)
             {
                 throw new Exception("Erro ao consultar o banco de dados", ex);
             }
-
         }
 
 
@@ -92,9 +100,7 @@ namespace DevLearning.Api.Repositories
             try
             {
                 var sql = "DELETE FROM Author WHERE Id = @Id";
-
                 await _connection.ExecuteAsync(sql, new { Id = id });
-
             }
             catch (SqlException ex)
             {

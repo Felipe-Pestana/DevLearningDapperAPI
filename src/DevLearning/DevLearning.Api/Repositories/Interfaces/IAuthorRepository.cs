@@ -11,6 +11,8 @@ namespace DevLearning.Api.Repositories.Interfaces
 
         Task<AuthorResponseDto> GetAuthorByIdAsync(Guid id);
 
+        Task<AuthorResponseDto> GetAuthorByEmailAsync(string email);
+
         Task UpdateAuthorByIdAsync(Author author, Guid id);
 
         Task DeleteAuthorByIdAsync(Guid id);

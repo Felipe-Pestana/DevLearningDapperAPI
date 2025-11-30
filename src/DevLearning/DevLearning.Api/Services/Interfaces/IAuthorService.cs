@@ -8,6 +8,8 @@ namespace DevLearning.Api.Services.Interfaces
 
         Task<AuthorResponseDto> GetAuthorByIdAsync(Guid id);
 
+        Task<AuthorResponseDto> GetAuthorByEmailAsync(string email);
+
         Task CreateAuthorAsync(CreateAuthorDto author);
 
         Task UpdateAuthorByIdAsync(UpdateAuthorDto author, Guid id);

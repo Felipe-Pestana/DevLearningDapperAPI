@@ -1,20 +1,22 @@
-﻿using DevLearning.Api.Models.Dtos.Author;
+﻿using DevLearning.Api.Controllers.Interfaces;
+using DevLearning.Api.Models.Dtos.Author;
 using DevLearning.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DevLearning.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AuthorsController : ControllerBase
+    public class AuthorsController : ControllerBase, IAuthorController
     {
         private IAuthorService _authorService;
-        private ILogger<AuthorsController> _ilogger;
+        private ILogger<AuthorsController> _logger;
 
-        public AuthorsController(IAuthorService authorService, ILogger<AuthorsController> ilogger)
+        public AuthorsController(IAuthorService authorService, ILogger<AuthorsController> logger)
         {
             _authorService = authorService;
-            _ilogger = ilogger;
+            _logger = logger;
         }
 
 
@@ -25,15 +27,13 @@ namespace DevLearning.Api.Controllers
             try
             {
                 var authors = await _authorService.GetAllAuthorAsync();
-
-                if (authors == null) return NoContent();
+                if (authors.IsNullOrEmpty()) return NoContent();
 
                 return Ok(authors);
             }
             catch (Exception ex)
             {
-                _ilogger.LogError(ex, "Erro inesperado durante a busca dos professores em {time}", DateTime.UtcNow);
-
+                _logger.LogError(ex, "Erro inesperado durante a busca dos professores em {time}", DateTime.UtcNow);
                 return Problem(ex.Message);
             }
         }
@@ -46,23 +46,36 @@ namespace DevLearning.Api.Controllers
             try
             {
                 var author = await _authorService.GetAuthorByIdAsync(id);
-
-                if (author == null) return NotFound("Professor não encontrado!");
-
                 return Ok(author);
             }
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                _logger.LogError(ex, "Ocorreu um erro inesperado durante a busca do professor");
+                return Problem(ex.Message);
+            }
+        }
+
+
+        // Get by Email
+        [HttpGet("{email}")]
+        public async Task<ActionResult<AuthorResponseDto>> GetAuthorByEmailAsync(string email)
+        {
+            try
+            {
+                var author = await _authorService.GetAuthorByEmailAsync(email);
+                return Ok(author);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
-                _ilogger.LogError(ex, "Ocorreu um erro inesperado durante a busca do professor");
-
+                _logger.LogError(ex, "Ocorreu um erro inesperado durante a busca do professor");
                 return Problem(ex.Message);
             }
         }
@@ -75,13 +88,15 @@ namespace DevLearning.Api.Controllers
             try
             {
                 await _authorService.CreateAuthorAsync(author);
-
                 return Created();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                _ilogger.LogError(ex, "Ocorreu um erro inesperado durante o cadastro do professor");
-
+                _logger.LogError(ex, "Ocorreu um erro inesperado durante o cadastro do professor");
                 return Problem(ex.Message);
             }
         }
@@ -93,18 +108,20 @@ namespace DevLearning.Api.Controllers
         {
             try
             {
-                var existing = await _authorService.GetAuthorByIdAsync(id);
-
-                if (existing == null) return NotFound("Professor não encontrado!");
-
                 await _authorService.UpdateAuthorByIdAsync(author, id);
-
                 return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                _ilogger.LogError(ex, "Ocorreu um erro inesperado durante o update do professor");
-
+                _logger.LogError(ex, "Ocorreu um erro inesperado durante o update do professor");
                 return Problem(ex.Message);
             }
         }
@@ -116,25 +133,19 @@ namespace DevLearning.Api.Controllers
         {
             try
             {
-                var existing = await _authorService.GetAuthorByIdAsync(id);
-
-                if (existing is null) return NotFound("Professor não encontrado");
-
                 await _authorService.DeleteAuthorByIdAsync(id);
-
                 return NoContent();
-
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
-                _ilogger.LogError(ex, "Ocorreu um erro inesperado durante o delete do professor");
-
+                _logger.LogError(ex, "Ocorreu um erro inesperado durante o delete do professor");
                 return Problem(ex.Message);
             }
-
         }
-
-
 
     }
 }

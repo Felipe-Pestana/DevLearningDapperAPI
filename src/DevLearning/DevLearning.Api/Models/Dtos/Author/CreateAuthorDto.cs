@@ -8,7 +8,7 @@ namespace DevLearning.Api.Models.Dtos.Author
         public string Title { get; init; } = string.Empty;
         public string Image { get; init; } = string.Empty;
         public string Bio { get; init; } = string.Empty;
-        public string Url { get; init; } = string.Empty;
+        public string? Url { get; init; } = string.Empty;
         public string Email { get; init; } = string.Empty;
         public ETypeAuthor Type { get; init; }
     }
