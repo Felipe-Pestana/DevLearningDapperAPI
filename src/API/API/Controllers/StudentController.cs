@@ -32,7 +32,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<StudentResponseDTO>>> GetAllStudentsAsync()
+        public async Task<ActionResult<List<StudentGetAllResponseDTO>>> GetAllStudentsAsync()
         {
             var students = await _studentService.GetAllStudentsAsync();
             if (students is null)
@@ -75,6 +75,61 @@ namespace API.Controllers
             {
                 await _studentService.EnrollingStudentInCourseAsync(studentId, courseId, dto);
                 return Created();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{studentId}/Course/{courseId}/Progress")]
+        public async Task<ActionResult> UpdateProgressStudentCourseAsync(Guid studentId, Guid courseId, StudentUpdateProgressDTO updateProgressDTO)
+        {
+            try
+            {
+                await _studentService.UpdateProgressStudentCourseAsync(studentId, courseId, updateProgressDTO);
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                if (ex.Message.Contains("não existe!"))
+                    return NotFound(ex.Message);
+                else
+                    return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("{id}/Courses")]
+        public async Task<ActionResult<StudentWithCoursesResponseDTO>> GetStudentCoursesAsync(Guid id)
+        {
+            try
+            {
+                var studentWithCourses = await _studentService.GetStudentCoursesAsync(id);
+                if (studentWithCourses is null)
+                    return NotFound("Estudante não encontrado");
+
+                return Ok(studentWithCourses);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<StudentGetByIdResponseDTO>> GetStudentByIdAsync(Guid id)
+        {
+            try
+            {
+                var student = await _studentService.GetStudentByIdAsync(id);
+                if (student is null)
+                    return NotFound("Estudante não encontrado!");
+
+                return Ok(student);
             }
             catch (ArgumentException ex)
             {

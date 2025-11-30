@@ -1,6 +1,7 @@
 ﻿using API.Database;
 using API.Models;
 using API.Models.DTOs.Student;
+using API.Models.DTOs.StudentCourse;
 using API.Repositories.Interfaces;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -63,17 +64,81 @@ namespace API.Repositories
             });
         }
 
-        public async Task<List<StudentResponseDTO>> GetAllStudentsAsync()
+        public async Task<List<StudentGetAllResponseDTO>> GetAllStudentsAsync()
         {
             var sql = @"SELECT Id, Name, Email, Phone, Birthdate FROM Student ORDER BY CreateDate";
 
-            return (await _connection.QueryAsync<StudentResponseDTO>(sql)).ToList();
+            return (await _connection.QueryAsync<StudentGetAllResponseDTO>(sql)).ToList();
+        }
+
+        public async Task<StudentGetByIdResponseDTO?> GetStudentByIdAsync(Guid id)
+        {
+            var sql = @"SELECT
+                            Id, [Name], Email, Document, Phone, Birthdate, CreateDate
+                        FROM Student
+                        WHERE Id = @Id";
+
+            var student = await _connection.QueryFirstOrDefaultAsync<StudentGetByIdResponseDTO>(sql, new {Id = id});
+            return student;
+        }
+
+        public async Task<StudentWithCoursesResponseDTO?> GetStudentCoursesAsync(Guid studentId)
+        {
+            var sql = @"SELECT 
+                            s.Id AS StudentId, s.[Name], s.Email,
+                            c.Id AS CourseId, c.Title AS CourseTitle, c.Summary, c.[Url], c.[Level], c.DurationInMinutes,
+                            ca.Title AS CategoryTitle,
+                            sc.Progress, sc.Favorite, sc.StartDate, sc.LastUpdateDate
+                        FROM Student s
+                        LEFT JOIN StudentCourse sc
+                        ON s.Id = sc.StudentId
+                        LEFT JOIN Course c
+                        ON sc.CourseId = c.Id
+                        LEFT JOIN Category ca
+                        ON c.CategoryId = ca.Id
+                        WHERE s.Id = @Id";
+
+            var lookup = new Dictionary<Guid, StudentWithCoursesResponseDTO>();
+            await _connection.QueryAsync<StudentWithCoursesResponseDTO, CourseOfStudentDTO, StudentWithCoursesResponseDTO>(sql,
+                (student, course) =>
+                {
+                    if (!lookup.TryGetValue(student.StudentId, out var dto))
+                    {
+                        dto = student;
+                        lookup.Add(student.StudentId, dto);
+                    }
+                    dto.Courses.Add(course);
+
+                    return student;
+                },
+                new { Id = studentId },
+                splitOn: "CourseId"
+            );
+
+            var student = lookup.Values.FirstOrDefault();
+            return student;
         }
 
         public async Task<StudentUpdateDTO?> SearchStudentToUpdateAsync(Guid id)
         {
             var sql = @"SELECT Name, Email, Phone FROM Student WHERE Id = @Id";
             return await _connection.QueryFirstOrDefaultAsync<StudentUpdateDTO>(sql, new { Id = id });
+        }
+
+        public async Task UpdateProgressStudentCourseAsync(Guid studentId, Guid courseId, StudentUpdateProgressDTO updateProgressDTO)
+        {
+            var sql = @"UPDATE StudentCourse SET
+                            Progress = @Progress,
+                            LastUpdateDate = @LastUpdateDate
+                        WHERE StudentId = @StudentId AND CourseId = @CourseId";
+
+            await _connection.ExecuteAsync(sql , new 
+            {
+                Progress =  updateProgressDTO.Progress,
+                LastUpdateDate = updateProgressDTO.LastUpdateDate,
+                StudentId = studentId,
+                CourseId = courseId
+            });
         }
 
         public async Task UpdateStudentAsync(Guid id, StudentUpdateDTO student)
@@ -96,15 +161,39 @@ namespace API.Repositories
         public async Task<bool> VerifyExistCourseAsync(Guid courseId)
         {
             var sql = @"SELECT CASE WHEN EXISTS (SELECT 1 FROM Course WHERE Id = @Id) THEN 1 ELSE 0 END";
-            var exist = await _connection.ExecuteScalarAsync<bool>(sql, new { Id = courseId });
+            var exist = await _connection.QueryFirstOrDefaultAsync<bool>(sql, new { Id = courseId });
             return exist;
         }
 
         public async Task<bool> VerifyExistStudentAsync(Guid studentId)
         {
             var sql = @"SELECT CASE WHEN EXISTS (SELECT 1 FROM Student WHERE Id = @Id) THEN 1 ELSE 0 END";
-            var exist = await _connection.ExecuteScalarAsync<bool>(sql, new { Id = studentId });
+            var exist = await _connection.QueryFirstOrDefaultAsync<bool>(sql, new { Id = studentId });
             return exist;
+        }
+
+        public async Task<byte> VerifyProgressToStudentInCourseAsync(Guid studentId, Guid courseId)
+        {
+            var sql = "SELECT Progress FROM StudentCourse WHERE StudentId = @StudentId AND CourseId = @CourseId";
+
+            return await _connection.QueryFirstOrDefaultAsync<byte>(sql, new
+            {
+                StudentId = studentId,
+                CourseId = courseId
+            });
+        }
+
+        public async Task<bool> VerifyStudentEnrollingInCourseAsync(Guid studentId, Guid courseId)
+        {
+            var sql = @"SELECT CASE WHEN EXISTS 
+                            (SELECT 1 FROM StudentCourse WHERE StudentId = @StudentId AND CourseId = @CourseId)
+                        THEN 1 ELSE 0 END";
+
+            return await _connection.QueryFirstOrDefaultAsync<bool>(sql, new
+            {
+                StudentId = studentId,
+                CourseId = courseId
+            });
         }
     }
 }

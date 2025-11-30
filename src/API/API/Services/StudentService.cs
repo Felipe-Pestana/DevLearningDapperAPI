@@ -52,13 +52,50 @@ namespace API.Services
             await _studentRepository.EnrollingStudentInCourseAsync(registration);
         }
 
-        public async Task<List<StudentResponseDTO>> GetAllStudentsAsync()
+        public async Task<List<StudentGetAllResponseDTO>> GetAllStudentsAsync()
         {
             var students = await _studentRepository.GetAllStudentsAsync();
             if (students is null || students.Count() == 0)
                 return null;
 
             return students;
+        }
+
+        public async Task<StudentGetByIdResponseDTO?> GetStudentByIdAsync(Guid id)
+        {
+            var student = await _studentRepository.GetStudentByIdAsync(id);
+            return student;
+        }
+
+        public async Task<StudentWithCoursesResponseDTO?> GetStudentCoursesAsync(Guid studentId)
+        {
+            var student = await _studentRepository.GetStudentCoursesAsync(studentId);
+            
+            return student;
+        }
+
+        public async Task UpdateProgressStudentCourseAsync(Guid studentId, Guid courseId, StudentUpdateProgressDTO updateProgressDTO)
+        {
+            if (updateProgressDTO.Progress < 1 || updateProgressDTO.Progress > 100)
+                throw new ArgumentException("Insira um valor entre 0 e 100");
+
+            if (!await _studentRepository.VerifyExistStudentAsync(studentId))
+                throw new ArgumentException("Esse estudante não existe!");
+
+            if (!await _studentRepository.VerifyExistCourseAsync(courseId))
+                throw new ArgumentException("Esse curso não existe!");
+
+            if (!await _studentRepository.VerifyStudentEnrollingInCourseAsync(studentId, courseId))
+                throw new ArgumentException("O Estudante não está cadastrado nesse curso!");
+
+            var currentProgress = await _studentRepository.VerifyProgressToStudentInCourseAsync(studentId, courseId);
+
+            if (currentProgress == 100)
+                throw new ArgumentException("Estudante já concluiu o curso!");
+            else if (currentProgress >= updateProgressDTO.Progress)
+                throw new ArgumentException($"Não foi possível atualizar o progresso! Insira um valor maior que {currentProgress}%!");
+
+            await _studentRepository.UpdateProgressStudentCourseAsync(studentId, courseId, updateProgressDTO);
         }
 
         public async Task UpdateStudentAsync(Guid id, StudentUpdateDTO student)
