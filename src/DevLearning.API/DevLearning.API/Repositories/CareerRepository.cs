@@ -23,7 +23,7 @@ namespace DevLearning.API.Repositories
         public async Task CreateCareerAsync(Career career)
         {
             var sql = @"INSERT INTO Career (Id, Title, Summary, url, DurationInMinutes, Active, Featured, Tags)
-                        VALUES (@Id, @Title, @Summary, @url, @DurationInMinutes, @Active, @Featured, @Tags)";
+                        VALUES (@Id, @Title, @Summary, @url, @DurationInMinutes, @Active, @Featured, @Tags) SELECT SCOPE_IDENTITY()";
             var parameters = new
             {
                 career.Id,
@@ -35,8 +35,10 @@ namespace DevLearning.API.Repositories
                 career.Featured,
                 career.Tags
             };
-            await connection.ExecuteAsync(sql, parameters);
+            var scopeIdentity = await connection.ExecuteScalarAsync(sql, parameters);
+            Guid id = Guid.Parse(scopeIdentity.ToString());
         }
+
 
         public async Task<List<CareerResponseDTO>> GetAllCareersAsync()
         {

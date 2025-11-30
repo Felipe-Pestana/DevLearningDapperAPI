@@ -10,6 +10,7 @@
         public bool Active { get; private set; }
         public bool Featured { get; private set; }
         public string Tags { get; private set; }
+        //public List<Course> courses { get; private }= new()
 
         public Career() { }
 
