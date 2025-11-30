@@ -7,11 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <Folder Include="Models\DTOs\Course\" />
+	  <Folder Include="Models\DTOs\Course\" />
+	  <Folder Include="Models\DTOs\Author\" />
+	  <Folder Include="Models\DTOs\Course\" />
+	  <Folder Include="Models\DTOs\Category\" />
     <Folder Include="Models\DTOs\Author\" />
     <Folder Include="Models\DTOs\Category\" />
     <Folder Include="Models\DTOs\Author\" />
     <Folder Include="Models\DTOs\Category\" />
     <Folder Include="Models\DTOs\Author\" />
+    <Folder Include="Models\DTOs\Course\" />
     <Folder Include="Models\DTOs\Category\" />
     <Folder Include="Models\DTOs\Student\" />
     <Folder Include="Models\DTOs\Student\" />

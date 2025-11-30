@@ -1,0 +1,109 @@
+﻿using API.Models.DTOs.Author;
+using API.Models.DTOs.Category;
+using API.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace API.Controllers
+{
+    [Route("[controller]")]
+    [ApiController]
+    public class AuthorController : ControllerBase
+    {
+
+        private IAuthorService _authorService;
+
+        public AuthorController(IAuthorService authorService)
+        {
+            _authorService = authorService;
+        }
+
+        [HttpGet("GetAllAuthorsAsync")]
+        public async Task<ActionResult<List<AuthorResponseDTO>>> GetAllAuthorsAsync()
+        {
+            try
+            {
+                return Ok(await _authorService.GetAllAuthorsAsync());
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+
+            }
+        }
+
+        [HttpGet("GetAuthorByIdAsync/{id}")]
+        public async Task<ActionResult<AuthorResponseDTO>> GetAuthorByIdAsync(Guid id)
+        {
+            try
+            {
+                var authorFound = await _authorService.GetAuthorByIdAsync(id);
+
+                if (authorFound is null)
+                    return NotFound();
+
+                return Ok(await _authorService.GetAuthorByIdAsync(id));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+
+            }
+        }
+
+        [HttpPost("CreateAuthorAsync")]
+        public async Task<ActionResult> CreateAuthorAsync(AuthorRequestDTO author)
+        {
+            try
+            {
+                await _authorService.CreateAuthorAsync(author);
+                return Created();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpPut("UpdateAuthorAsync/{id}")]
+        public async Task<ActionResult> UpdateAuthorAsync(AuthorRequestDTO author, Guid id)
+        {
+            try
+            {
+                var authorFound = await _authorService.GetAuthorByIdAsync(id);
+
+                if (authorFound is null)
+                    return NotFound();
+
+                await _authorService.UpdateAuthorAsync(author, id);
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+
+            }
+        }
+
+        [HttpDelete("DeleteAuthorAsync/{id}")]
+        public async Task<ActionResult> DeleteAuthorAsync(Guid id)
+        {
+            try
+            {
+                var authorFound = await _authorService.GetAuthorByIdAsync(id);
+
+                if (authorFound is null)
+                    return NotFound();
+
+                await _authorService.DeleteAuthorAsync(id);
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+
+            }
+        }
+
+    }
+}
