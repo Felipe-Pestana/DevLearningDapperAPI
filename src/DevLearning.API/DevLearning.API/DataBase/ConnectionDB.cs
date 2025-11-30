@@ -4,6 +4,7 @@ namespace DevLearning.API.DataBase
 {
     public class ConnectionDB
     {
+
         private readonly string _connectionString;
 
         public ConnectionDB(IConfiguration configuration)
