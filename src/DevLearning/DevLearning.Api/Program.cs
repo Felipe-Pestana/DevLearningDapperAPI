@@ -25,6 +25,12 @@ builder.Services.AddTransient<ConnectionDB>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 
+builder.Services.AddSingleton<ConnectionDB>();
+
+builder.Services.AddSingleton<CategoryService>();
+builder.Services.AddSingleton<CategoryRepository>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
