@@ -28,6 +28,10 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<AuthorRepository>();
 builder.Services.AddScoped<AuthorService>();
 
+builder.Services.AddScoped<StudentRepository>();
+builder.Services.AddScoped<StudentService>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
