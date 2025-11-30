@@ -2,11 +2,11 @@
 
 namespace DevLearning.API.DataBase
 {
-    public class DbConnection
+    public class ConnectionDb
     {
         private readonly string _connectionString;
 
-        public DbConnection(IConfiguration configuration)
+        public ConnectionDb(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
