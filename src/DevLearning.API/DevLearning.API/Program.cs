@@ -1,9 +1,10 @@
-using System.Data.Common;
 using DevLearning.API.DataBase;
-using DevLearning.API.Models;
 using DevLearning.API.Repositories;
 using DevLearning.API.Services;
-using Microsoft.Data.SqlClient;
+using DevLearning.API.Repositories.Interfaces;
+using DevLearning.API.Services.Interfaces;
+using System.Data.Common;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,19 @@ builder.Services.AddSingleton<ConnectionDb>();
 builder.Services.AddSingleton<CourseRepository>();
 builder.Services.AddSingleton<CourseService>();
 
+builder.Services.AddSingleton<ConnectionDB>();
+builder.Services.AddSingleton<CareerRepository>();
+builder.Services.AddSingleton<CareerService>();
+
+
+builder.Services.AddScoped<ConnectionDB>();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+
+builder.Services.AddScoped<AuthorRepository>();
+builder.Services.AddScoped<AuthorService>();
 
 var app = builder.Build();
 
