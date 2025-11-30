@@ -11,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSingleton<DbConnectionFactory>();
 
+builder.Services.AddSingleton<CourseRepository>();
+builder.Services.AddSingleton<CourseService>();
+
 builder.Services.AddSingleton<ICategoryService, CategoryService>();
 builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
 
@@ -31,4 +34,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-// devTeste1////
+// devTeste1/////
