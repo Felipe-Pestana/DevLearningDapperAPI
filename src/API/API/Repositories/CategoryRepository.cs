@@ -47,10 +47,10 @@ namespace API.Repositories
         public async Task UpdateCategoryAsync(Category category, Guid id)
         {
             var sqlString =
-                @"UPDATE Category SET Title = @Title, Summary = @Summary, Order = @Order, Featured = @Featured
+                @"UPDATE Category SET Title = @Title, Url = @Url, Summary = @Summary, Order = @Order, Featured = @Featured
                 WHERE Id = @CategoryId";
 
-            await _connection.ExecuteAsync(sqlString, new {category.Title, category.Summary, category.Order, category.Featured, CategoryId = id});
+            await _connection.ExecuteAsync(sqlString, new {category.Title, category.Url, category.Summary, category.Order, category.Featured, CategoryId = id});
         }
 
         public async Task DeleteCategoryAsync(Guid id)
