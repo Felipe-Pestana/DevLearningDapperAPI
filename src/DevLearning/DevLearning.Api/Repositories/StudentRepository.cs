@@ -193,7 +193,7 @@ namespace DevLearning.Api.Repositories
                         WHERE CourseId = @courseId
                         AND StudentId = @StudentId";
 
-                return await _connection.QueryFirstOrDefaultAsync(sql, new
+                return await _connection.QueryFirstOrDefaultAsync<StudentCourseResponseDto?>(sql, new
                 { @CourseId = courseId, @StudentId = studentId });
             }
             catch (SqlException sqlEx)
@@ -211,14 +211,11 @@ namespace DevLearning.Api.Repositories
         {
             try
             {
-                var sql = @"UPDATE StudentCourse 
-                            SET Progress = @Progress
-                            WHERE CourseId = @courseId
-                            AND StudentId = @StudentId";
+                var sql = @"UPDATE StudentCourse SET Progress = @Progress WHERE CourseId = @courseId AND StudentId = @StudentId";
 
                 await _connection.ExecuteAsync(sql, new
                 {
-                    student.Progress,
+                    @Progress = student.Progress,
                     @CourseId = courseId,
                     @StudentId = studentId
                 });
@@ -251,11 +248,10 @@ namespace DevLearning.Api.Repositories
                 throw new Exception(ex.StackTrace);
             }
         }
-
         
         public async Task<List<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id) 
         {
-            var sql = @"SELECT s.Id, s.Name, s.Email, c.Id, c.Title, c.Level, c.DurationInMinutes, c.Active
+            var sql = @"SELECT s.Id, s.Name, s.Email, c.Id, c.Title, c.Level, c.DurationInMinutes, c.Active, sc.Progress
                 FROM Student s 
                 JOIN StudentCourse sc 
                 ON s.Id = sc.StudentId 

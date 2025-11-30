@@ -185,9 +185,10 @@ namespace DevLearning.Api.Services
             if (studentCourseExist is null)
                 throw new KeyNotFoundException("Estudante não está cadastrado no curso informado!");
 
+
             try
             {
-                await _repository.UpdateStudentCourseProgressAsync(courseId, studentId, student);
+                await _repository.UpdateStudentCourseProgressAsync( studentId, courseId, student);
             }
             catch (Exception ex)
             {
