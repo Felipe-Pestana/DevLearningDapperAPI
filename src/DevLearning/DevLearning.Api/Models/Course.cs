@@ -1,4 +1,6 @@
-﻿namespace DevLearning.Api.Models
+﻿using DevLearning.Api.Models.Enum;
+
+namespace DevLearning.Api.Models
 {
     public class Course
     {
@@ -7,7 +9,7 @@
         public string Title { get; private set; }
         public string Summary { get; private set; }
         public string Url { get; private set; }
-        public byte Level { get; private set; }
+        public ELevelCourse Level { get; private set; }
         public int DurationInMinutes { get; private set; }
         public DateTime CreateDate { get; private set; }
         public DateTime LastUpdateDate { get; private set; }
@@ -21,7 +23,7 @@
         public Course(
             string tag, string title, 
             string summary, string url, 
-            byte level, int durationInMinutes, 
+            ELevelCourse level, int durationInMinutes, 
             DateTime createDate, DateTime lastUpdateDate, 
             bool active, bool free, bool featured, 
             Guid authorId, Guid categoryId, string tags

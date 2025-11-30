@@ -1,4 +1,6 @@
-﻿namespace DevLearning.Api.Models.Dtos.Course
+﻿using DevLearning.Api.Models.Enum;
+
+namespace DevLearning.Api.Models.Dtos.Course
 {
     public class CourseResponseDto
     {
@@ -8,7 +10,7 @@
         public string Author { get; set; }
         public string Category { get; set; }
         public string Url { get; set; }
-        public byte Level { get; set; }
+        public ELevelCourse Level { get; set; }
         public int DurationInMinutes { get; set; }
         public bool Active { get; set; }
         public bool Free { get; set; }

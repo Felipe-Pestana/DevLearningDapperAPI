@@ -1,4 +1,6 @@
-﻿namespace DevLearning.Api.Models.Dtos.Course
+﻿using DevLearning.Api.Models.Enum;
+
+namespace DevLearning.Api.Models.Dtos.Course
 {
     public class CourseDataDto
     {
@@ -6,7 +8,7 @@
         public string Title { get; private set; }
         public string Summary { get; private set; }
         public string Url { get; private set; }
-        public byte Level { get; private set; }
+        public ELevelCourse Level { get; private set; }
         public int DurationInMinutes { get; private set; }
         public DateTime CreateDate { get; private set; }
         public bool Active { get; private set; }
