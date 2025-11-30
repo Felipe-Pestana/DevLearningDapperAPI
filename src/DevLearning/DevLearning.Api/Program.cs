@@ -13,23 +13,23 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
-builder.Services.AddSingleton<ConnectionDB>();
+builder.Services.AddScoped<ConnectionDB>();
 
-builder.Services.AddSingleton<CourseRepository>();
-builder.Services.AddSingleton<CourseService>();
+builder.Services.AddScoped<CourseRepository>();
+builder.Services.AddScoped<CourseService>();
 
-builder.Services.AddSingleton<StudentRepository>();
-builder.Services.AddSingleton<StudentService>();
+builder.Services.AddScoped<StudentRepository>();
+builder.Services.AddScoped<StudentService>();
 
-builder.Services.AddTransient<ConnectionDB>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 
-builder.Services.AddSingleton<ConnectionDB>();
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<CategoryRepository>();
 
-builder.Services.AddSingleton<CategoryService>();
-builder.Services.AddSingleton<CategoryRepository>();
-
+builder.Services.AddScoped<CareerRepository>();
+builder.Services.AddScoped<ICareerRepository, CareerRepository>();
+builder.Services.AddScoped<ICareerService, CareerService>();
 
 var app = builder.Build();
 
