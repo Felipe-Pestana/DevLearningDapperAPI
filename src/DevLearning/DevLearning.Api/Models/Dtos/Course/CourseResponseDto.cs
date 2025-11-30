@@ -5,8 +5,8 @@
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Tag { get; set; }
-        public Guid AuthorId { get; set; }      //TODO: change ID to show Author and Category name respectively
-        public Guid CategoryId { get; set; }
+        public string Author { get; set; }
+        public string Category { get; set; }
         public string Url { get; set; }
         public byte Level { get; set; }
         public int DurationInMinutes { get; set; }

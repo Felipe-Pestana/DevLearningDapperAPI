@@ -58,10 +58,14 @@ namespace DevLearning.Api.Repositories
 
         public async Task<List<CourseResponseDto>> GetAllCoursesAsync()
         {
-            var sql = @"SELECT [Title], [Summary], [Tag], [AuthorId], [CategoryId], 
-                          [Url], [Level], [DurationInMinutes], [Active], [Free], 
-                          [Featured], [Tags]
-                        FROM [Course]";
+            var sql = @"SELECT c.[Title], c.[Summary], c.[Tag], 
+						  a.[Name] AS Author, 
+						  ca.[Title] AS Category, 
+                          c.[Url], c.[Level], c.[DurationInMinutes], c.[Active], c.[Free], 
+                          c.[Featured], c.[Tags]
+                        FROM [Course] c
+                        JOIN [Author] a ON c.AuthorId = a.Id
+						JOIN [Category] ca ON c.CategoryId = ca.Id;";
 
             try
             {
@@ -79,11 +83,15 @@ namespace DevLearning.Api.Repositories
 
         public async Task<CourseResponseDto?> GetCourseByIdAsync(Guid id)
         {
-            var sql = @"SELECT [Title], [Summary], [Tag], [AuthorId], [CategoryId], 
-                          [Url], [Level], [DurationInMinutes], [Active], [Free], 
-                          [Featured], [Tags]
-                        FROM [Course]
-                        WHERE Id = @Id";
+            var sql = @"SELECT c.[Title], c.[Summary], c.[Tag], 
+						  a.[Name] AS Author, 
+						  ca.[Title] AS Category, 
+                          c.[Url], c.[Level], c.[DurationInMinutes], c.[Active], c.[Free], 
+                          c.[Featured], c.[Tags]
+                        FROM [Course] c
+                        JOIN [Author] a ON c.AuthorId = a.Id
+						JOIN [Category] ca ON c.CategoryId = ca.Id
+                        WHERE c.Id = @Id";
 
             try
             {
@@ -94,6 +102,30 @@ namespace DevLearning.Api.Repositories
                 throw new Exception(sqlex.Message);
             }
             catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<CourseDataDto?> GetCourseToUpdateAsync(Guid id)
+        {
+            var sql = @"SELECT [Tag], [Title], [Summary], [Url], 
+                          [Level], [DurationInMinutes],
+                          [CreateDate], [Active], [Free], 
+                          [Featured], [AuthorId], [CategoryId], 
+                          [Tags]
+                        FROM [Course]
+                        WHERE Id = @Id";
+
+            try
+            {
+                return await _connection.QuerySingleOrDefaultAsync<CourseDataDto>(sql, new { Id = id});
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception(sqlex.Message);
+            }
+            catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }

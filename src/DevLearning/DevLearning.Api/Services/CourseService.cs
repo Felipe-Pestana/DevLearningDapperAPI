@@ -70,14 +70,14 @@ namespace DevLearning.Api.Services
             if ((update.Tags is not null) && string.IsNullOrWhiteSpace(update.Tags))
                 throw new ArgumentException("The field 'Tags' cannot be changed to empty spaces!");
 
-            var oldCourse = await _courseRepository.GetCourseByIdAsync(id) ?? 
+            var oldCourse = await _courseRepository.GetCourseToUpdateAsync(id) ?? 
                 throw new KeyNotFoundException($"No course was found with this ID.");
 
             var updatedCourse = new Course(
                 oldCourse.Tag, oldCourse.Title,
                 update.Summary ?? oldCourse.Summary,
                 oldCourse.Url, oldCourse.Level, oldCourse.DurationInMinutes,
-                DateTime.Now, DateTime.Now,
+                oldCourse.CreateDate, DateTime.Now,
                 update.Active ?? oldCourse.Active,
                 update.Free ?? oldCourse.Free,
                 update.Featured ?? oldCourse.Featured,
