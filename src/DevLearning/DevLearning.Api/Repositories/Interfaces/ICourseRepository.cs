@@ -13,8 +13,18 @@ namespace DevLearning.Api.Repositories.Interfaces
 
         public Task<CourseResponseDto?> GetCourseByIdAsync(Guid id);
 
+        public Task<CourseDataDto?> GetCourseToUpdateAsync(Guid id);
+
+        public Task<bool> GetCourseTitleAsync(string title);
+
+        public Task<bool> GetCourseUrlAsync(string url);
+
         public Task UpdateCourseAsync(Guid id, Course course);
 
         public Task DeleteCourseAsync(Guid id);
+
+        public Task<int> DeleteCourseByAuthorIdAsync(Guid id);
+
+        public Task<int> DeleteCourseByCategoryIdAsync(Guid id);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using DevLearning.Api.Models;
-using DevLearning.Api.Models.Dtos;
+using DevLearning.Api.Models.Dtos.Category;
 using DevLearning.Api.Repositories;
 using DevLearning.Api.Services.Interfaces;
 using Microsoft.Data.SqlClient;
