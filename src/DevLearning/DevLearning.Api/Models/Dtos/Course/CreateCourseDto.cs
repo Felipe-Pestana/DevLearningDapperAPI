@@ -4,16 +4,16 @@ namespace DevLearning.Api.Models.Dtos.Course
 {
     public class CreateCourseDto
     {
-        public string Tag { get; set; }
-        public string Title { get; set; }
-        public string Summary { get; set; }
-        public string Url { get; set; }
-        public string Level { get; set; }
-        public int DurationInMinutes { get; set; }
-        public bool Free { get; set; }
-        public bool Featured { get; set; }
-        public Guid AuthorId { get; set; }
-        public Guid CategoryId { get; set; }
-        public string Tags { get; set; }
+        public string Tag { get; init; } = string.Empty;
+        public string Title { get; init; } = string.Empty;
+        public string Summary { get; init; } = string.Empty;
+        public string Url { get; init; } = string.Empty;
+        public string Level { get; init; } = string.Empty;
+        public int DurationInMinutes { get; init; }
+        public bool Free { get; init; }
+        public bool Featured { get; init; }
+        public Guid AuthorId { get; init; }
+        public Guid CategoryId { get; init; }
+        public string Tags { get; init; } = string.Empty;
     }
 }

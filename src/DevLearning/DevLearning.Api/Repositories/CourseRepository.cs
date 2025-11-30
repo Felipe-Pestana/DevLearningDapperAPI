@@ -3,9 +3,7 @@ using DevLearning.Api.Data;
 using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos.Course;
 using DevLearning.Api.Repositories.Interfaces;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.Data.SqlClient;
-using System.Net.WebSockets;
 
 namespace DevLearning.Api.Repositories
 {
@@ -50,10 +48,6 @@ namespace DevLearning.Api.Repositories
             {
                 throw new Exception(sqlex.Message);
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
         }
 
         public async Task<List<CourseResponseDto>> GetAllCoursesAsync()
@@ -74,10 +68,6 @@ namespace DevLearning.Api.Repositories
             catch (SqlException sqlex)
             {
                 throw new Exception(sqlex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
             }
         }
 
@@ -101,10 +91,6 @@ namespace DevLearning.Api.Repositories
             {
                 throw new Exception(sqlex.Message);
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
         }
 
         public async Task<CourseDataDto?> GetCourseToUpdateAsync(Guid id)
@@ -125,10 +111,6 @@ namespace DevLearning.Api.Repositories
             {
                 throw new Exception(sqlex.Message);
             }
-            catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
         }
 
         public async Task<bool> GetCourseTitleAsync(string title)
@@ -147,10 +129,6 @@ namespace DevLearning.Api.Repositories
             {
                 throw new Exception(sqlex.Message);
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
         }
 
         public async Task<bool> GetCourseUrlAsync(string url)
@@ -168,10 +146,6 @@ namespace DevLearning.Api.Repositories
             catch (SqlException sqlex)
             {
                 throw new Exception(sqlex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
             }
         }
 
@@ -199,10 +173,6 @@ namespace DevLearning.Api.Repositories
             {
                 throw new Exception(sqlex.Message);
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
         }
 
         public async Task DeleteCourseAsync(Guid id)
@@ -216,10 +186,6 @@ namespace DevLearning.Api.Repositories
             catch (SqlException sqlex)
             {
                 throw new Exception(sqlex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
             }
         }
 
@@ -235,10 +201,6 @@ namespace DevLearning.Api.Repositories
             {
                 throw new Exception(sqlex.Message);
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
         }
 
         public async Task<int> DeleteCourseByCategoryIdAsync(Guid id)
@@ -252,10 +214,6 @@ namespace DevLearning.Api.Repositories
             catch (SqlException sqlex)
             {
                 throw new Exception(sqlex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
             }
         }
     }

@@ -4,17 +4,17 @@ namespace DevLearning.Api.Models.Dtos.Course
 {
     public class CourseResponseDto
     {
-        public string Title { get; set; }
-        public string Summary { get; set; }
-        public string Tag { get; set; }
-        public string Author { get; set; }
-        public string Category { get; set; }
-        public string Url { get; set; }
-        public ELevelCourse Level { get; set; }
-        public int DurationInMinutes { get; set; }
-        public bool Active { get; set; }
-        public bool Free { get; set; }
-        public bool Featured { get; set; }
-        public string Tags { get; set; }
+        public string Title { get; init; } = string.Empty;
+        public string Summary { get; init; } = string.Empty;
+        public string Tag { get; init; } = string.Empty;
+        public string Author { get; init; } = string.Empty;
+        public string Category { get; init; } = string.Empty;
+        public string Url { get; init; } = string.Empty;
+        public ELevelCourse Level { get; init; }
+        public int DurationInMinutes { get; init; }
+        public bool Active { get; init; }
+        public bool Free { get; init; }
+        public bool Featured { get; init; }
+        public string Tags { get; init; } = string.Empty;
     }
 }

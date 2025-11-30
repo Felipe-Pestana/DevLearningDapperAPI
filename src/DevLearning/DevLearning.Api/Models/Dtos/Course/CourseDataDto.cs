@@ -4,18 +4,18 @@ namespace DevLearning.Api.Models.Dtos.Course
 {
     public class CourseDataDto
     {
-        public string Tag { get; private set; }
-        public string Title { get; private set; }
-        public string Summary { get; private set; }
-        public string Url { get; private set; }
-        public ELevelCourse Level { get; private set; }
-        public int DurationInMinutes { get; private set; }
-        public DateTime CreateDate { get; private set; }
-        public bool Active { get; private set; }
-        public bool Free { get; private set; }
-        public bool Featured { get; private set; }
-        public Guid AuthorId { get; private set; }
-        public Guid CategoryId { get; private set; }
-        public string Tags { get; private set; }
+        public string Tag { get; init; } = string.Empty;
+        public string Title { get; init; } = string.Empty;
+        public string Summary { get; init; } = string.Empty;
+        public string Url { get; init; } = string.Empty;
+        public ELevelCourse Level { get; init; }
+        public int DurationInMinutes { get; init; }
+        public DateTime CreateDate { get; init; }
+        public bool Active { get; init; }
+        public bool Free { get; init; }
+        public bool Featured { get; init; }
+        public Guid AuthorId { get; init; }
+        public Guid CategoryId { get; init; }
+        public string Tags { get; init; } = string.Empty;
     }
 }
