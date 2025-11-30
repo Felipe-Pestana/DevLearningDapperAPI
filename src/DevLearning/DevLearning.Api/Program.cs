@@ -8,7 +8,6 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -19,10 +18,12 @@ builder.Services.AddSingleton<ConnectionDB>();
 builder.Services.AddSingleton<CourseRepository>();
 builder.Services.AddSingleton<CourseService>();
 
-builder.Services.AddSingleton<ConnectionDB>();
-
 builder.Services.AddSingleton<StudentRepository>();
 builder.Services.AddSingleton<StudentService>();
+
+builder.Services.AddTransient<ConnectionDB>();
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
 
 var app = builder.Build();
 
