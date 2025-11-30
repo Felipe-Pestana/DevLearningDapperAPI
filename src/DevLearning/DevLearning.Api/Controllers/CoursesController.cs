@@ -1,10 +1,7 @@
 ﻿using DevLearning.Api.Controllers.Interfaces;
 using DevLearning.Api.Models.Dtos.Course;
 using DevLearning.Api.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace DevLearning.Api.Controllers
 {

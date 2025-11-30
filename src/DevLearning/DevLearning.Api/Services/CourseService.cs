@@ -3,10 +3,6 @@ using DevLearning.Api.Models.Dtos.Course;
 using DevLearning.Api.Models.Enum;
 using DevLearning.Api.Repositories;
 using DevLearning.Api.Services.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using Microsoft.Data.SqlClient;
-using System.Reflection.Metadata.Ecma335;
 
 namespace DevLearning.Api.Services
 {
