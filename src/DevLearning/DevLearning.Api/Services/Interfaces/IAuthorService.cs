@@ -15,5 +15,7 @@ namespace DevLearning.Api.Services.Interfaces
         Task UpdateAuthorByIdAsync(UpdateAuthorDto author, Guid id);
 
         Task DeleteAuthorByIdAsync(Guid id);
+
+        Task<AuthorWithCoursesDto> GetAuthorCoursesAsync(Guid id);
     }
 }

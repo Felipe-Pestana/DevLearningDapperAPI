@@ -13,6 +13,8 @@ namespace DevLearning.Api.Models
         public string Email { get; private set; }
         public ETypeAuthor Type { get; private set; }
 
+        public List<Course> Courses { get; set; } = new();
+
         public Author(string name, string title, string image, string bio, string? url, string email, ETypeAuthor type)
         {
             Id = Guid.NewGuid();

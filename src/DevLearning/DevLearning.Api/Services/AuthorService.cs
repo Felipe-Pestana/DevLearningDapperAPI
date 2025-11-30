@@ -86,5 +86,30 @@ namespace DevLearning.Api.Services
             await _authorRepository.DeleteAuthorByIdAsync(id);
         }
 
+
+        public async Task<AuthorWithCoursesDto> GetAuthorCoursesAsync(Guid id)
+        {
+            var author = await _authorRepository.GetAuthorCoursesByIdAsync(id);
+            if (author is null) throw new KeyNotFoundException("Professor não encontrado.");
+
+            return new AuthorWithCoursesDto
+            {
+                Name = author.Name,
+                Title = author.Title,
+                Email = author.Email,
+                Type = author.Type,
+                Courses = author.Courses.Select(c => new CourseAuthorResponseDto
+                {
+                    Id = c.Id,
+                    Tag = c.Tag,
+                    Title = c.Title,
+                    Summary = c.Summary,
+                    Active = c.Active,
+                    CategoryId = c.CategoryId
+
+                }).ToList()
+            };
+        }
+
     }
 }

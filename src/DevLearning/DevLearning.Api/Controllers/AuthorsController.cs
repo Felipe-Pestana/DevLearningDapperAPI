@@ -147,5 +147,26 @@ namespace DevLearning.Api.Controllers
             }
         }
 
+
+        // Get Courses by Author
+        [HttpGet("{id}/courses")]
+        public async Task<ActionResult<AuthorWithCoursesDto>> GetAuthorCoursesAsync(Guid id)
+        {
+            try
+            {
+                var result = await _authorService.GetAuthorCoursesAsync(id);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ocorreu um erro inesperado durante a busca de cursos do professor");
+                return Problem(ex.Message);
+            }
+        }
+
     }
 }

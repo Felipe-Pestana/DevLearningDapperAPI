@@ -16,5 +16,7 @@ namespace DevLearning.Api.Controllers.Interfaces
         Task<ActionResult> UpdateAuthorByIdAsync(UpdateAuthorDto author, Guid id);
 
         Task<ActionResult> DeleteAuthorByIdAsync(Guid id);
+
+        Task<ActionResult<AuthorWithCoursesDto>> GetAuthorCoursesAsync(Guid id);
     }
 }

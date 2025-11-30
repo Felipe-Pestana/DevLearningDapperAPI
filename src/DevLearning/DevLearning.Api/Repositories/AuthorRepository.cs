@@ -4,6 +4,7 @@ using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos.Author;
 using DevLearning.Api.Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace DevLearning.Api.Repositories
 {
@@ -107,6 +108,50 @@ namespace DevLearning.Api.Repositories
                 throw new Exception("Erro ao consultar o banco de dados", ex);
             }
         }
+
+
+        public async Task<Author> GetAuthorCoursesByIdAsync(Guid id)
+        {
+            try
+            {
+                var sql = @"SELECT a.Name, a.Title, a.Email, a.Type
+                            c.Id, c.Tag, c.Title AS [Course], c.Summary, c.Active, c.CategoryId, 
+                            FROM Author a
+                            LEFT JOIN Course c
+                            ON c.AuthorId = a.Id
+                            WHERE a.Id = @Id";
+
+                var authorDictionary = new Dictionary<Guid, Author>();
+
+                var courses = await _connection.QueryAsync<Author, Course, Author>(
+                        sql, (author, course) =>
+                        {
+                            // garante apenas 1 instância de Author
+                            if (!authorDictionary.TryGetValue(author.Id, out var currentAuthor))
+                            {
+                                currentAuthor = author;
+                                currentAuthor.Courses = new List<Course>();
+                                authorDictionary.Add(currentAuthor.Id, currentAuthor);
+                            }
+
+                            // se houver course, adiciona
+                            if (course != null && course.Id != Guid.Empty)
+                                currentAuthor.Courses.Add(course);
+
+                            return currentAuthor;
+                        },
+                        new { Id = id },
+                        splitOn: "Id"
+                    );
+
+                return authorDictionary.Values.FirstOrDefault();
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Erro ao consultar o banco de dados", ex);
+            }
+        }
+
 
     }
 }
