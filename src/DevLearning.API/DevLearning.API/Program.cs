@@ -11,7 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddSingleton<ConnectionDb>();
 builder.Services.AddSingleton<CourseRepository>();
 builder.Services.AddSingleton<CourseService>();
 
