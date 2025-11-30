@@ -4,6 +4,7 @@ using DevLearning.API.Models.DTOs.Author;
 using DevLearning.API.Models.Enums.Author;
 using DevLearning.API.Repositories;
 using DevLearning.API.Services.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace DevLearning.API.Services
 {
@@ -55,19 +56,29 @@ namespace DevLearning.API.Services
             await _authorRepository.UpdatePatchAuthorAsync(dto, id);
         }
         public async Task UpdatePutAuthorAsync(Guid id, UpdateAuthorFullDTO dto)
-        { 
+        {
             await _authorRepository.UpdatePutAuthorAsync(dto, id);
         }
 
         public async Task UpdateAuthorTypeAsync(Guid id, AuthorType type)
         {
-           
+
             await _authorRepository.UpdateAuthorTypeAsync(id, type);
         }
 
+
+        public async Task<AuthorWithCoursesDTO> GetAuthorCoursesAsync(Guid authorId)
+        {
+            var (authorName, courses) = await _authorRepository.GetAuthorCoursesAsync(authorId);
+
+            if (authorName == null)
+                return null;
+
+            return new AuthorWithCoursesDTO
+            {
+                AuthorName = authorName,
+                Courses = courses
+            };
+        }
     }
-    //public async Task GetAuthorsCourses()
-    //{
-    //    // Lógica para pegar os cursos de cada autor será implementada aqui 
-    //}
 }

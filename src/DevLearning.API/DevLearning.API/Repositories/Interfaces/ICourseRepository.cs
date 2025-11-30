@@ -7,12 +7,12 @@ namespace DevLearning.API.Repositories.Interfaces
     {
         Task CreateCourseAsync(Course course);
 
-        Task<List<CourseResponseDTO>> GetAllCoursesAsync();
+        Task<List<CourseResponseDTO>> GetAllCoursesAsync(string category);
 
-        Task<CourseResponseDTO> GetOneCourseByIdAsync(string title);
+        Task<CourseResponseDTO> GetOneCourseByTitleAsync(string title);
 
-        Task<CourseResponseDTO> DeleteCourseByIdAsync(string title);
+        Task<CourseResponseDTO> DeleteCourseByTitleAsync(string title);
 
-        Task UpdateCourseAsync(string title, bool active, bool free, bool featured, DateTime lastUpdate);
+        Task UpdateCourseByTitleAsync(string title, bool active, bool free, bool featured, DateTime lastUpdate);
     }
 }

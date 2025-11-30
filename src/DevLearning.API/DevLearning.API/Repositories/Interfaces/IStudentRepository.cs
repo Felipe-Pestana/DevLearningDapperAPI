@@ -7,9 +7,10 @@ namespace DevLearning.API.Repositories.Interfaces
     {
         public Task CreateStudent(Student student);
         public Task DeleteStudent(Guid id);
-        public Task UpdateStudent(StudentRequestDTO student);
-        public Task<List<Student>> GetAllStudents();
+        public Task UpdateStudent(Student student, Guid id);
+        public Task<List<StudentResponseDTO>> GetAllStudents();
         public Task<Student> GetStudentByDocument(string document);
-
+        public Task<Student> GetStudentByEmail(string email);
+        public Task<Student> GetStudentById(Guid id);
     }
 }

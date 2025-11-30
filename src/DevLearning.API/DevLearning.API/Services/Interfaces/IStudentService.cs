@@ -7,9 +7,10 @@ namespace DevLearning.API.Services.Interfaces
     {
         public Task CreateStudent(StudentRequestDTO student);
         public Task DeleteStudent(string id);
-        public Task UpdateStudent(StudentRequestDTO student);
-        public Task<List<Student>> GetAllStudents();
+        public Task UpdateStudent(StudentRequestUpdateDTO student, string id);
+        public Task<List<StudentResponseDTO>> GetAllStudents();
         public Task<Student> GetStudentById(string id);
         public Task<Student> GetStudentByDocument(string document);
+        public Task<Student> GetStudentByEmail(string email);
     }
 }
