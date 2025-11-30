@@ -21,42 +21,123 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<CourseResponseDTO>>> GetAllCourses()
         {
-            var courses = await _courseService.GetAllCoursesAsync();
-            if (courses == null || !courses.Any())
-                return NoContent();
-            return Ok(courses);
+            try
+            {
+                var courses = await _courseService.GetAllCoursesAsync();
+
+                if (courses == null || !courses.Any())
+                    return NoContent();     // 204
+
+                return Ok(courses);         // 200
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Erro de entrada ao listar cursos");
+                return BadRequest(new { error = ex.Message }); // 400
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro inesperado ao listar cursos");
+                return StatusCode(500, new { error = "Erro interno no servidor." }); // 500
+            }
         }
 
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<CourseResponseDTO>> GetCourseById(Guid id)
         {
-            var course = await _courseService.GetCourseByIdAsync(id);
-            if (course == null)
-                return NotFound();
-            return Ok(course);
+            try
+            {
+                var course = await _courseService.GetCourseByIdAsync(id);
+
+                if (course == null)
+                    return NotFound(new { error = "Curso não encontrado." }); // 404
+
+                return Ok(course); // 200
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Erro de entrada ao obter curso");
+                return BadRequest(new { error = ex.Message }); // 400
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro inesperado ao obter curso");
+                return StatusCode(500, new { error = "Erro interno no servidor." }); // 500
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateCourse([FromBody] CourseRequestDTO dto)
         {
-            await _courseService.CreateCourseAsync(dto);
-            return Created(string.Empty, null);
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState); // 400
+
+                await _courseService.CreateCourseAsync(dto);
+                return StatusCode(201);           // 201 
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Erro de entrada ao criar curso");
+                return BadRequest(new { error = ex.Message }); // 400
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro inesperado ao criar curso");
+                return StatusCode(500, new { error = "Erro interno no servidor." }); // 500
+            }
         }
 
         [HttpPut("{id:guid}")]
         public async Task<ActionResult> UpdateCourse(Guid id, [FromBody] CourseRequestDTO dto)
         {
-            var ok = await _courseService.UpdateCourseAsync(id, dto);
-            if (!ok) return NotFound();
-            return NoContent();
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState); // 400
+
+                var updated = await _courseService.UpdateCourseAsync(id, dto);
+
+                if (!updated)
+                    return NotFound(new { error = "Curso não encontrado." }); // 404
+
+                return NoContent(); // 204
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Erro de entrada ao atualizar curso");
+                return BadRequest(new { error = ex.Message }); // 400
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro inesperado ao atualizar curso");
+                return StatusCode(500, new { error = "Erro interno no servidor." }); // 500
+            }
         }
 
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> DeleteCourse(Guid id)
         {
-            var ok = await _courseService.DeleteCourseAsync(id);
-            if (!ok) return NotFound();
-            return NoContent();
+            try
+            {
+                var deleted = await _courseService.DeleteCourseAsync(id);
+
+                if (!deleted)
+                    return NotFound(new { error = "Curso não encontrado." }); // 404
+
+                return NoContent(); // 204
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Erro de entrada ao excluir curso");
+                return BadRequest(new { error = ex.Message }); // 400
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro inesperado ao excluir curso");
+                return StatusCode(500, new { error = "Erro interno no servidor." }); // 500
+            }
         }
     }
 }
