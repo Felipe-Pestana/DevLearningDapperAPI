@@ -1,8 +1,10 @@
 ﻿using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos.Course;
+using DevLearning.Api.Models.Enum;
 using DevLearning.Api.Repositories;
 using DevLearning.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.Data.SqlClient;
 using System.Reflection.Metadata.Ecma335;
 
@@ -18,24 +20,37 @@ namespace DevLearning.Api.Services
 
         public async Task CreateCourseAsync(CreateCourseDto course)
         {
-            
-            //TODO: validate all data entering and check if Title and Url is unique
-            //TODO: implement author and category service to check if id's exist and if author is active
-            try
-            {
-                var newCourse = new Course(
-                    course.Tag, course.Title, course.Summary, course.Url,
-                    course.Level, course.DurationInMinutes, DateTime.Now,
-                    DateTime.Now, true, course.Free, course.Featured,
-                    course.AuthorId, course.CategoryId, course.Tags
-                    );
+            if (string.IsNullOrWhiteSpace(course.Tag))
+                throw new ArgumentException("The field 'Tag' must not be comprised of only empty spaces!");
+            if (string.IsNullOrWhiteSpace(course.Title))
+                throw new ArgumentException("The field 'Title' must not be comprised of only empty spaces!");
+            if (string.IsNullOrWhiteSpace(course.Summary))
+                throw new ArgumentException("The field 'Summary' must not be comprised of only empty spaces!");
+            if (string.IsNullOrWhiteSpace(course.Url))
+                throw new ArgumentException("The field 'Url' must not be comprised of only empty spaces!");
+            if (course.DurationInMinutes < 1)
+                throw new ArgumentException("The field 'DurationInMinutes' must be over 0!");
+            if (string.IsNullOrWhiteSpace(course.Tag))
+                throw new ArgumentException("The field 'Tags' must not be comprised of only empty spaces!");
 
-                await _courseRepository.CreateCourseAsync(newCourse);
+            if (await _courseRepository.GetCourseTitleAsync(course.Title))
+                throw new ArgumentException("There is already a course with this title.");
+            if (await _courseRepository.GetCourseUrlAsync(course.Url))
+                throw new ArgumentException("There is already a course with this url.");
+
+            //TODO: implement author and category service to check if id's exist and if author is active
+            if (!Enum.TryParse<ELevelCourse>(course.Level, true, out ELevelCourse level)) {
+                throw new ArgumentException("The field 'Level' must be either 'Beginner', 'Basic', 'Intermediate' or 'Advanced'.");
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+
+            var newCourse = new Course(
+                course.Tag, course.Title, course.Summary, course.Url,
+                level, course.DurationInMinutes, DateTime.Now,
+                DateTime.Now, true, course.Free, course.Featured,
+                course.AuthorId, course.CategoryId, course.Tags
+                );
+
+            await _courseRepository.CreateCourseAsync(newCourse);
         }
 
         public async Task<List<CourseResponseDto>> GetAllCoursesAsync()

@@ -131,6 +131,50 @@ namespace DevLearning.Api.Repositories
             }
         }
 
+        public async Task<bool> GetCourseTitleAsync(string title)
+        {
+            var sql = "SELECT [Title] FROM [Course] WHERE [Title] = @Title";
+
+            try
+            {
+                var courses = await _connection.QueryAsync(sql, new { Title = title});
+                if (courses.Any())
+                    return true;
+                else
+                    return false;
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception(sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<bool> GetCourseUrlAsync(string url)
+        {
+            var sql = "SELECT [Url] FROM [Course] WHERE [Url] = @Url";
+
+            try
+            {
+                var courses = await _connection.QueryAsync(sql, new { Url = url });
+                if (courses.Any())
+                    return true;
+                else
+                    return false;
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception(sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task UpdateCourseAsync(Guid id, Course course)
         {
             var sql = @"UPDATE [Course] 

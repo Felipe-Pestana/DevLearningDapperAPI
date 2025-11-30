@@ -27,6 +27,10 @@ namespace DevLearning.Api.Controllers
 
                 return Created();
             }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message, null, 400, "Invalid Input");
+            }
             catch (Exception ex)
             {
                 return Problem(ex.Message);
