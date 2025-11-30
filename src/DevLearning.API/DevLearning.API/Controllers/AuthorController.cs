@@ -122,5 +122,17 @@ namespace DevLearning.API.Controllers
                 return StatusCode(400, new { error = $"Erro ao atualizar tipo do autor. {ex.Message}" });
             }
         }
+
+        //Listar cursos do autor
+        [HttpGet("{id}/courses")]
+        public async Task<IActionResult> GetAuthorCourses(Guid id)
+        {
+            var result = await _authorService.GetAuthorCoursesAsync(id);
+
+            if (result == null)
+                return NotFound("Autor não encontrado.");
+
+            return Ok(result);
+        }
     }
 }
