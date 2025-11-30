@@ -74,6 +74,14 @@ namespace DevLearning.Api.Controllers
 
                 return NoContent();
             }
+            catch (KeyNotFoundException ex)
+            {
+                return Problem(ex.Message, null, 404, "Course Not Found");
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message, null, 400, "Invalid Input");
+            }
             catch (Exception ex)
             {
                 return Problem(ex.Message);
@@ -88,6 +96,10 @@ namespace DevLearning.Api.Controllers
                 await _courseService.DeleteCourseAsync(id);
 
                 return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return Problem(ex.Message, null, 404, "Course Not Found");
             }
             catch (Exception ex)
             {

@@ -18,9 +18,11 @@ namespace DevLearning.Api.Services
 
         public async Task CreateCourseAsync(CreateCourseDto course)
         {
+            
+            //TODO: validate all data entering and check if Title and Url is unique
+            //TODO: implement author and category service to check if id's exist and if author is active
             try
             {
-                //TODO: validate all data entering and check if Title and Url is unique
                 var newCourse = new Course(
                     course.Tag, course.Title, course.Summary, course.Url,
                     course.Level, course.DurationInMinutes, DateTime.Now,
@@ -42,10 +44,6 @@ namespace DevLearning.Api.Services
             {
                 return await _courseRepository.GetAllCoursesAsync();
             }
-            catch (SqlException sqlex)
-            {
-                throw new Exception(sqlex.Message);
-            }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
@@ -66,47 +64,37 @@ namespace DevLearning.Api.Services
 
         public async Task UpdateCourseAsync(Guid id, UpdateCourseDto update)
         {
-            try
-            {
-                var oldCourse = await _courseRepository.GetCourseByIdAsync(id) ?? 
-                    throw new Exception("Course not found!");       //TODO: return proper StatusCode(404 Not Found)
+            if ((update.Summary is not null) && string.IsNullOrWhiteSpace(update.Summary))
+                throw new ArgumentException("The field 'Summary' cannot be changed to empty spaces!");
 
-                //TODO: validate all data entering from update
-                var updatedCourse = new Course(
-                    oldCourse.Tag, oldCourse.Title,
-                    update.Summary ?? oldCourse.Summary,
-                    oldCourse.Url, oldCourse.Level, oldCourse.DurationInMinutes,
-                    DateTime.Now, DateTime.Now,
-                    update.Active ?? oldCourse.Active,
-                    update.Free ?? oldCourse.Free,
-                    update.Featured ?? oldCourse.Featured,
-                    oldCourse.AuthorId, oldCourse.CategoryId,
-                    update.Tags ?? oldCourse.Tags
-                    );
+            if ((update.Tags is not null) && string.IsNullOrWhiteSpace(update.Tags))
+                throw new ArgumentException("The field 'Tags' cannot be changed to empty spaces!");
 
-                await _courseRepository.UpdateCourseAsync(id, updatedCourse);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            var oldCourse = await _courseRepository.GetCourseByIdAsync(id) ?? 
+                throw new KeyNotFoundException($"No course was found with this ID.");
+
+            var updatedCourse = new Course(
+                oldCourse.Tag, oldCourse.Title,
+                update.Summary ?? oldCourse.Summary,
+                oldCourse.Url, oldCourse.Level, oldCourse.DurationInMinutes,
+                DateTime.Now, DateTime.Now,
+                update.Active ?? oldCourse.Active,
+                update.Free ?? oldCourse.Free,
+                update.Featured ?? oldCourse.Featured,
+                oldCourse.AuthorId, oldCourse.CategoryId,
+                update.Tags ?? oldCourse.Tags
+                );
+
+            await _courseRepository.UpdateCourseAsync(id, updatedCourse);
         }
 
         public async Task DeleteCourseAsync(Guid id)
         {
-            try
-            {
-                var course = await _courseRepository.GetCourseByIdAsync(id) ??
-                    throw new Exception("Course not found!");       //TODO: return proper StatusCode(404 Not Found)
-
-                await _courseRepository.DeleteCourseAsync(id);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            var course = await _courseRepository.GetCourseByIdAsync(id) ??
+                throw new KeyNotFoundException($"No course was found with this ID.");
+            
+            await _courseRepository.DeleteCourseAsync(id);
         }
-
 
         public async Task<int> DeleteCourseByAuthorIdAsync(Guid id)
         {
