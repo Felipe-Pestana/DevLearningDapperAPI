@@ -91,19 +91,19 @@ namespace DevLearning.Api.Controllers
             }
         }
 
-        //[HttpGet("categories/{id})/courses")]
-        //public async Task<List<CoursesCategoryDTO>> GetAllCoursesByCategoryIdAsync(Guid categoryId)
-        //{
-        //try
-        //{
-        //    var courses = await _categoryService.GetAllCoursesByCategoryIdAsync(categoryId);
+        [HttpGet("categories/{id})/courses")]
+        public async Task<ActionResult<List<CoursesCategoryDTO>>> GetAllCoursesByCategoryIdAsync(Guid categoryId)
+        {
+            try
+            {
+                var courses = await _categoryService.GetAllCoursesByCategoryIdAsync(categoryId);
 
-        //    return Ok(courses);
-        //}
-        //catch (Exception ex)
-        //{
-        //    return Problem(ex.Message);
-        //}
-        //}
+                return Ok(courses);
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
     }
 }
