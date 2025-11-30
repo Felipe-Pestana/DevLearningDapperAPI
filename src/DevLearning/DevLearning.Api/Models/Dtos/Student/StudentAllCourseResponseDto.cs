@@ -4,6 +4,6 @@
     {
         public string Name { get; init; }
         public string Email { get; init; }
-        public List<CourseResponseDto> Courses { get; set; } = new List<CourseResponseDto>();
+        //public List<CourseResponseDto> Courses { get; set; } = new List<CourseResponseDto>();
     }
 }

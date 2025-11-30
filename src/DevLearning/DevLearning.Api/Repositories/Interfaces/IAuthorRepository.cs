@@ -17,6 +17,6 @@ namespace DevLearning.Api.Repositories.Interfaces
 
         Task DeleteAuthorByIdAsync(Guid id);
 
-        Task<Author> GetAuthorCoursesByIdAsync(Guid id);
+        Task<AuthorWithCoursesDto> GetAuthorCoursesByIdAsync(Guid id);
     }
 }
