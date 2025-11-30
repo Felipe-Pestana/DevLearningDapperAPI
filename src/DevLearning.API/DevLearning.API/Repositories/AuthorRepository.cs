@@ -147,14 +147,24 @@ namespace DevLearning.API.Repositories
             });
         }
 
+        public async Task<(string AuthorName, List<string> Courses)> GetAuthorCoursesAsync(Guid authorId)
+        {
+            var sql = @"
+            SELECT a.Name AS AuthorName, c.Title AS CourseTitle
+            FROM Author a
+            LEFT JOIN Course c ON a.Id = c.AuthorId
+            WHERE a.Id = @AuthorId";
 
-        //public async Task GetAuthorsCourses()  ---- FAZER DEPOIS A LÓGICA PARA PEGAR OS CURSOS DE CADA AUTOR
-        //{
-        //    var sql = @"SELECT a.Name AS AuthorName, c.Title AS CourseTitle
-        //                FROM Author a
-        //                JOIN Course c ON a.Id = c.AuthorId";
-        //    var authorCourses = await _connection.QueryAsync(sql);
-        //    
-        //}
+            var rows = await _connection.QueryAsync(sql, new { AuthorId = authorId });
+
+            if (!rows.Any())
+                return (null, new List<string>()); 
+
+            string authorName = rows.First().AuthorName;
+            var courses = rows.Select(r => (string)r.CourseTitle).Where(c => c != null).ToList();
+
+            return (authorName, courses);
+        }
+
     }
 }

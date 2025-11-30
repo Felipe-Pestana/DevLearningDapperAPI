@@ -13,6 +13,7 @@ namespace DevLearning.API.Repositories.Interfaces
         Task UpdatePatchAuthorAsync(UpdateAuthorParcialDTO dto, Guid id);
         Task UpdatePutAuthorAsync(UpdateAuthorFullDTO dto, Guid id);
         Task UpdateAuthorTypeAsync(Guid id, AuthorType type);
+        Task<(string AuthorName, List<string> Courses)> GetAuthorCoursesAsync(Guid authorId);
 
     }
 }

@@ -15,7 +15,7 @@ namespace DevLearning.API.Repositories
     {
         private readonly SqlConnection _connection;
 
-        public CourseRepository(ConnectionDb connection)
+        public CourseRepository(ConnectionDB connection)
         {
             _connection = connection.GetConnection();
         }
