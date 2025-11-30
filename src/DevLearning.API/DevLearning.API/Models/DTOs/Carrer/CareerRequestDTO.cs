@@ -1,4 +1,7 @@
-﻿namespace DevLearning.API.Services
+﻿using DevLearning.API.Models;
+using DevLearning.API.Models.DTOs.CareerItem;
+
+namespace DevLearning.API.Services
 {
     public class CareerRequestDTO
     {
@@ -6,6 +9,6 @@
         public string Summary { get; init; }
         public int DurationInMinutes { get; init; }
         public string Tags { get; init; }
-        // public List<Course> courses {get; init;}
+        public List<CareerItemRequestCreateDTO> careerItems {get; init;}
     }
 }

@@ -1,0 +1,109 @@
+﻿using Dapper;
+using DevLearning.API.DataBase;
+using DevLearning.API.Models;
+using DevLearning.API.Models.DTOs.CareerItem;
+using DevLearning.API.Models.DTOs.Carrer;
+using DevLearning.API.Repositories;
+using DevLearning.API.Services.Interfaces;
+using Microsoft.Data.SqlClient;
+
+namespace DevLearning.API.Services
+{
+    public class CareerItemService : ICareerItemService
+    {
+        public readonly CareerItemRepository careerItemRepository;
+        private readonly ILogger<CareerItemService> logger;
+        public CareerItemService(ILogger<CareerItemService> logger, CareerItemRepository careerItemRepository)
+        {
+            this.careerItemRepository = careerItemRepository;
+            this.logger = logger;
+        }
+
+        public async Task<bool> CreateItemCareerAsync(CareerItemRequestCreateDTO careerItemDTO)
+        {
+            try
+
+            {
+                var retorno = await careerItemRepository.GetCareerItemByIdAsync(careerItemDTO.CareerId, careerItemDTO.CourseId);
+                if (retorno == true){                
+                    return false;
+                }
+
+                var careerItems= new CareerItem(
+                    careerItemDTO.CareerId,
+                    careerItemDTO.CourseId,
+                    careerItemDTO.Title,
+                    careerItemDTO.Description,
+                    careerItemDTO.Order
+                );
+               
+                await careerItemRepository.CreateCareerItemAsync(careerItems);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Erro interno ao item carreira: {ex.Message}");
+                throw;
+            }
+        }
+       
+        public async Task<bool> DeleteItemCareerAsync(Guid careerId, Guid courseId)
+        {
+            try
+            {
+                var result = await careerItemRepository.DeleteCareerItemAsync(careerId, courseId);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Erro interno ao deletar item de carreira: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<bool> UpdateCareerItemAsync(Guid careerId, Guid courseId, CareerItemUpdateDTO updateDTO)
+        {
+            try
+            {
+
+                var updates = new List<string>();
+                var parameters = new DynamicParameters();
+                parameters.Add("CareerId", careerId);
+                parameters.Add("CourseId", courseId);
+
+
+                if (updateDTO.CourseId.HasValue)
+                {
+                    updates.Add("CourseId = @CourseId");
+                    parameters.Add("CourseId", updateDTO.CourseId);
+                }
+
+                if (!string.IsNullOrEmpty(updateDTO.Title))
+                {
+                    updates.Add("Title = @Title");
+                    parameters.Add("Title", updateDTO.Title);
+                }
+                if (!string.IsNullOrEmpty(updateDTO.Description))
+                {
+                    updates.Add("Description = @Description");
+                    parameters.Add("Description", updateDTO.Description);
+                }
+                if (updateDTO.Order.HasValue)
+                {
+                    updates.Add("[Order] = @Order");
+                    parameters.Add("Order", updateDTO.Order);
+                }
+               
+                var result = await careerItemRepository.UpdateCareerItemAsync(careerId, courseId, updates, parameters);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Erro interno ao atualizar carreira: {ex.Message}");
+                throw;
+            }
+        }
+
+
+    }
+}

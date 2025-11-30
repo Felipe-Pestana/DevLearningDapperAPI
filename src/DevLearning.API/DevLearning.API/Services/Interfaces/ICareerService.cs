@@ -5,8 +5,8 @@ namespace DevLearning.API.Services.Interfaces
     public interface ICareerService
     {
         Task CreateCareerAsync(CareerRequestDTO careerDTO);
-        Task<List<CareerResponseDTO>> GetAllCareerAsync();
-        Task<CareerResponseDTO?> GetCareerByIdAsync(Guid careerId);
+        Task<List<CareerWhitCareerItemResponseDTO>> GetAllCareerAsync();
+        Task<CareerWhitCareerItemResponseDTO?> GetCareerByIdAsync(Guid careerId);
         Task<bool> DeleteCareerAsync(Guid careerId);
         Task<bool> UpdateCareerAsync(Guid id, CareerUpdateDTO updateDTO);
     }

@@ -1,5 +1,6 @@
 ﻿using DevLearning.API.Models;
 using DevLearning.API.Models.DTOs.Author;
+using DevLearning.API.Models.Enums.Author;
 
 namespace DevLearning.API.Services.Interfaces
 {
@@ -12,8 +13,9 @@ namespace DevLearning.API.Services.Interfaces
         Task CreateAuthorAsync(Author author);
 
         Task DeleteAuthorAsync(Guid id);
+        Task UpdatePatchAuthorAsync(Guid id, UpdateAuthorParcialDTO dto);
+        Task UpdatePutAuthorAsync(Guid id, UpdateAuthorFullDTO dto);
+        Task UpdateAuthorTypeAsync(Guid id, AuthorType type);
 
-        Task UpdateAuthorAsync(Guid id, UpdateAuthorDTO author);
-       
     }
 }
