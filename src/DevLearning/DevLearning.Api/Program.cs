@@ -3,6 +3,10 @@ using DevLearning.Api.Repositories;
 using DevLearning.Api.Repositories.Interfaces;
 using DevLearning.Api.Services;
 using DevLearning.Api.Services.Interfaces;
+using DevLearningAPI.Repositories;
+using DevLearningAPI.Repositories.Interfaces;
+using DevLearningAPI.Services;
+using DevLearningAPI.Services.Interfaces;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);

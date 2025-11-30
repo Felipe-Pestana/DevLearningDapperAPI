@@ -212,5 +212,51 @@ namespace DevLearningAPI.Repositories
                 if (_connection.State == ConnectionState.Open) await _connection.CloseAsync();
             }
         }
+
+        public async Task<bool> RemoveItemAsync(Guid careerId, Guid courseId)
+        {
+            if (_connection.State != ConnectionState.Open) await _connection.OpenAsync();
+            using var transaction = _connection.BeginTransaction();
+
+            try
+            {
+                var durationSql = "SELECT [DurationInMinutes] FROM [Course] WHERE [Id] = @Id";
+                var duration = await _connection.ExecuteScalarAsync<int>(durationSql, new { Id = courseId }, transaction);
+                var deleteSql = @"DELETE FROM [CareerItem] 
+                                  WHERE [CareerId] = @CareerId AND 
+                                  [CourseId] = @CourseId";
+                var rowsAffected = await _connection.ExecuteAsync(deleteSql, new
+                {
+                    CareerId = careerId,
+                    CourseId = courseId
+                }, transaction);
+
+                if (rowsAffected > 0)
+                {
+                    var updateSql = @"UPDATE [Career] 
+                              SET [DurationInMinutes] = [DurationInMinutes] - @Duration 
+                              WHERE [Id] = @Id";
+                    await _connection.ExecuteAsync(updateSql, new { Duration = duration, Id = careerId }, transaction);
+
+                    transaction.Commit();
+                    return true; 
+                }
+                else
+                {
+                    transaction.Rollback();
+                    return false;
+                }
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+            finally
+            {
+                if (_connection.State == ConnectionState.Open) await _connection.CloseAsync();
+            }
+        
+        }
     }
 }

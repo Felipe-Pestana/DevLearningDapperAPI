@@ -10,6 +10,7 @@ namespace DevLearningAPI.Repositories.Interfaces
         Task CreateAsync(Career career);
         Task UpdateAsync(Career career);
         Task SoftDeleteAsync(Guid id); 
-        Task AddItemAsync(CareerItem item); 
+        Task AddItemAsync(CareerItem item);
+        Task<bool> RemoveItemAsync(Guid careerId, Guid courseId);
     }
 }

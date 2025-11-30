@@ -13,5 +13,6 @@ namespace DevLearningAPI.Services.Interfaces
         Task UpdateAsync(Guid id, UpdateCareerDto dto);
         Task DeleteAsync(Guid id);
         Task AddItemAsync(Guid careerId, CreateCareerItemDTO dto);
+        Task RemoveItemAsync(Guid careerId, Guid courseId);
     }
 }
