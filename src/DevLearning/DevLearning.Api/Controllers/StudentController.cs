@@ -134,7 +134,7 @@ namespace DevLearning.Api.Controllers
         }
 
         [HttpGet("{id}/courses")]
-        public async Task<ActionResult<StudentResponseDto>> GetStudentAllCoursesAsync(Guid id)
+        public async Task<ActionResult<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id)
         {
             try
             {

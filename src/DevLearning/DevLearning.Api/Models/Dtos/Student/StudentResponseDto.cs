@@ -9,7 +9,5 @@
         public string? Phone { get; init; }
         public DateTime? BirthDate { get; init; }
         public DateTime CreateDate { get; init; }
-
-        public List<CourseResponseDto> Courses { get; set; } = new List<CourseResponseDto>();
     }
 }

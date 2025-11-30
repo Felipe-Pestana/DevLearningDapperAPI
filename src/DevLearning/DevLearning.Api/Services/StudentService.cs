@@ -151,7 +151,7 @@ namespace DevLearning.Api.Services
             }
         }
 
-        public async Task<StudentCourse?> GetStudentCourseAsync(Guid courseId, Guid studentId)
+        public async Task<StudentCourseResponseDto?> GetStudentCourseAsync(Guid courseId, Guid studentId)
         {
             try
             {
@@ -184,7 +184,7 @@ namespace DevLearning.Api.Services
             }
         }
 
-        public async Task<List<StudentResponseDto>> GetStudentAllCoursesAsync(Guid id)
+        public async Task<List<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id)
         {
             var studentCourse = await _repository.GetStudentAllCoursesAsync(id);
             if (studentCourse is null)

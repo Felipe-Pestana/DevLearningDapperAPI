@@ -180,7 +180,7 @@ namespace DevLearning.Api.Repositories
             }
         }
 
-        public async Task <StudentCourse?> GetStudentCourseAsync(Guid courseId, Guid studentId) 
+        public async Task <StudentCourseResponseDto?> GetStudentCourseAsync(Guid courseId, Guid studentId) 
         {
             try
             {
@@ -248,7 +248,7 @@ namespace DevLearning.Api.Repositories
             }
         }
 
-        public async Task<List<StudentResponseDto>> GetStudentAllCoursesAsync(Guid id) 
+        public async Task<List<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id) 
         {
             var sql = @"SELECT s.Id, s.Name, s.Email, c.Id, c.Title, c.Summary, c.DurationInMinutes, c.Active
                 FROM Student s 
@@ -260,13 +260,13 @@ namespace DevLearning.Api.Repositories
 
             try
             {
-                var student = await _connection.QueryAsync<StudentResponseDto, CourseResponseDto, StudentResponseDto>(sql, (student, course) =>
+                var student = await _connection.QueryAsync<StudentAllCourseResponseDto, CourseResponseDto, StudentAllCourseResponseDto>(sql, (student, course) =>
                     {
                         student.Courses.Add(course);
                         return student;
                     }, new { @StudentId = id }, splitOn: "Id");
 
-                var groupeStudent = student.GroupBy(s => s.Id).Select(l =>
+                var groupeStudent = student.GroupBy(s => s.Email).Select(l =>
                 {
                     var listStudent = l.First();
                     listStudent.Courses = l.Select(s => s.Courses.Single()).ToList();
