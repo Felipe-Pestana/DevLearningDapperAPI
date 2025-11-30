@@ -10,6 +10,7 @@
         public bool Active { get; private set; }
         public bool Featured { get; private set; }
         public string Tags { get; private set; }
+        public List<CareerItem> items { get; private set; } = new();
 
         public Career() { }
 
@@ -23,6 +24,11 @@
             this.Active = true;
             Featured = false;
             Tags = tags;
+        }
+
+        public void AddItem(CareerItem item)
+        {
+            items.Add(item);
         }
     }
 }

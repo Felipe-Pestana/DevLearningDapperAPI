@@ -75,7 +75,7 @@ namespace DevLearning.API.Services
 
         public async Task<Student> GetStudentById(string id)
         {
-            try
+           try
             {
                 return await _studentRepository.GetStudentById(Guid.Parse(id));
             }

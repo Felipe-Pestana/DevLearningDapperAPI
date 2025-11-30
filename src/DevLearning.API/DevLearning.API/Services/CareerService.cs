@@ -30,19 +30,30 @@ namespace DevLearning.API.Services
                    careerDTO.DurationInMinutes,
                    careerDTO.Tags
                 );
+                var careerItems = careerDTO.careerItems.Select(itemDTO => new CareerItem(
+                    career.Id,
+                    itemDTO.CourseId,
+                    itemDTO.Title,
+                    itemDTO.Description,
+                    itemDTO.Order
+                )).ToList();
+                foreach (var item in careerItems)
+                {
+                    career.AddItem(item);
+                }
                 await careerRepository.CreateCareerAsync(career);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, $"Erro interno ao criar carreira: {ex.Message}");
+                logger.LogError(ex, $"Erro interno ao criar carreira e item carreira: {ex.Message}");
                 throw;
             }
         }
-        public async Task<List<CareerResponseDTO>> GetAllCareerAsync()
+        public async Task<List<CareerWhitCareerItemResponseDTO>> GetAllCareerAsync()
         {
             try { 
                 
-                var careers = await careerRepository.GetAllCareersAsync();
+                var careers = await careerRepository.GetAllCareerWithCareerItem();
                 return careers;
             }
             catch (Exception ex)
@@ -52,11 +63,11 @@ namespace DevLearning.API.Services
             }
         }
 
-        public async Task<CareerResponseDTO?> GetCareerByIdAsync(Guid careerId)
+        public async Task<CareerWhitCareerItemResponseDTO?> GetCareerByIdAsync(Guid careerId)
         {
             try
             {
-                var career = await careerRepository.GetCareerByIdAsync(careerId);
+                var career = await careerRepository.GetOneCareerWithCareerItem(careerId);
                 return career;
             }
             catch (Exception ex)
