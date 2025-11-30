@@ -2,8 +2,8 @@
 {
     public enum CourseLevel : byte
     {
-        Beginner = 0,
-        Intermediate = 1,
-        Advanced = 2
+        Beginner = 1,
+        Intermediate = 2,
+        Advanced = 3
     }
 }

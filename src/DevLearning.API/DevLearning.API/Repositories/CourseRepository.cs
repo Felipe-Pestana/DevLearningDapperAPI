@@ -22,48 +22,105 @@ namespace DevLearning.API.Repositories
 
         public async Task CreateCourseAsync(Course course)
         {
-            var sql = @"INSERT INTO Course(Id, Tag, Title, Summary, [Url], [Level], DurationInMinutes,
+            try
+            {
+                var sql = @"INSERT INTO Course(Id, Tag, Title, Summary, [Url], [Level], DurationInMinutes,
                       CreateDate, LastUpdateDate, Active, Free, Featured, AuthorId, CategoryId, Tags) 
                       VALUES(@Id, @Tag, @Title, @summary, @Url, @Level, @DurationInMinutes, @CreateDate, @LastUpdateDate,
                       @Active, @Free, @Featured, @AuthorId, @CategoryId, @Tags)";
 
-            await _connection.ExecuteAsync(sql, new { course.Id, course.Tag, course.Title, course.Summary, course.Url, course.Level, course.DurationInMinutes, course.CreateDate, course.LastUpdateDate, course.Active, course.Free, course.Featured, course.AuthorId, course.CategoryId, course.Tags });
+                await _connection.ExecuteAsync(sql, new { course.Id, course.Tag, course.Title, course.Summary, course.Url, course.Level, course.DurationInMinutes, course.CreateDate, course.LastUpdateDate, course.Active, course.Free, course.Featured, course.AuthorId, course.CategoryId, course.Tags });
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public async Task<CourseResponseDTO> DeleteCourseByIdAsync(string title)
+        public async Task<CourseResponseDTO> DeleteCourseByTitleAsync(string title)
         {
-            var sql = @"DELETE FROM Course WHERE title = @title";
+            try
+            {
+                var sql = @"DELETE FROM Course WHERE title = @title";
 
-            return (await _connection.QueryFirstOrDefaultAsync<CourseResponseDTO>(sql, new { title = title }));
+                return (await _connection.QueryFirstOrDefaultAsync<CourseResponseDTO>(sql, new { title = title }));
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public async Task<List<CourseResponseDTO>> GetAllCoursesAsync()
+        public async Task<List<CourseResponseDTO>> GetAllCoursesAsync(string category)
         {
-            var sql = @"SELECT c.Tag, c.Title, c.Summary, c.[Url], c.[Level], c.DurationInMinutes,
+            try
+            {
+                var sql = @"SELECT c.Tag, c.Title, c.Summary, c.[Url], c.[Level], c.DurationInMinutes,
                        c.CreateDate, c.LastUpdateDate, c.Active, c.Free, c.Featured, a.[Name] AS authorName, 
                        ca.Title AS categoryName, c.Tags FROM Course c
                        JOIN Author a ON a.Id = c.AuthorId
-                       JOIN Category ca ON ca.Id = c.CategoryId;";
+                       JOIN Category ca ON ca.Id = c.CategoryId
+                       WHERE (@categoria IS NULL OR ca.Title = @categoria) 
+                       ORDER BY c.Level ASC;";
 
-            return (await _connection.QueryAsync<CourseResponseDTO>(sql)).ToList();
+                return (await _connection.QueryAsync<CourseResponseDTO>(sql, new { categoria = category })).ToList();
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public async Task<CourseResponseDTO> GetOneCourseByIdAsync(string title)
+        public async Task<CourseResponseDTO> GetOneCourseByTitleAsync(string title)
         {
-            var sql = @"SELECT c.Tag, c.Title, c.Summary, c.[Url], c.[Level], c.DurationInMinutes,
+            try
+            {
+                var sql = @"SELECT c.Tag, c.Title, c.Summary, c.[Url], c.[Level], c.DurationInMinutes,
                        c.CreateDate, c.LastUpdateDate, c.Active, c.Free, c.Featured, a.[Name] AS authorName, 
                        ca.Title AS categoryName, c.Tags FROM Course c
                        JOIN Author a ON a.Id = c.AuthorId
                        JOIN Category ca ON ca.Id = c.CategoryId WHERE c.title = @Titulo";
 
-            return (await _connection.QueryFirstOrDefaultAsync<CourseResponseDTO>(sql, new { Titulo = title }));
+                return (await _connection.QueryFirstOrDefaultAsync<CourseResponseDTO>(sql, new { Titulo = title }));
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public async Task UpdateCourseAsync(string title, bool active, bool free, bool featured, DateTime lastUpdateDate)
+        public async Task UpdateCourseByTitleAsync(string title, bool active, bool free, bool featured, DateTime lastUpdateDate)
         {
-            var sql = @"UPDATE Course SET Active = @active, Free = @free, Featured = @featured, LastUpdateDate = @lastUpdateDate WHERE Title = @Title";
+            try
+            {
+                var sql = @"UPDATE Course SET Active = @active, Free = @free, Featured = @featured, LastUpdateDate = @lastUpdateDate WHERE Title = @Title";
 
-            await _connection.ExecuteAsync(sql, new {active = active, Free = free, Featured = featured, LastUpdateDate = lastUpdateDate, Title = title });
+                await _connection.ExecuteAsync(sql, new { active = active, Free = free, Featured = featured, LastUpdateDate = lastUpdateDate, Title = title });
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
