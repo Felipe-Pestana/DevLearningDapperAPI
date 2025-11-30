@@ -144,21 +144,33 @@ namespace DevLearning.Api.Services
 
         public async Task<StudentCourse?> GetStudentCourseAsync(Guid courseId, Guid studentId)
         {
-            
+            try
+            {
+               return await _repository.GetStudentCourseAsync(courseId, studentId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
         }
+
         //TRATAR - NÃO EXISTE O ESTUDANTE SOZINHO (CADASTRADO)
         //NÃO EXISTIR O GUID DO CURSO
         //NÃO EXISTIR RELAÇÃO ENTRE ESTUDANTE E CURSO
 
-        public async Task UpdateStudentCourseProgressAsync(Guid id, UpdateStudentCourseDto student)
+        public async Task UpdateStudentCourseProgressAsync(Guid studentId, Guid courseId, UpdateStudentCourseDto student)
         {
-            var studentExist = await _repository.GetStudentByIdAsync(id);
+            var studentExist = await _repository.GetStudentByIdAsync(studentId);
             if (studentExist is null)
                 throw new KeyNotFoundException("Estudante não encontrado!");
 
+            var studentCourseExist = await _repository.GetStudentCourseAsync(courseId, studentId);
+            if (studentCourseExist is null)
+                throw new KeyNotFoundException("Estudante e curso não vinculados!");
+
             try
             {
-                await _repository.UpdateStudentCourseProgressAsync(id, student);
+                await _repository.UpdateStudentCourseProgressAsync(courseId, studentId, student);
             }
             catch (Exception ex)
             {

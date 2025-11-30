@@ -18,6 +18,9 @@ namespace DevLearning.Api.Repositories
             _connection = connection.GetConnection();
         }
 
+
+        //TODO: VALIDAR EMAIL DUPLICIDADE
+
         public async Task CreateStudentAsync(Student student) 
         {
             try

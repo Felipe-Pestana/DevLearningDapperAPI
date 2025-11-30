@@ -1,4 +1,5 @@
-﻿using DevLearning.Api.Models.Dtos.Student;
+﻿using DevLearning.Api.Models;
+using DevLearning.Api.Models.Dtos.Student;
 using DevLearning.Api.Models.Dtos.StudentCourse;
 using DevLearning.Api.Services;
 using Microsoft.AspNetCore.Http;
@@ -128,6 +129,18 @@ namespace DevLearning.Api.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
+            }
+        }
+
+        public async Task<StudentCourse?> GetStudentCourseAsync(Guid courseId, Guid studentId)
+        {
+            try
+            {
+                return await _service.GetStudentCourseAsync(courseId, studentId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
             }
         }
 
