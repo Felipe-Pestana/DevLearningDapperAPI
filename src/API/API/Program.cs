@@ -1,4 +1,4 @@
-using API.Database;
+/*using API.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,4 +17,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+app.Run();*/
