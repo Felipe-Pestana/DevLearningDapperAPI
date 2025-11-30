@@ -13,8 +13,8 @@ namespace DevLearning.Api.Services.Interfaces
         Task UpdateStudentAsync(Guid id, UpdateStudentDto student);
         Task DeleteStudentAsync(Guid id);
         Task CreateStudentCourseAsync(Guid courseId, Guid studentId, CreateStudentCourseDto studentCourse);
-        Task<StudentCourse?> GetStudentCourseAsync(Guid courseId, Guid studentId);
+        Task<StudentCourseResponseDto?> GetStudentCourseAsync(Guid courseId, Guid studentId);
         Task UpdateStudentCourseProgressAsync(Guid studentId, Guid courseId, UpdateStudentCourseDto student);
-        Task<List<StudentResponseDto>> GetStudentAllCoursesAsync(Guid id);
+        Task<List<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id);
     }
 }

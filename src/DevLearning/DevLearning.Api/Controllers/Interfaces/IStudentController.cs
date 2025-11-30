@@ -12,7 +12,7 @@ namespace DevLearning.Api.Controllers.Interfaces
         Task<ActionResult> UpdateStudentAsync(Guid id, UpdateStudentDto student);
         Task<ActionResult> DeleteStudentAsync(Guid id);
         Task<ActionResult> CreateStudentCourseAsync(Guid courseId, Guid studentId, CreateStudentCourseDto studentCourse);
-        Task<ActionResult<StudentResponseDto>> GetStudentAllCoursesAsync(Guid id);
+        Task<ActionResult<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id);
 
     }
 }
