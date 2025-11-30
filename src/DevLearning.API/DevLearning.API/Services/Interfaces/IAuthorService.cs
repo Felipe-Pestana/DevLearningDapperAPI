@@ -16,6 +16,7 @@ namespace DevLearning.API.Services.Interfaces
         Task UpdatePatchAuthorAsync(Guid id, UpdateAuthorParcialDTO dto);
         Task UpdatePutAuthorAsync(Guid id, UpdateAuthorFullDTO dto);
         Task UpdateAuthorTypeAsync(Guid id, AuthorType type);
+        Task<AuthorWithCoursesDTO> GetAuthorCoursesAsync(Guid authorId);
 
     }
 }

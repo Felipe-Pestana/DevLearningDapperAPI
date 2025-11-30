@@ -18,7 +18,8 @@ namespace DevLearning.API.Services
             {
                 var newStudent = new Student(student.Name, student.Email, student.Document, student.Phone, student.Birthdate);
                 await _studentRepository.CreateStudent(newStudent);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -29,7 +30,8 @@ namespace DevLearning.API.Services
             try
             {
                 await _studentRepository.DeleteStudent(Guid.Parse(id));
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -47,16 +49,6 @@ namespace DevLearning.API.Services
             }
         }
 
-        public async Task<Student> GetStudentByDocument(string document)
-        {
-           try
-            {
-                return await _studentRepository.GetStudentByDocument(document);
-            } catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
         public async Task<Student> GetStudentByEmail(string email)
         {
             try
@@ -69,14 +61,27 @@ namespace DevLearning.API.Services
             }
         }
 
+        public async Task<Student> GetStudentByDocument(string document)
+        {
+            try
+            {
+                return await _studentRepository.GetStudentByDocument(document);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<Student> GetStudentById(string id)
         {
             try
             {
                 return await _studentRepository.GetStudentById(Guid.Parse(id));
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                throw new Exception(ex.Message);    
+                throw new Exception(ex.Message);
             }
         }
 
@@ -100,7 +105,8 @@ namespace DevLearning.API.Services
                     student.Birthdate is not null ? (DateTime)student.Birthdate : studentStorage.Birthdate
                     );
                 await _studentRepository.UpdateStudent(newStudent, Guid.Parse(id));
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
