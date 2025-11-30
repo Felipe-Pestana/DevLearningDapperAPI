@@ -42,6 +42,9 @@ namespace API.Services
             if (!await _studentRepository.VerifyExistCourseAsync(courseId))
                 throw new ArgumentException("Esse curso não existe!");
 
+            if (await _studentRepository.VerifyStudentEnrollingInCourseAsync(studentId, courseId))
+                throw new ArgumentException("O Estudante já está cadastrado nesse curso!");
+
             var registration = new StudentCourse(
                 courseId,
                 studentId,
@@ -77,7 +80,7 @@ namespace API.Services
         public async Task UpdateProgressStudentCourseAsync(Guid studentId, Guid courseId, StudentUpdateProgressDTO updateProgressDTO)
         {
             if (updateProgressDTO.Progress < 1 || updateProgressDTO.Progress > 100)
-                throw new ArgumentException("Insira um valor entre 0 e 100");
+                throw new ArgumentException("Insira um valor entre 1 e 100");
 
             if (!await _studentRepository.VerifyExistStudentAsync(studentId))
                 throw new ArgumentException("Esse estudante não existe!");
@@ -86,7 +89,7 @@ namespace API.Services
                 throw new ArgumentException("Esse curso não existe!");
 
             if (!await _studentRepository.VerifyStudentEnrollingInCourseAsync(studentId, courseId))
-                throw new ArgumentException("O Estudante não está cadastrado nesse curso!");
+                throw new ArgumentException("O Estudante não está cadastrado em nenhum curso!");
 
             var currentProgress = await _studentRepository.VerifyProgressToStudentInCourseAsync(studentId, courseId);
 

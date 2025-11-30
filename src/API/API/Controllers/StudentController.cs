@@ -12,33 +12,45 @@ namespace API.Controllers
     public class StudentController : ControllerBase, IStudentController
     {
         private StudentService _studentService;
+        private readonly ILogger<StudentController> _logger;
 
-        public StudentController(StudentService studentService)
+        public StudentController(StudentService studentService, ILogger<StudentController> logger)
         {
             _studentService = studentService;
-        }
-
-        [HttpGet("HeartBeat")]
-        public ActionResult<string> HearBeat()
-        {
-            return Ok("StudentController funcionando corretamente!");
+            _logger = logger;
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateStudentAsync(StudentRequestDTO dto)
         {
-            await _studentService.CreateStudentAsync(dto);
-            return Created();
+            try
+            {
+                await _studentService.CreateStudentAsync(dto);
+                return Created();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro inesperado ao criar estudante!");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult<List<StudentGetAllResponseDTO>>> GetAllStudentsAsync()
         {
-            var students = await _studentService.GetAllStudentsAsync();
-            if (students is null)
-                return NotFound("Não há estudantes cadastrados!");
+            try
+            {
+                var students = await _studentService.GetAllStudentsAsync();
+                if (students is null)
+                    return NotFound("Não há estudantes cadastrados!");
 
-            return Ok(students);
+                return Ok(students);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro inesperado ao listar estudantes!");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
@@ -51,18 +63,32 @@ namespace API.Controllers
             }
             catch (ArgumentException ex)
             {
+                _logger.LogWarning(ex, "Erro ao etualizar estudadnte!");
                 return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro inesperado ao atualizar estudante!");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteStudentAsync(Guid id)
         {
-            var rowsAfected = await _studentService.DeleteStudentAsync(id);
-            if (rowsAfected > 0)
-                return NoContent();
-            else
-                return NotFound("Estudante não encontrado!");
+            try
+            {
+                var rowsAfected = await _studentService.DeleteStudentAsync(id);
+                if (rowsAfected > 0)
+                    return NoContent();
+                else
+                    return NotFound("Estudante não encontrado!");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro inesperado ao deletar estudante!");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPost("{studentId}/Course/{courseId}")]
@@ -78,7 +104,16 @@ namespace API.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message);
+                _logger.LogWarning(ex, "Erro ao matricular estudante em um curso!");
+                if (ex.Message.Contains("não existe!"))
+                    return NotFound(ex.Message);
+                else
+                    return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro inesperado ao matricular estudante em um curso!");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
@@ -92,6 +127,7 @@ namespace API.Controllers
             }
             catch (ArgumentException ex)
             {
+                _logger.LogWarning(ex, "Erro ao atualizar progresso do estudante em um curso!");
                 if (ex.Message.Contains("não existe!"))
                     return NotFound(ex.Message);
                 else
@@ -99,6 +135,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Erro inesperado ao atualizar progresso do estudante em um curso!");
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -112,10 +149,14 @@ namespace API.Controllers
                 if (studentWithCourses is null)
                     return NotFound("Estudante não encontrado");
 
+                if (studentWithCourses.Courses.Count() == 0)
+                    return NotFound("Esse estudante não está cadastrado em cursos!");
+
                 return Ok(studentWithCourses);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Erro inesperado ao listar cursos de um estudante!");
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -133,7 +174,13 @@ namespace API.Controllers
             }
             catch (ArgumentException ex)
             {
+                _logger.LogWarning(ex, "Erro ao buscar estudante por id!");
                 return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro inesperado ao buscar estudante por id!");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }

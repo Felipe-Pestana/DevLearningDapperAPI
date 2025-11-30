@@ -11,10 +11,12 @@ namespace API.Repositories
     public class StudentRepository : IStudentRepository
     {
         private readonly SqlConnection _connection;
+        private readonly ILogger<StudentRepository> _logger;
 
-        public StudentRepository(DbConnectionFactory dbConnection)
+        public StudentRepository(DbConnectionFactory dbConnection, ILogger<StudentRepository> logger)
         {
             _connection = dbConnection.GetConnection();
+            _logger = logger;
         }
 
         public async Task CreateStudentAsync(Student student)
@@ -96,7 +98,10 @@ namespace API.Repositories
                         ON sc.CourseId = c.Id
                         LEFT JOIN Category ca
                         ON c.CategoryId = ca.Id
-                        WHERE s.Id = @Id";
+                        WHERE s.Id = @Id
+                        ORDER BY 
+                            sc.Favorite DESC,
+                            sc.StartDate";
 
             var lookup = new Dictionary<Guid, StudentWithCoursesResponseDTO>();
             await _connection.QueryAsync<StudentWithCoursesResponseDTO, CourseOfStudentDTO, StudentWithCoursesResponseDTO>(sql,
@@ -107,7 +112,9 @@ namespace API.Repositories
                         dto = student;
                         lookup.Add(student.StudentId, dto);
                     }
-                    dto.Courses.Add(course);
+
+                    if (course is not null)
+                        dto.Courses.Add(course);
 
                     return student;
                 },
