@@ -2,10 +2,11 @@
 using DevLearning.Api.Models.Dtos.Student;
 using DevLearning.Api.Models.Dtos.StudentCourse;
 using DevLearning.Api.Repositories;
+using DevLearning.Api.Services.Interfaces;
 
 namespace DevLearning.Api.Services
 {
-    public class StudentService
+    public class StudentService : IStudentService
     {
         public StudentRepository _repository;
 
@@ -124,6 +125,7 @@ namespace DevLearning.Api.Services
             }
         }
 
+        //TODO: NÃO EXISTIR O GUID DO CURSO
         public async Task CreateStudentCourseAsync(Guid courseId, Guid studentId, CreateStudentCourseDto studentCourse)
         {
 

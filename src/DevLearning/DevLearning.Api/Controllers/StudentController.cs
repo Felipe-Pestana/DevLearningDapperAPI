@@ -1,4 +1,5 @@
-﻿using DevLearning.Api.Models;
+﻿using DevLearning.Api.Controllers.Interfaces;
+using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos.Student;
 using DevLearning.Api.Models.Dtos.StudentCourse;
 using DevLearning.Api.Services;
@@ -11,7 +12,7 @@ namespace DevLearning.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentController : ControllerBase
+    public class StudentController : ControllerBase, IStudentController
     {
         public StudentService _service;
 

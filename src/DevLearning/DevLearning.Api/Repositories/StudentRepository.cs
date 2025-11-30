@@ -3,6 +3,7 @@ using DevLearning.Api.Data;
 using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos.Student;
 using DevLearning.Api.Models.Dtos.StudentCourse;
+using DevLearning.Api.Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Diagnostics;
 
 namespace DevLearning.Api.Repositories
 {
-    public class StudentRepository
+    public class StudentRepository : IStudentRepository
     {
         private readonly SqlConnection _connection;
         public StudentRepository(ConnectionDB connection)
@@ -249,7 +250,7 @@ namespace DevLearning.Api.Repositories
 
         public async Task<List<StudentResponseDto>> GetStudentAllCoursesAsync(Guid id) 
         {
-            var sql = @"SELECT s.Name, s.Email, c.Title, c.Summary, c.DurationInMinutes, c.Active
+            var sql = @"SELECT s.Id, s.Name, s.Email, c.Id, c.Title, c.Summary, c.DurationInMinutes, c.Active
                 FROM Student s 
                 JOIN StudentCourse sc 
                 ON s.Id = sc.StudentId 
@@ -259,11 +260,11 @@ namespace DevLearning.Api.Repositories
 
             try
             {
-                var student = await _connection.QueryAsync<StudentResponseDto, Course, StudentResponseDto>(sql, (student, course) =>
+                var student = await _connection.QueryAsync<StudentResponseDto, CourseResponseDto, StudentResponseDto>(sql, (student, course) =>
                     {
                         student.Courses.Add(course);
                         return student;
-                    }, new { @StudentId = id }, splitOn: "c.Id");
+                    }, new { @StudentId = id }, splitOn: "Id");
 
                 var groupeStudent = student.GroupBy(s => s.Id).Select(l =>
                 {
@@ -271,6 +272,7 @@ namespace DevLearning.Api.Repositories
                     listStudent.Courses = l.Select(s => s.Courses.Single()).ToList();
                     return listStudent;
                 });
+                return groupeStudent.ToList();
             }
             catch (SqlException sqlEx)
             {
