@@ -19,6 +19,11 @@ builder.Services.AddSingleton<ConnectionDB>();
 builder.Services.AddSingleton<CourseRepository>();
 builder.Services.AddSingleton<CourseService>();
 
+builder.Services.AddSingleton<ConnectionDB>();
+
+builder.Services.AddSingleton<StudentRepository>();
+builder.Services.AddSingleton<StudentService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
