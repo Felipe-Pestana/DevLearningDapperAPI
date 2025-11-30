@@ -9,61 +9,129 @@ namespace DevLearning.Api.Controllers
     public class AuthorsController : ControllerBase
     {
         private IAuthorService _authorService;
-        private ILogger _ilogger;
+        private ILogger<AuthorsController> _ilogger;
 
-        public AuthorsController(IAuthorService authorService, ILogger ilogger)
+        public AuthorsController(IAuthorService authorService, ILogger<AuthorsController> ilogger)
         {
             _authorService = authorService;
             _ilogger = ilogger;
         }
 
 
-        // Test connection
-        [HttpGet]
-        public async Task<ActionResult> HeartBeat()
-        {
-            return Ok("Online");
-        }
-
-
-
         // Get all
-        [HttpGet("Author")]
-        public async Task<List<AuthorResponseDto>> GetAllAuthorsAsync()
+        [HttpGet]
+        public async Task<ActionResult<List<AuthorResponseDto>>> GetAllAuthorsAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var authors = await _authorService.GetAllAuthorAsync();
+
+                if (authors == null) return NoContent();
+
+                return Ok(authors);
+            }
+            catch (Exception ex)
+            {
+                _ilogger.LogError(ex, "Erro inesperado durante a busca dos professores em {time}", DateTime.UtcNow);
+
+                return Problem(ex.Message);
+            }
         }
 
 
         // Get by ID
-        [HttpGet("Author/{id}")]
-        public async Task<ActionResult> GetAuthorByIdAsync(Guid id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AuthorResponseDto>> GetAuthorByIdAsync(Guid id)
         {
-            return Ok(await _authorService.GetAuthorByIdAsync(id));
+            try
+            {
+                var author = await _authorService.GetAuthorByIdAsync(id);
+
+                if (author == null) return NotFound("Professor não encontrado!");
+
+                return Ok(author);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _ilogger.LogError(ex, "Ocorreu um erro inesperado durante a busca do professor");
+
+                return Problem(ex.Message);
+            }
         }
 
 
         // Post from author
-        [HttpPost("Author")]
-        public async Task<ActionResult> CreateAuthorAsync()
+        [HttpPost]
+        public async Task<ActionResult> CreateAuthorAsync(CreateAuthorDto author)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _authorService.CreateAuthorAsync(author);
+
+                return Created();
+            }
+            catch (Exception ex)
+            {
+                _ilogger.LogError(ex, "Ocorreu um erro inesperado durante o cadastro do professor");
+
+                return Problem(ex.Message);
+            }
         }
 
 
         // Put from author by ID
-        [HttpPut("Author{id}")]
-        public async Task<ActionResult> UpdateAuthorByIdAsync(Guid id)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateAuthorByIdAsync(UpdateAuthorDto author, Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existing = await _authorService.GetAuthorByIdAsync(id);
+
+                if (existing == null) return NotFound("Professor não encontrado!");
+
+                await _authorService.UpdateAuthorByIdAsync(author, id);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _ilogger.LogError(ex, "Ocorreu um erro inesperado durante o update do professor");
+
+                return Problem(ex.Message);
+            }
         }
 
 
         // Delete from author by ID
-        [HttpDelete("Author{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAuthorByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existing = await _authorService.GetAuthorByIdAsync(id);
+
+                if (existing is null) return NotFound("Professor não encontrado");
+
+                await _authorService.DeleteAuthorByIdAsync(id);
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                _ilogger.LogError(ex, "Ocorreu um erro inesperado durante o delete do professor");
+
+                return Problem(ex.Message);
+            }
+
         }
 
 

@@ -1,3 +1,4 @@
+using DevLearning.Api.Data;
 using DevLearning.Api.Repositories;
 using DevLearning.Api.Repositories.Interfaces;
 using DevLearning.Api.Services;
@@ -8,8 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-//builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
-//builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddTransient<ConnectionDB>();
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
 
 
 var app = builder.Build();

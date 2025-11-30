@@ -1,4 +1,6 @@
-﻿namespace DevLearning.Api.Models.Dtos.Author
+﻿using DevLearning.Api.Models.Enum;
+
+namespace DevLearning.Api.Models.Dtos.Author
 {
     public class CreateAuthorDto
     {
@@ -8,6 +10,6 @@
         public string Bio { get; init; } = string.Empty;
         public string Url { get; init; } = string.Empty;
         public string Email { get; init; } = string.Empty;
-        public byte Type { get; init; }
+        public ETypeAuthor Type { get; init; }
     }
 }

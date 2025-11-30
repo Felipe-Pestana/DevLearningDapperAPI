@@ -1,9 +1,10 @@
 ﻿using DevLearning.Api.Models.Dtos.Author;
 using DevLearning.Api.Repositories.Interfaces;
+using DevLearning.Api.Services.Interfaces;
 
 namespace DevLearning.Api.Services
 {
-    public class AuthorService
+    public class AuthorService : IAuthorService
     {
         private IAuthorRepository _authorRepository;
 
@@ -30,15 +31,22 @@ namespace DevLearning.Api.Services
         }
 
 
-        public async Task UpdateAuthorById(UpdateAuthorDto author, Guid id)
+        public async Task UpdateAuthorByIdAsync(UpdateAuthorDto author, Guid id)
         {
             throw new NotImplementedException();
         }
 
 
-        public async Task DeleteAuthorById(Guid id)
+        public async Task DeleteAuthorByIdAsync(Guid id)
         {
+
+
             await _authorRepository.DeleteAuthorByIdAsync(id);
+
+
+
+
+
         }
 
 
