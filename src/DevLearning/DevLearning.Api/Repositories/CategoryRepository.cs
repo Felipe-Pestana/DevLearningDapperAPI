@@ -131,5 +131,39 @@ namespace DevLearning.Api.Repositories
             }
 
         }
+
+
+        public async Task<List<CoursesCategoryDTO>> GetAllCoursesByCategoryIdAsync(Guid categoryId)
+        {
+            var sql = @"SELECT 
+                        c.Id AS IdCourse,
+                        c.Tag AS TagCourse,
+                        c.Title AS TitleCourse,
+                        c.Summary AS SummaryCourse,
+                        cat.Id AS IdCategory,
+                        cat.Title AS TitleCategory,
+                        cat.Description AS DescriptionCategory
+                        FROM Course c
+                        INNER JOIN Category cat ON c.CategoryId = cat.Id
+                        WHERE cat.Id = @CategoryId";
+
+            var courseDictionary = new Dictionary<Guid, CoursesCategoryDTO>();
+
+            var list = await _connection.QueryAsync<CoursesCategoryDTO, CoursesCategoryDTO, CoursesCategoryDTO>(
+                sql,
+                (course, category) =>
+                {
+                    course.IdCategory = category.IdCategory;
+                    course.TitleCategory = category.TitleCategory;
+                    course.DescriptionCategory = category.DescriptionCategory;
+                    return course;
+                },
+                new { CategoryId = categoryId },
+                splitOn: "IdCategory"
+            );
+
+            return list.AsList();
+        }
+
     }
 }

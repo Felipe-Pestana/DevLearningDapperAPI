@@ -112,6 +112,24 @@ namespace DevLearning.Api.Services
             }
         }
 
-        
+        public async Task<List<CoursesCategoryDTO>> GetAllCoursesByCategoryIdAsync(Guid categoryId)
+        {
+            try
+            {
+                var category = await _categoryRepository.GetCategoryByIdAsync(categoryId) ??
+                   throw new KeyNotFoundException("Categoria não encontrada!");
+
+                var coursesWithCategory = await _categoryRepository.GetAllCoursesByCategoryIdAsync(categoryId) ??
+                    throw new KeyNotFoundException("Não há cursos com essa categoria!");
+
+                return coursesWithCategory;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
     }
 }

@@ -90,5 +90,20 @@ namespace DevLearning.Api.Controllers
                 return Problem(ex.Message);
             }
         }
+
+        //[HttpGet("categories/{id})/courses")]
+        //public async Task<List<CoursesCategoryDTO>> GetAllCoursesByCategoryIdAsync(Guid categoryId)
+        //{
+        //try
+        //{
+        //    var courses = await _categoryService.GetAllCoursesByCategoryIdAsync(categoryId);
+
+        //    return Ok(courses);
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Problem(ex.Message);
+        //}
+        //}
     }
 }
