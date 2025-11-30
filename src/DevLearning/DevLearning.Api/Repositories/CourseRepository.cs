@@ -146,5 +146,41 @@ namespace DevLearning.Api.Repositories
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<int> DeleteCourseByAuthorIdAsync(Guid id)
+        {
+            var sql = "DELETE FROM Course WHERE AuthorId = @AuthorId";
+
+            try
+            {
+                return await _connection.ExecuteAsync(sql, new { AuthorId = id });
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception(sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> DeleteCourseByCategoryIdAsync(Guid id)
+        {
+            var sql = "DELETE FROM Course WHERE CategoryId = @CategoryId";
+
+            try
+            {
+                return await _connection.ExecuteAsync(sql, new { CategoryId = id });
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception(sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

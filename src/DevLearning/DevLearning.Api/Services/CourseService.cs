@@ -106,5 +106,30 @@ namespace DevLearning.Api.Services
                 throw new Exception(ex.Message);
             }
         }
+
+
+        public async Task<int> DeleteCourseByAuthorIdAsync(Guid id)
+        {
+            try
+            {
+                return await _courseRepository.DeleteCourseByAuthorIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> DeleteCourseByCategoryIdAsync(Guid id)
+        {
+            try
+            {
+                return await _courseRepository.DeleteCourseByCategoryIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
