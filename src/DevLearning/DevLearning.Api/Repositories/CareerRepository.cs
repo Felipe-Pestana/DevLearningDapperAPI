@@ -6,6 +6,7 @@ using DevLearningAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Connections;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 
 namespace DevLearningAPI.Repositories
 {
@@ -17,97 +18,200 @@ namespace DevLearningAPI.Repositories
             _connection = connection.GetConnection();
         }
 
-
-
-        public async Task CreateCareerAsync(Career career)
+        public async Task CreateAsync(Career career)
         {
-            using (var con = _connection) 
-            {
-                var sql = @"INSERT INTO Career(Id,Title,Summary,Url,DurationInMinutes,Active,Featured,Tags)
-                                       VALUES (@CareerGuid,@CareerTitle,@CareerSumary,@CareerUrl,@CareerDurationInMinutes,@CareerActive,@CareerFeatured,@CareerTags);";
+            var sql = @"INSERT INTO [Career] (
+                          [Id], [Title], [Summary], [Url], [DurationInMinutes], 
+                          [Active], [Featured], [Tags]
+                        )
+                        VALUES (
+                          @Id, @Title, @Summary, @Url, @DurationInMinutes, 
+                          @Active, @Featured, @Tags
+                        )";
 
-                await con.ExecuteAsync(sql, new
+            try
+            {
+                await _connection.ExecuteAsync(sql, new
                 {
-                    CareerGuid = career.Id,
-                    CareerTitle = career.Title,
-                    CareerSumary = career.Summary,
-                    CareerUrl = career.Url,
-                    CareerDurationInMinutes = career.DurationInMinutes,
-                    CareerActive = career.Active,
-                    CareerFeatured = career.Featured,
-                    CareerTags = career.Tags
-                }
-                                      );
-            }
-
-        }
-
-        public async Task<List<CareerResponseDto>> GetAllCareersAsync()
-        {
-            using (var con = _connection)
-            {
-                var sql = @"SELECT Id,Title,Summary,Url,DurationInMinutes,Active,Featured,Tags 
-                                         FROM Career;";
-
-                return (await con.QueryAsync<CareerResponseDto>(sql)).ToList();
-            }
-
-        }
-        public async Task<CareerResponseDto> GetCareerByIdAsync(Guid careerId)
-        {
-            using (var con = _connection)
-            {
-                var sql = @"SELECT Id,Title,Summary,Url,DurationInMinutes,Active,Featured,Tags 
-                                         FROM Career
-                                         WHERE Id = @CareerId;";
-
-                return await con.QueryFirstOrDefaultAsync<CareerResponseDto>(sql, new { CareerId = careerId });
-            }
-
-        }
-
-        public async Task UpdateCareerAsync(Guid careerId, Career career)
-        {
-            using (var con = _connection)
-            {
-                var sql = @"UPDATE Career
-                                     SET Title = @CareerTitle,
-                                         Summary = @CareerSumary,
-                                         Url = @CareerUrl,
-                                         DurationInMinutes = @CareerDurationInMinutes,
-                                         Active = @CareerActive,
-                                         Featured = @CareerFeatured,
-                                         Tags = @CareerTags
-                                     WHERE Id = @CareerId;";
-
-                await con.ExecuteAsync(sql, new
-                {
-                    CareerId = careerId,
-                    CareerTitle = career.Title,
-                    CareerSumary = career.Summary,
-                    CareerUrl = career.Url,
-                    CareerDurationInMinutes = career.DurationInMinutes,
-                    CareerActive = career.Active,
-                    CareerFeatured = career.Featured,
-                    CareerTags = career.Tags
+                    career.Id,
+                    career.Title,
+                    career.Summary,
+                    career.Url,
+                    career.DurationInMinutes,
+                    career.Active,
+                    career.Featured,
+                    career.Tags
                 });
             }
-        }
-
-        public async Task ChangeActiveAsync(Guid careerId)
-        {
-            using (var con = _connection)
+            catch (SqlException sqlex)
             {
-                var sql = @"UPDATE Career
-                            SET Active = CASE Active WHEN 0 THEN 1
-                                                     WHEN 1 THEN 0
-                                                     END
-                            WHERE Id = @CareerId;";
-
-                await con.ExecuteAsync(sql, new { CareerId = careerId });
+                throw new Exception(sqlex.Message);
             }
-
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
+        public async Task<IEnumerable<Career>> GetAllAsync()
+        {
+            // Traz apenas as ativas conforme regra lógica comum, ou todas se preferir.
+            var sql = @"SELECT [Id], [Title], [Summary], [Url], [DurationInMinutes], 
+                               [Active], [Featured], [Tags]
+                        FROM [Career] 
+                        WHERE [Active] = 1";
+
+            try
+            {
+                return await _connection.QueryAsync<Career>(sql);
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception(sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<Career?> GetByIdAsync(Guid id)
+        {
+            var sql = @"SELECT 
+                            c.[Id], c.[Title], c.[Summary], c.[Url], c.[DurationInMinutes], 
+                            c.[Active], c.[Featured], c.[Tags],
+                            ci.[CareerId], ci.[CourseId], ci.[Title], ci.[Description], ci.[Order]
+                        FROM [Career] c
+                        LEFT JOIN [CareerItem] ci ON c.[Id] = ci.[CareerId]
+                        WHERE c.[Id] = @Id
+                        ORDER BY ci.[Order]";
+
+            try
+            {
+                Career? careerEntry = null;
+
+                await _connection.QueryAsync<Career, CareerItem, Career>(
+                    sql,
+                    (career, item) =>
+                    {
+                        if (careerEntry == null) careerEntry = career;
+                        if (item != null) careerEntry.AddItem(item);
+                        return careerEntry;
+                    },
+                    new { Id = id },
+                    splitOn: "CareerId");
+
+                return careerEntry;
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception(sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task UpdateAsync(Career career)
+        {
+            var sql = @"UPDATE [Career] 
+                        SET [Title] = @Title, [Summary] = @Summary, [Url] = @Url, 
+                            [Active] = @Active, [Featured] = @Featured, [Tags] = @Tags
+                        WHERE [Id] = @Id";
+
+            try
+            {
+                await _connection.ExecuteAsync(sql, new
+                {
+                    career.Title,
+                    career.Summary,
+                    career.Url,
+                    career.Active,
+                    career.Featured,
+                    career.Tags,
+                    career.Id
+                });
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception(sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task SoftDeleteAsync(Guid id)
+        {
+            var sql = "UPDATE [Career] SET [Active] = 0 WHERE [Id] = @Id";
+
+            try
+            {
+                await _connection.ExecuteAsync(sql, new { Id = id });
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception(sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task AddItemAsync(CareerItem item)
+        {
+            try
+            {
+                if (_connection.State != ConnectionState.Open) await _connection.OpenAsync();
+
+                using var transaction = _connection.BeginTransaction();
+
+                try
+                {
+                    var durationSql = "SELECT [DurationInMinutes] FROM [Course] WHERE [Id] = @Id";
+                    var duration = await _connection.ExecuteScalarAsync<int>(durationSql, new { Id = item.CourseId }, transaction);
+
+                    var insertSql = @"INSERT INTO [CareerItem] ([CareerId], [CourseId], [Title], [Description], [Order]) 
+                                      VALUES (@CareerId, @CourseId, @Title, @Description, @Order)";
+
+                    await _connection.ExecuteAsync(insertSql, new
+                    {
+                        item.CareerId,
+                        item.CourseId,
+                        item.Title,
+                        item.Description,
+                        item.Order
+                    }, transaction);
+
+                    var updateSql = @"UPDATE [Career] 
+                                      SET [DurationInMinutes] = [DurationInMinutes] + @Duration 
+                                      WHERE [Id] = @Id";
+
+                    await _connection.ExecuteAsync(updateSql, new { Duration = duration, Id = item.CareerId }, transaction);
+
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw; 
+                }
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception(sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                if (_connection.State == ConnectionState.Open) await _connection.CloseAsync();
+            }
+        }
     }
 }

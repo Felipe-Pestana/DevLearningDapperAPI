@@ -1,21 +1,26 @@
 ﻿namespace DevLearningAPI.Models.Dtos.Career
 {
+
+    public class CareerItemResponseDto
+    {
+        public Guid CourseId { get; set; }
+        public string Title { get; set; }       
+        public string Description { get; set; } 
+        public byte Order { get; set; }
+    }
+
     public class CareerResponseDto
     {
-        public Guid Id { get; init; } = Guid.NewGuid();
+        public Guid Id { get; set; }
+        public string Title { get; set; }
+        public string Summary { get; set; }
+        public string Url { get; set; }
+        public int DurationInMinutes { get; set; }
+        public bool Active { get; set; }
+        public bool Featured { get; set; }
+        public string Tags { get; set; }
 
-        public string Title { get; init; } = string.Empty;
-
-        public string Summary { get; init; } = string.Empty;
-
-        public string Url { get; init; } = string.Empty;
-
-        public int DurationInMinutes { get; init; } = 0;
-
-        public bool Active { get; init; } = true;
-
-        public bool Featured { get; init; } = false;
-
-        public string Tags { get; init; } = string.Empty;
+        public List<CareerItemResponseDto> Items { get; set; } = new List<CareerItemResponseDto>();
     }
 }
+    

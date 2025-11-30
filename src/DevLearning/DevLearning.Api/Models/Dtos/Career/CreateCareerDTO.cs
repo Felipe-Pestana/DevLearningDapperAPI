@@ -3,16 +3,10 @@
     public class CreateCareerDTO
     {
 
-        public string Title { get; init; } = string.Empty;
-
-        public string Summary { get; init; } = string.Empty;
-
-        public string Url { get; init; } = string.Empty;
-
-        public int DurationInMinutes { get; init; } = 0;
-
-        public bool Featured { get; init; } = false;
-
-        public string Tags { get; init; } = string.Empty;
+        public string Title { get; set; }
+        public string Summary { get; set; }
+        public string Url { get; set; }
+        public bool Featured { get; set; }
+        public string Tags { get; set; }
     }
 }
