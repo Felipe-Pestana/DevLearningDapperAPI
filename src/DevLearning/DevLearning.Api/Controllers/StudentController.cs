@@ -12,7 +12,7 @@ namespace DevLearning.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentController : ControllerBase, IStudentController
+    public class StudentController : ControllerBase//, IStudentController
     {
         public StudentService _service;
 
@@ -133,23 +133,23 @@ namespace DevLearning.Api.Controllers
             }
         }
 
-        [HttpGet("{id}/courses")]
-        public async Task<ActionResult<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id)
-        {
-            try
-            {
-                var student = await _service.GetStudentAllCoursesAsync(id);
-                return Ok(student);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
+        //[HttpGet("{id}/courses")]
+        //public async Task<ActionResult<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id)
+        //{
+        //    try
+        //    {
+        //        var student = await _service.GetStudentAllCoursesAsync(id);
+        //        return Ok(student);
+        //    }
+        //    catch (KeyNotFoundException ex)
+        //    {
+        //        return NotFound(ex.Message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, ex.Message);
+        //    }
+        //}
 
     }
 }

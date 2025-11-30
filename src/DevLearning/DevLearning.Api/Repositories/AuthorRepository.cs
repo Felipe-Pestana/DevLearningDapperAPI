@@ -110,28 +110,28 @@ namespace DevLearning.Api.Repositories
         }
 
 
-        public async Task<Author> GetAuthorCoursesByIdAsync(Guid id)
+        public async Task<AuthorWithCoursesDto> GetAuthorCoursesByIdAsync(Guid id)
         {
             try
             {
-                var sql = @"SELECT a.Name, a.Title, a.Email, a.Type
-                            c.Id, c.Tag, c.Title AS [Course], c.Summary, c.Active, c.CategoryId, 
+                var sql = @"SELECT a.Name, a.Title, a.Email, a.Type, 
+                            c.Id, c.Tag, c.Title AS [Course], c.Summary, c.Active, c.CategoryId
                             FROM Author a
                             LEFT JOIN Course c
                             ON c.AuthorId = a.Id
                             WHERE a.Id = @Id";
 
-                var authorDictionary = new Dictionary<Guid, Author>();
+                var authorDictionary = new Dictionary<string, AuthorWithCoursesDto>();
 
-                var courses = await _connection.QueryAsync<Author, Course, Author>(
+                var courses = await _connection.QueryAsync<AuthorWithCoursesDto, CourseAuthorResponseDto, AuthorWithCoursesDto>(
                         sql, (author, course) =>
                         {
                             // garante apenas 1 instância de Author
-                            if (!authorDictionary.TryGetValue(author.Id, out var currentAuthor))
+                            if (!authorDictionary.TryGetValue(author.Email, out var currentAuthor))
                             {
                                 currentAuthor = author;
-                                currentAuthor.Courses = new List<Course>();
-                                authorDictionary.Add(currentAuthor.Id, currentAuthor);
+                                currentAuthor.Courses = new List<CourseAuthorResponseDto>();
+                                authorDictionary.Add(currentAuthor.Email, currentAuthor);
                             }
 
                             // se houver course, adiciona
