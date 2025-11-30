@@ -1,5 +1,6 @@
 ﻿using API.Controllers.Interfaces;
 using API.Models.DTOs.Course;
+using API.Services;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,10 @@ namespace API.Controllers
     [ApiController]
     public class CourseController : ControllerBase, ICourseController
     {
-        private readonly ICourseService _courseService;
+        private readonly CourseService _courseService;
         private readonly ILogger<CourseController> _logger;
 
-        public CourseController(ICourseService courseService, ILogger<CourseController> logger)
+        public CourseController(CourseService courseService, ILogger<CourseController> logger)
         {
             _courseService = courseService;
             _logger = logger;

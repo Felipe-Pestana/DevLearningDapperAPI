@@ -1,4 +1,5 @@
 ﻿using API.Models.DTOs.Course;
+using API.Repositories;
 using API.Repositories.Interfaces;
 using API.Services.Interfaces;
 using Blog.API.Models;
@@ -7,9 +8,9 @@ namespace API.Services
 {
     public class CourseService : ICourseService
     {
-        private readonly ICourseRepository _courseRepository;
+        private readonly CourseRepository _courseRepository;
 
-        public CourseService(ICourseRepository courseRepository)
+        public CourseService(CourseRepository courseRepository)
         {
             _courseRepository = courseRepository;
         }

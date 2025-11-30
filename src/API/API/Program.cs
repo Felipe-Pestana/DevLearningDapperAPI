@@ -1,4 +1,6 @@
 using API.Database;
+using API.Repositories;
+using API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSingleton<DbConnectionFactory>();
+
+
+
+
+builder.Services.AddSingleton<CourseRepository>();
+builder.Services.AddSingleton<CourseService>();
 
 var app = builder.Build();
 
