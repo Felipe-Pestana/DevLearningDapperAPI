@@ -1,5 +1,5 @@
 ﻿using DevLearning.Api.Models;
-using DevLearning.Api.Models.Dtos;
+using DevLearning.Api.Models.Dtos.Category;
 
 namespace DevLearning.Api.Repositories.Interfaces
 {

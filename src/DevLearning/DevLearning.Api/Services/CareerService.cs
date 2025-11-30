@@ -1,13 +1,10 @@
-﻿using DevLearning.Api.Data;
-using DevLearning.Api.Models.Dtos.CareerItem;
+﻿using DevLearning.Api.Models.Dtos.CareerItem;
+using DevLearning.Api.Repositories;
+using DevLearning.Api.Services.Interfaces;
 using DevLearningAPI.Models;
 using DevLearningAPI.Models.Dtos.Career;
-using DevLearningAPI.Repositories;
-using DevLearningAPI.Repositories.Interfaces;
-using DevLearningAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
-namespace DevLearningAPI.Services
+namespace DevLearning.Api.Services
 {
     public class CareerService : ICareerService
     {

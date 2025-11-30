@@ -3,7 +3,7 @@ using DevLearningAPI.Models;
 using DevLearningAPI.Models.Dtos.Career;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DevLearningAPI.Services.Interfaces
+namespace DevLearning.Api.Services.Interfaces
 {
     public interface ICareerService
     {

@@ -114,8 +114,8 @@ namespace DevLearning.Api.Repositories
         {
             try
             {
-                var sql = @"SELECT a.Name, a.Title, a.Email, a.Type
-                            c.Id, c.Tag, c.Title AS [Course], c.Summary, c.Active, c.CategoryId, 
+                var sql = @"SELECT a.Name, a.Title, a.Email, a.Type,
+                            c.Id, c.Tag, c.Title AS [Course], c.Summary, c.Active, c.CategoryId
                             FROM Author a
                             LEFT JOIN Course c
                             ON c.AuthorId = a.Id

@@ -1,4 +1,4 @@
-﻿using DevLearning.Api.Models.Dtos;
+﻿using DevLearning.Api.Models.Dtos.Category;
 using DevLearning.Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

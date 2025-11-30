@@ -1,7 +1,7 @@
 ﻿using DevLearningAPI.Models;
 using DevLearningAPI.Models.Dtos.Career;
 
-namespace DevLearningAPI.Repositories.Interfaces
+namespace DevLearning.Api.Repositories.Interfaces
 {
     public interface ICareerRepository
     {

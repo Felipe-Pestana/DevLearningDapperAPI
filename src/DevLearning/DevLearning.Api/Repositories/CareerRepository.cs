@@ -1,14 +1,14 @@
 ﻿using Dapper;
 using DevLearning.Api.Data;
+using DevLearning.Api.Repositories.Interfaces;
 using DevLearningAPI.Models;
 using DevLearningAPI.Models.Dtos.Career;
-using DevLearningAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Connections;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 
-namespace DevLearningAPI.Repositories
+namespace DevLearning.Api.Repositories
 {
     public class CareerRepository : ICareerRepository
     {
