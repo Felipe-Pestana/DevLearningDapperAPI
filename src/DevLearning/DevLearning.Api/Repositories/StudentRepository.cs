@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using DevLearning.Api.Data;
 using DevLearning.Api.Models;
+using DevLearning.Api.Models.Dtos.Course;
 using DevLearning.Api.Models.Dtos.Student;
 using DevLearning.Api.Models.Dtos.StudentCourse;
 using DevLearning.Api.Repositories.Interfaces;
@@ -14,9 +15,12 @@ namespace DevLearning.Api.Repositories
     public class StudentRepository : IStudentRepository
     {
         private readonly SqlConnection _connection;
+        private readonly CourseRepository _courseRepository;
+
         public StudentRepository(ConnectionDB connection)
         {
             _connection = connection.GetConnection();
+            _courseRepository = new CourseRepository(connection);
         }
 
         public async Task CreateStudentAsync(Student student) 
@@ -248,9 +252,10 @@ namespace DevLearning.Api.Repositories
             }
         }
 
+        
         public async Task<List<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id) 
         {
-            var sql = @"SELECT s.Id, s.Name, s.Email, c.Id, c.Title, c.Summary, c.DurationInMinutes, c.Active
+            var sql = @"SELECT s.Id, s.Name, s.Email, c.Id, c.Title, c.Level, c.DurationInMinutes, c.Active
                 FROM Student s 
                 JOIN StudentCourse sc 
                 ON s.Id = sc.StudentId 
@@ -260,7 +265,7 @@ namespace DevLearning.Api.Repositories
 
             try
             {
-                var student = await _connection.QueryAsync<StudentAllCourseResponseDto, CourseResponseDto, StudentAllCourseResponseDto>(sql, (student, course) =>
+                var student = await _connection.QueryAsync<StudentAllCourseResponseDto, CoursePerStudentDto, StudentAllCourseResponseDto>(sql, (student, course) =>
                     {
                         student.Courses.Add(course);
                         return student;
