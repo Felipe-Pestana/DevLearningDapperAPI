@@ -54,7 +54,6 @@ namespace DevLearning.Api.Controllers
         {
             try
             {
-                // Ajustado conforme sua interface: CreateAsync recebe apenas o DTO
                 await _service.CreateAsync(dto);
                 return Created();
             }

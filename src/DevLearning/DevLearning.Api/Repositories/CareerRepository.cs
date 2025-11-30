@@ -55,7 +55,6 @@ namespace DevLearningAPI.Repositories
 
         public async Task<IEnumerable<Career>> GetAllAsync()
         {
-            // Traz apenas as ativas conforme regra lógica comum, ou todas se preferir.
             var sql = @"SELECT [Id], [Title], [Summary], [Url], [DurationInMinutes], 
                                [Active], [Featured], [Tags]
                         FROM [Career] 

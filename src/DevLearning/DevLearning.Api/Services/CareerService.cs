@@ -93,7 +93,6 @@ namespace DevLearningAPI.Services
                 if (existing is null)
                     throw new KeyNotFoundException("Carreira não encontrada!");
 
-                // Executa Soft Delete
                 await _careerRepository.SoftDeleteAsync(id);
             }
             catch (KeyNotFoundException) { throw; }
