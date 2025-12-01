@@ -1,12 +1,8 @@
 ﻿using DevLearning.Api.Controllers.Interfaces;
-using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos.Student;
 using DevLearning.Api.Models.Dtos.StudentCourse;
-using DevLearning.Api.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
+using DevLearning.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace DevLearning.Api.Controllers
 {
@@ -14,9 +10,9 @@ namespace DevLearning.Api.Controllers
     [ApiController]
     public class StudentController : ControllerBase, IStudentController
     {
-        public StudentService _service;
+        public IStudentService _service;
 
-        public StudentController(StudentService service)
+        public StudentController(IStudentService service)
         {
             _service = service;
         }
@@ -103,7 +99,7 @@ namespace DevLearning.Api.Controllers
             try
             {
                 await _service.DeleteStudentAsync(id);
-                return NoContent(); 
+                return NoContent();
             }
             catch (KeyNotFoundException ex)
             {
@@ -115,9 +111,9 @@ namespace DevLearning.Api.Controllers
             }
         }
 
-        [HttpPost("{studentId}/course/{courseId}/")]
+        [HttpPost("{studentId}/courses/{courseId}")]
         public async Task<ActionResult> CreateStudentCourseAsync(Guid courseId, Guid studentId, CreateStudentCourseDto studentCourse)
-        { 
+        {
             try
             {
                 await _service.CreateStudentCourseAsync(courseId, studentId, studentCourse);
@@ -151,5 +147,23 @@ namespace DevLearning.Api.Controllers
             }
         }
 
+        [HttpPut("{studentId}/courses/{courseId}/progress")]
+        public async Task<ActionResult> UpdateStudentCourseProgressAsync(Guid studentId, Guid courseId, UpdateStudentCourseDto student)
+        {
+            try
+            {
+                await _service.UpdateStudentCourseProgressAsync(studentId, courseId, student);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+        }
     }
 }

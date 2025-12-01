@@ -16,6 +16,7 @@ namespace DevLearning.Api.Repositories.Interfaces
         Task<StudentCourseResponseDto?> GetStudentCourseAsync(Guid courseId, Guid studentId);
         Task UpdateStudentCourseProgressAsync(Guid studentId, Guid courseId, UpdateStudentCourseDto student);
         Task DeleteStudentCourseAsync(Guid studentId);
+        Task DeleteStudentCourseByCourseAsync(Guid courseId);
         Task<List<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id);
     }
 }

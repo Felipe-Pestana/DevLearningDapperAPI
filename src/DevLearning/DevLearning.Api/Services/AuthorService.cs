@@ -9,10 +9,12 @@ namespace DevLearning.Api.Services
     public class AuthorService : IAuthorService
     {
         private IAuthorRepository _authorRepository;
+        private readonly ICourseService _courseService;
 
-        public AuthorService(IAuthorRepository authorRepository)
+        public AuthorService(IAuthorRepository authorRepository, ICourseService courseService)
         {
             _authorRepository = authorRepository;
+            _courseService = courseService;
         }
 
 
@@ -64,11 +66,6 @@ namespace DevLearning.Api.Services
             var oldAuthor = await _authorRepository.GetAuthorByIdAsync(id);
             if (oldAuthor is null) throw new KeyNotFoundException("Professor não encontrado.");
 
-            if (authorUpdate.Title.Length > 80) throw new ArgumentException("Error Título: Atingiu o limite máximo de 80 caracteres.");
-            if (authorUpdate.Image.Length > 1024) throw new ArgumentException("Error Imagem: Atingiu o limite máximo de 1024 caracteres.");
-            if (authorUpdate.Bio.Length > 2000) throw new ArgumentException("Error Bio: Atingiu o limite máximo de 2000 caracteres.");
-            if (!Enum.IsDefined(typeof(ETypeAuthor), authorUpdate.Type)) throw new ArgumentException("Error: Tipo de professor inválido.");
-
             var updatedAuthor = new Author(oldAuthor.Name, authorUpdate.Title ?? oldAuthor.Title,
             authorUpdate.Image ?? oldAuthor.Image, authorUpdate.Bio ?? oldAuthor.Bio,
             authorUpdate.Url ?? oldAuthor.Url, oldAuthor.Email, authorUpdate.Type ?? oldAuthor.Type
@@ -83,6 +80,7 @@ namespace DevLearning.Api.Services
             var authorExist = await _authorRepository.GetAuthorByIdAsync(id);
             if (authorExist is null) throw new KeyNotFoundException("Professor não encontrado.");
 
+            await _courseService.DeleteCourseByAuthorIdAsync(id);
             await _authorRepository.DeleteAuthorByIdAsync(id);
         }
 
@@ -102,7 +100,7 @@ namespace DevLearning.Api.Services
                 {
                     Id = c.Id,
                     Tag = c.Tag,
-                    Title = c.Title,
+                    Course = c.Course,
                     Summary = c.Summary,
                     Active = c.Active,
                     CategoryId = c.CategoryId

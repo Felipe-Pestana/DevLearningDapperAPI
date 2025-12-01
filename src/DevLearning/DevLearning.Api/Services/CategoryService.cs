@@ -1,6 +1,6 @@
 ﻿using DevLearning.Api.Models;
-using DevLearning.Api.Models.Dtos;
-using DevLearning.Api.Repositories;
+using DevLearning.Api.Models.Dtos.Category;
+using DevLearning.Api.Repositories.Interfaces;
 using DevLearning.Api.Services.Interfaces;
 using Microsoft.Data.SqlClient;
 
@@ -8,10 +8,10 @@ namespace DevLearning.Api.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly CategoryRepository _categoryRepository;
-        private readonly CourseRepository _courseRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly ICourseRepository _courseRepository;
 
-        public CategoryService(CategoryRepository categoryRepository, CourseRepository courseRepository)
+        public CategoryService(ICategoryRepository categoryRepository, ICourseRepository courseRepository)
         {
             _categoryRepository = categoryRepository;
             _courseRepository = courseRepository;
