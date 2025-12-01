@@ -71,9 +71,7 @@ namespace API.Controllers
         public async Task<ActionResult> CreateCourse([FromBody] CourseRequestDTO dto)
         {
             try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState); // 400
+            { 
 
                 await _courseService.CreateCourseAsync(dto);
                 return StatusCode(201);           // 201 

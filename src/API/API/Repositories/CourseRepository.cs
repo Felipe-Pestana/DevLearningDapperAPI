@@ -23,7 +23,7 @@ namespace API.Repositories
             const string sql = @"
                 SELECT Id, Tag, Title, Summary, Url, [Level],
                        DurationInMinutes, CreateDate, LastUpdateDate,
-                       Active, Free, Featured, AuthorId, CategoryId
+                       Active, Free, Featured, AuthorId, CategoryId, Tags
                 FROM Course";
 
             var courses = await _connection.QueryAsync<CourseResponseDTO>(sql);
@@ -35,7 +35,7 @@ namespace API.Repositories
             const string sql = @"
                 SELECT Id, Tag, Title, Summary, Url, [Level],
                        DurationInMinutes, CreateDate, LastUpdateDate,
-                       Active, Free, Featured, AuthorId, CategoryId
+                       Active, Free, Featured, AuthorId, CategoryId, Tags
                 FROM Course
                 WHERE Id = @Id";
 
@@ -48,11 +48,11 @@ namespace API.Repositories
                 INSERT INTO Course
                 (Id, Tag, Title, Summary, Url, [Level], DurationInMinutes,
                  CreateDate, LastUpdateDate, Active, Free, Featured,
-                 AuthorId, CategoryId)
+                 AuthorId, CategoryId, Tags)
                 VALUES
                 (@Id, @Tag, @Title, @Summary, @Url, @Level, @DurationInMinutes,
                  @CreateDate, @LastUpdateDate, @Active, @Free, @Featured,
-                 @AuthorId, @CategoryId)";
+                 @AuthorId, @CategoryId, @Tags)";
 
             await _connection.ExecuteAsync(sql, course);
         }
@@ -72,7 +72,8 @@ namespace API.Repositories
                     Free = @Free,
                     Featured = @Featured,
                     AuthorId = @AuthorId,
-                    CategoryId = @CategoryId
+                    CategoryId = @CategoryId,
+                    Tags = @Tags
                 WHERE Id = @Id";
 
             await _connection.ExecuteAsync(sql, new
@@ -82,14 +83,15 @@ namespace API.Repositories
                 course.Title,
                 course.Summary,
                 course.Url,
-                Level = course.Level,
+                course.Level,
                 course.DurationInMinutes,
                 LastUpdateDate = DateTime.UtcNow,
                 course.Active,
                 course.Free,
                 course.Featured,
                 course.AuthorId,
-                course.CategoryId
+                course.CategoryId,
+                course.Tags
             });
         }
 

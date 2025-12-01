@@ -20,7 +20,7 @@
             Bio = bio;
             Url = url;
             Email = email;
-            Type = true;
+            Type = type;
         }
     }
 }
