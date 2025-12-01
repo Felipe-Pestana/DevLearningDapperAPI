@@ -2,6 +2,7 @@
 using DevLearning.API.Models.DTOs.Author;
 using DevLearning.API.Models.Enums.Author;
 using DevLearning.API.Services;
+using DevLearning.API.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,12 +41,16 @@ namespace DevLearning.API.Controllers
             try
             {
                 var author = await _authorService.GetAuthorByIdAsync(id);
-                return Ok(author);
+                if (author is null)
+                    return StatusCode(404, new { message = "Autor não encontrado" });
+                else
+                    return Ok(author);
             }
             catch (Exception ex)
             {
                 return StatusCode(404, new { error = $"Autor não encontrado. {ex.Message}" });
             }
+           
         }
 
         //Criar autor
@@ -60,21 +65,6 @@ namespace DevLearning.API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(400, new { error = $"Erro ao criar autor. {ex.Message}" });
-            }
-        }
-
-        //Deletar autor
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteAuthor(Guid id)
-        {
-            try
-            {
-                await _authorService.DeleteAuthorAsync(id);
-                return Ok("Autor deletado com sucesso.");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(204, new { error = $"Erro ao deletar autor. {ex.Message}" });
             }
         }
 
@@ -108,7 +98,8 @@ namespace DevLearning.API.Controllers
                 return StatusCode(400, new { error = $"Erro ao atualizar autor. {ex.Message}" });
             }
         }
-        //Type
+
+        // Atualiza apenas o tipo do autor// Ativo (1) ou Inativo (2)
         [HttpPut("type/{id}")]
         public async Task<ActionResult> UpdateType(Guid id, [FromBody] AuthorType type)
         {
