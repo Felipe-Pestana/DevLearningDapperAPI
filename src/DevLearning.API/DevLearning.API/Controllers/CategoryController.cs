@@ -113,5 +113,16 @@ namespace DevLearning.API.Controllers
                 return StatusCode(500, new { message = $"Erro interno: {ex.Message}" });
             }
         }
+
+        [HttpGet("{id}/courses")]
+        public async Task<IActionResult> GetCategoryCourses(Guid id)
+        {
+            var result = await _categoryService.GetCategoryCoursesAsync(id);
+
+            if (result == null)
+                return NotFound("Categoria não encontrada.");
+
+            return Ok(result);
+        }
     }
 }

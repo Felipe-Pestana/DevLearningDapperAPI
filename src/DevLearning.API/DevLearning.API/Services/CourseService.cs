@@ -12,12 +12,14 @@ namespace DevLearning.API.Services
         private CourseRepository _courseRepository;
         private ICategoryRepository _categoryRepository;
         private AuthorRepository _authorRepository;
+        private StudentRepository _studentRepository;
 
-        public CourseService(CourseRepository courseRepository, ICategoryRepository categoryRepository, AuthorRepository authorRepository)
+        public CourseService(CourseRepository courseRepository, ICategoryRepository categoryRepository, AuthorRepository authorRepository, StudentRepository studentRepository)
         {
             _courseRepository = courseRepository;
             _categoryRepository = categoryRepository;
             _authorRepository = authorRepository;
+            _studentRepository = studentRepository;
         }
 
         public async Task CreateCourseAsync(CourseRequestDTO course)
@@ -110,9 +112,32 @@ namespace DevLearning.API.Services
         {
             try
             {
+                var courseStorage = await _courseRepository.GetOneCourseByTitleAsync(title);
+                if(courseStorage is null)
+                {
+                    throw new Exception("Você não modificar um curso inexistente!");
+                } 
+                    var verifyStudentCourse = await _studentRepository.GetCountStudentCourse(courseStorage.CourseId);
+
+                if (verifyStudentCourse > 0)
+                {
+                    throw new Exception("Você não pode inativar um curso com alunos nele!");
+                }
+
                 await _courseRepository.UpdateActiveCourseByTitleAsync(title, update.Active, DateTime.UtcNow);
             }
             catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<CourseResponseDTO> GetOneCourseByIdAsync(string id)
+        {
+            try
+            {
+                return await _courseRepository.GetOneCourseByIdAsync(Guid.Parse(id));
+            }catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }

@@ -17,6 +17,8 @@ builder.Services.AddSingleton<CourseService>();
 
 builder.Services.AddSingleton<CareerRepository>();
 builder.Services.AddSingleton<CareerService>();
+builder.Services.AddSingleton<CareerItemRepository>();
+builder.Services.AddSingleton<CareerItemService>();
 
 
 

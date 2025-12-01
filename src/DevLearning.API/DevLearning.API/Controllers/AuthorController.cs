@@ -125,7 +125,7 @@ namespace DevLearning.API.Controllers
 
         //Listar cursos do autor
         [HttpGet("{id}/courses")]
-        public async Task<IActionResult> GetAuthorCourses(Guid id)
+        public async Task<ActionResult> GetAuthorCourses(Guid id)
         {
             var result = await _authorService.GetAuthorCoursesAsync(id);
 

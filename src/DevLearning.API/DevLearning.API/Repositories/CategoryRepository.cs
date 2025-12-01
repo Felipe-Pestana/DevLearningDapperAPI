@@ -12,9 +12,11 @@ namespace DevLearning.API.Repositories
     {
         private readonly SqlConnection _connection;
 
-        public CategoryRepository(ConnectionDB connection)
+        private CourseRepository _courseRepository;
+        public CategoryRepository(ConnectionDB connection, CourseRepository courseRepository)
         {
             _connection = connection.GetConnection();
+            _courseRepository = courseRepository;
         }
 
         public async Task<bool> CategoryTitleExistsAsync(string title)
@@ -122,11 +124,32 @@ namespace DevLearning.API.Repositories
         }
         public async Task DeleteCategoryAsync(Guid id)
         {
-            //var deleteCoursesSql = "DELETE FROM Course WHERE CategoryId = @Id";
-            //await _connection.ExecuteAsync(deleteCoursesSql, new { Id = id });
+            var deleteCoursesSql = "DELETE FROM Course WHERE CategoryId = @Id";
+            await _connection.ExecuteAsync(deleteCoursesSql, new { Id = id });
 
             var deleteCategorySql = "DELETE FROM Category WHERE Id = @Id";
             await _connection.ExecuteAsync(deleteCategorySql, new { Id = id });
+        }
+
+        public async Task<(string CategoryTitle, List<string> Courses)> GetCategoryCoursesAsync(Guid categoryId)
+        {
+            var sql = @"SELECT cat.Title AS CategoryTitle, c.Title AS CourseTitle
+                        FROM Category cat
+                        LEFT JOIN Course c 
+                        ON cat.Id = c.CategoryId
+                        WHERE cat.Id = @CategoryId";
+
+            var rows = await _connection.QueryAsync(sql, new { CategoryId = categoryId });
+
+            if (!rows.Any())
+                return (null, new List<string>());
+
+            string categoryTitle = rows.First().CategoryTitle;
+            var courses = rows.Select(r => (string)r.CourseTitle)
+                              .Where(c => c != null)
+                              .ToList();
+
+            return (categoryTitle, courses);
         }
     }
 }

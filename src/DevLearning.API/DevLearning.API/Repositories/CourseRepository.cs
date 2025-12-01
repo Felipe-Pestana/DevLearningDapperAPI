@@ -98,7 +98,7 @@ namespace DevLearning.API.Repositories
         {
             try
             {
-                var sql = @"SELECT c.Tag, c.Title, c.Summary, c.[Url], c.[Level], c.DurationInMinutes,
+                var sql = @"SELECT c.Id AS CourseId, c.Tag, c.Title, c.Summary, c.[Url], c.[Level], c.DurationInMinutes,
                        c.CreateDate, c.LastUpdateDate, c.Active, c.Free, c.Featured, a.[Name] AS authorName, 
                        ca.Title AS categoryName, c.Tags FROM Course c
                        JOIN Author a ON a.Id = c.AuthorId
@@ -114,6 +114,17 @@ namespace DevLearning.API.Repositories
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public async Task<CourseResponseDTO> GetOneCourseByIdAsync(Guid id)
+        {
+            var sql = @"SELECT c.Tag, c.Title, c.Summary, c.[Url], c.[Level], c.DurationInMinutes,
+                       c.CreateDate, c.LastUpdateDate, c.Active, c.Free, c.Featured, a.[Name] AS authorName, 
+                       ca.Title AS categoryName, c.Tags FROM Course c
+                       JOIN Author a ON a.Id = c.AuthorId
+                       JOIN Category ca ON ca.Id = c.CategoryId WHERE c.Id = @Id";
+
+            return (await _connection.QueryFirstOrDefaultAsync<CourseResponseDTO>(sql, new { Id = id }));
         }
 
         public async Task UpdateCourseByTitleAsync(string title, bool free, bool featured, DateTime lastUpdateDate)
