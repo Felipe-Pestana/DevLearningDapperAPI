@@ -1,4 +1,4 @@
-﻿using DevLearning.Api.Models.Dtos;
+﻿using DevLearning.Api.Models.Dtos.Category;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevLearning.Api.Controllers.Interfaces

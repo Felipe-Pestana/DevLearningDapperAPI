@@ -248,7 +248,26 @@ namespace DevLearning.Api.Repositories
                 throw new Exception(ex.StackTrace);
             }
         }
-        
+
+        public async Task DeleteStudentCourseByCourseAsync(Guid courseId)
+        {
+            try
+            {
+                var sql = @"DELETE FROM StudentCourse 
+                            WHERE CourseId = @CourseId";
+
+                await _connection.ExecuteAsync(sql, new { @CourseId = courseId });
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
+        }
+
         public async Task<List<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id) 
         {
             var sql = @"SELECT s.Id, s.Name, s.Email, c.Id, c.Title, c.Level, c.DurationInMinutes, c.Active, sc.Progress

@@ -4,7 +4,7 @@ using DevLearningAPI.Models.Dtos.Career;
 using DevLearningAPI.Repositories;
 using DevLearningAPI.Services.Interfaces;
 
-namespace DevLearningAPI.Services
+namespace DevLearning.Api.Services
 {
     public class CareerService : ICareerService
     {
@@ -142,6 +142,16 @@ namespace DevLearningAPI.Services
             {
 
                 throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task RemoveItemByCourseAsync(Guid courseId)
+        {
+            var careerIds = await _careerRepository.GetItemByCourseAsync(courseId);
+
+            foreach(var careerId in careerIds)
+            {
+                await _careerRepository.RemoveItemAsync(careerId, courseId);
             }
         }
     }

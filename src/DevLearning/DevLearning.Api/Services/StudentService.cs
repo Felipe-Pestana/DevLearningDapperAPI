@@ -130,6 +130,11 @@ namespace DevLearning.Api.Services
             }
         }
 
+        public async Task DeleteStudentCourseByCourseAsync(Guid id)
+        {
+            await _repository.DeleteStudentCourseByCourseAsync(id);
+        }
+
         public async Task CreateStudentCourseAsync(Guid courseId, Guid studentId, CreateStudentCourseDto studentCourse)
         {
             var courseExist = await _courseRepository.GetCourseByIdAsync(courseId);

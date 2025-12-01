@@ -2,7 +2,7 @@
 using DevLearningAPI.Models;
 using DevLearningAPI.Models.Dtos.Career;
 
-namespace DevLearningAPI.Services.Interfaces
+namespace DevLearning.Api.Services.Interfaces
 {
     public interface ICareerService
     {
