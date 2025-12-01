@@ -1,0 +1,741 @@
+{
+	"info": {
+		"_postman_id": "b1416ee4-9a01-4fc2-8f96-cbe8e8009b3b",
+		"name": "APIDapperDevLearning",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50380864",
+		"_collection_link": "https://brunocapita-dev-3582795.postman.co/workspace/bruno's-Workspace~c0762347-09e2-4f2d-85a3-44e836a5fd45/collection/50380864-b1416ee4-9a01-4fc2-8f96-cbe8e8009b3b?action=share&source=collection_link&creator=50380864"
+	},
+	"item": [
+		{
+			"name": "Student",
+			"item": [
+				{
+					"name": "Inserindo estudante",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Bruno\",\r\n    \"Email\": \"bruno@gmail.com\",\r\n    \"Password\": \"Bruno123\",\r\n    \"Bio\": \"Backend Developer\",\r\n    \"Image\": \"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\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/student",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos estudantes",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar estudante por Id",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar estudante por Documento",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar estudante por Email",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Modificando Estudante",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/student/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"student",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificando o Progresso do Estudante no Curso e Favorito",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/student/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"student",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inserindo Estudante em Curso",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Favorite\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/students/0bc3d383-b629-4fd8-bebc-d22e699c0e1b/courses/B2EE394B-6DE5-4AD2-95E7-83959918549A",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"students",
+								"0bc3d383-b629-4fd8-bebc-d22e699c0e1b",
+								"courses",
+								"B2EE394B-6DE5-4AD2-95E7-83959918549A"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Course",
+			"item": [
+				{
+					"name": "Buscar todos cursos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7169/api/Course",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Course"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar um curso por título",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7169/api/Course/get-by-title",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Course",
+								"get-by-title"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inserindo curso",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tag\": \"backend\",\r\n  \"title\": \"Curso de POO Básiquinho\",\r\n  \"summary\": \"Introdução à Programação Orientada a Objetos\",\r\n  \"url\": \"curso-poo-basica\",\r\n  \"level\": 3,\r\n  \"durationInMinutes\": 120,\r\n  \"authorId\": \"ADABAAEC-199C-4533-8C53-E1B19F015311\",\r\n  \"categoryId\": \"35AC4CB9-E3A2-4A28-8D81-E75876B918F7\",\r\n  \"tags\": \"fundamentos de C#\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/Course/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Course",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificando curso",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/Course/title",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Course",
+								"title"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificando Tipo do Curso",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Active\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/Course/Active/Curso de POO Intermediario",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Course",
+								"Active",
+								"Curso de POO Intermediario"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "PostCategory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Nova Categoria\",\r\n    \"summary\": \"Descrição da categoria\",\r\n    \"order\": 1,\r\n    \"description\": \"Texto detalhado da categoria\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/Category",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllCategories",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Programação\",\r\n  \"url\": \"programacao\",\r\n  \"summary\": \"Cursos de programação\",\r\n  \"order\": 1,\r\n  \"description\": \"Tudo sobre programação\",\r\n  \"featured\": true\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/Category",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCategoryById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Programação\",\r\n  \"url\": \"programacao\",\r\n  \"summary\": \"Cursos de programação\",\r\n  \"order\": 1,\r\n  \"description\": \"Tudo sobre programação\",\r\n  \"featured\": true\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/Category/CEAC3794-1C8C-48AA-B7F8-18BDC811EF85",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Category",
+								"CEAC3794-1C8C-48AA-B7F8-18BDC811EF85"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutCategory",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"order\": 3,\r\n    \"featured\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/Category/7D334E1D-2F38-4C34-B354-1D61D1281623",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Category",
+								"7D334E1D-2F38-4C34-B354-1D61D1281623"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCategory",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"order\": 3,\r\n    \"featured\": true\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/Category/9ca1ae29-8987-4dab-b942-64418c20a4d3",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Category",
+								"9ca1ae29-8987-4dab-b942-64418c20a4d3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCategoryCourses",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Programação\",\r\n  \"url\": \"programacao\",\r\n  \"summary\": \"Cursos de programação\",\r\n  \"order\": 1,\r\n  \"description\": \"Tudo sobre programação\",\r\n  \"featured\": true\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/Category/d30a351d-f0e7-42c6-a6af-d4ed0fcc20c2/courses",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Category",
+								"d30a351d-f0e7-42c6-a6af-d4ed0fcc20c2",
+								"courses"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Career",
+			"item": [
+				{
+					"name": "CareerWhitCareerItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"title\": \"Carreira Desenvolvedor Full Stack\",\r\n        \"summary\": \"Trilha completa para se tornar um desenvolvedor front-end utilizando .NET.\",\r\n        \"durationInMinutes\": 2800,\r\n        \"tags\": \"front-end,csharp,aspnetcore\",\r\n        \"careerItems\": [\r\n            {\r\n                \"courseId\": \"fe96259e-da25-442f-bd65-0dbb0fdc6eed\",\r\n                \"title\": \"Fundamentos de C#\",\r\n                \"description\": \"Aprenda os pilares da linguagem C#, incluindo tipos, classes e coleções.\",\r\n                \"order\": 1\r\n            }\r\n        ]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/Career",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Career"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get CareerItemWhitCareerItem Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7169/api/Career/5b9529d4-2d48-4e0a-990a-16012e192ed8",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Career",
+								"5b9529d4-2d48-4e0a-990a-16012e192ed8"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Get AllCareerWhitCareerItam",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7169/api/Career",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Career"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Career",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Featured\": true,\r\n    \"durationInMinutes\" : 5000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/Career/5b9529d4-2d48-4e0a-990a-16012e192ed8",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Career",
+								"5b9529d4-2d48-4e0a-990a-16012e192ed8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Career",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7169/api/Career/871BB471-47FD-4ACA-9B3F-45C9A6F23F24",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"Career",
+								"871BB471-47FD-4ACA-9B3F-45C9A6F23F24"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post CareerItem",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"CareerId\": \"7ce073ee-2d71-40da-b710-8d7d80a67b17\",\n  \"CourseId\": \"14bce1e5-2289-4135-9bba-4081d1fde1cf\",\n  \"Title\": \"Fundamentos de c#\",\n  \"Description\": \"Aprenda dapper\",\n  \"Order\" : 2\n}\n\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/CareerItem",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"CareerItem"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Update CareerItem",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful PUT request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Title\": \"Fundamentos de c# e Java\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/CareerItem/5b9529d4-2d48-4e0a-990a-16012e192ed8/fe96259e-da25-442f-bd65-0dbb0fdc6eed",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"CareerItem",
+								"5b9529d4-2d48-4e0a-990a-16012e192ed8",
+								"fe96259e-da25-442f-bd65-0dbb0fdc6eed"
+							]
+						},
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete CareerItem",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful DELETE request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7169/api/CareerItem/14BCE1E5-2289-4135-9BBA-4081D1FDE1CF/871BB471-47FD-4ACA-9B3F-45C9A6F23F24",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7169",
+							"path": [
+								"api",
+								"CareerItem",
+								"14BCE1E5-2289-4135-9BBA-4081D1FDE1CF",
+								"871BB471-47FD-4ACA-9B3F-45C9A6F23F24"
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
