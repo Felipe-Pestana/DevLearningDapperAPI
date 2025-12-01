@@ -22,7 +22,12 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(await _categoryService.GetAllCategoriesAsync());
+                var category = await _categoryService.GetAllCategoriesAsync();
+
+                if (category is null)
+                    return NotFound();
+
+                return Ok(category);
             }
             catch (Exception)
             {

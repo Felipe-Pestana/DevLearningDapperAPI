@@ -24,7 +24,12 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(await _authorService.GetAllAuthorsAsync());
+                var author = await _authorService.GetAllAuthorsAsync();
+
+                if (author is null)
+                    return NotFound();
+                
+                return Ok(author);
             }
             catch (Exception)
             {
