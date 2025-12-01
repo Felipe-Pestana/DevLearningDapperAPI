@@ -12,6 +12,7 @@ namespace DevLearning.API.Models
         public string Url { get; private set; }
         public string Email { get; private set; }
         public AuthorType Type { get; private set; } //Author ativo ou inativo
+        public List<Course> Courses { get; set; } = [];
 
         public Author(string name, string title, string image, string bio, string email)
         {
