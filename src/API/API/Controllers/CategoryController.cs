@@ -16,7 +16,7 @@ namespace API.Controllers
             _categoryService = categoryService;
         }
 
-        [HttpGet("GetAllCategoriesAsync")]
+        [HttpGet]
         public async Task<ActionResult<List<CategoryResponseDTO>>> GetAllCategoriesAsync()
         {
             try
@@ -30,7 +30,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GetCategoryByIdAsync/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<CategoryResponseDTO>> GetCategoryByIdAsync(Guid id)
         {
             try
@@ -49,7 +49,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("CreateCategoryAsync")]
+        [HttpPost]
         public async Task<ActionResult> CreateCategoryAsync(CategoryRequestDTO category)
         {
             try
@@ -63,7 +63,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("UpdateCategoryAsync/{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCategoryAsync(CategoryRequestDTO category, Guid id)
         {
             try
@@ -83,7 +83,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("DeleteCategoryAsync/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCategoryAsync(Guid id)
         {
             try
