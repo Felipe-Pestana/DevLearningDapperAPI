@@ -1,7 +1,9 @@
-﻿using DevLearning.Api.Models;
+﻿using DevLearning.Api.Data;
+using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos.Student;
 using DevLearning.Api.Models.Dtos.StudentCourse;
 using DevLearning.Api.Repositories;
+using DevLearning.Api.Repositories.Interfaces;
 using DevLearning.Api.Services.Interfaces;
 
 namespace DevLearning.Api.Services
@@ -9,10 +11,13 @@ namespace DevLearning.Api.Services
     public class StudentService : IStudentService
     {
         public StudentRepository _repository;
+        private readonly CourseRepository _courseRepository;
 
-        public StudentService(StudentRepository repository)
+
+        public StudentService(StudentRepository repository, CourseRepository courseRepository)
         {
             _repository = repository;
+            _courseRepository = courseRepository;
         }
 
         public async Task CreateStudentAsync(CreateStudentDto student)
@@ -132,6 +137,10 @@ namespace DevLearning.Api.Services
 
         public async Task CreateStudentCourseAsync(Guid courseId, Guid studentId, CreateStudentCourseDto studentCourse)
         {
+            var courseExist = await _courseRepository.GetCourseByIdAsync(courseId);
+            if (courseExist is null)
+                throw new KeyNotFoundException("Curso não encontrado!");
+
 
             var studentExist = await _repository.GetStudentByIdAsync(studentId);
             if (studentExist is null)
@@ -167,9 +176,12 @@ namespace DevLearning.Api.Services
             }
         }
 
-        //TODO: NÃO EXISTIR O GUID DO CURSO
         public async Task UpdateStudentCourseProgressAsync(Guid studentId, Guid courseId, UpdateStudentCourseDto student)
         {
+            var courseExist = await _courseRepository.GetCourseByIdAsync(courseId);
+            if (courseExist is null)
+                throw new KeyNotFoundException("Curso não encontrado!");
+
             var studentExist = await _repository.GetStudentByIdAsync(studentId);
             if (studentExist is null)
                 throw new KeyNotFoundException("Estudante não encontrado!");
@@ -178,9 +190,10 @@ namespace DevLearning.Api.Services
             if (studentCourseExist is null)
                 throw new KeyNotFoundException("Estudante não está cadastrado no curso informado!");
 
+
             try
             {
-                await _repository.UpdateStudentCourseProgressAsync(courseId, studentId, student);
+                await _repository.UpdateStudentCourseProgressAsync( studentId, courseId, student);
             }
             catch (Exception ex)
             {
@@ -190,6 +203,10 @@ namespace DevLearning.Api.Services
 
         public async Task<List<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id)
         {
+            var studentExist = await _repository.GetStudentByIdAsync(id);
+            if (studentExist is null)
+                throw new KeyNotFoundException("Estudante não encontrado!");
+
             var studentCourse = await _repository.GetStudentAllCoursesAsync(id);
             if (studentCourse is null)
                 throw new KeyNotFoundException("Estudante não está matriculado em nenhum curso!");

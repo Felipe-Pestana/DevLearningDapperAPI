@@ -10,9 +10,11 @@ namespace DevLearning.Api.Repositories
     public class CourseRepository : ICourseRepository
     {
         private readonly SqlConnection _connection;
+
         public CourseRepository(ConnectionDB connection)
         {
             _connection = connection.GetConnection();
+
         }
 
         public async Task CreateCourseAsync(Course course)

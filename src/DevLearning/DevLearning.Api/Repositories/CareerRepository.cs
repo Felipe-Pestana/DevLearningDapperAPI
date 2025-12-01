@@ -4,8 +4,8 @@ using DevLearning.Api.Repositories.Interfaces;
 using DevLearningAPI.Models;
 using DevLearningAPI.Models.Dtos.Career;
 using Microsoft.AspNetCore.Connections;
+using DevLearningAPI.Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Tokens;
 using System.Data;
 
 namespace DevLearning.Api.Repositories
@@ -57,8 +57,7 @@ namespace DevLearning.Api.Repositories
         {
             var sql = @"SELECT [Id], [Title], [Summary], [Url], [DurationInMinutes], 
                                [Active], [Featured], [Tags]
-                        FROM [Career] 
-                        WHERE [Active] = 1";
+                        FROM [Career]";
 
             try
             {

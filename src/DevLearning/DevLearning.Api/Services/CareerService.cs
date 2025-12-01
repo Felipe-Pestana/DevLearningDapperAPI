@@ -1,8 +1,8 @@
 ﻿using DevLearning.Api.Models.Dtos.CareerItem;
-using DevLearning.Api.Repositories;
-using DevLearning.Api.Services.Interfaces;
 using DevLearningAPI.Models;
 using DevLearningAPI.Models.Dtos.Career;
+using DevLearningAPI.Repositories;
+using DevLearningAPI.Services.Interfaces;
 
 namespace DevLearning.Api.Services
 {
@@ -82,7 +82,7 @@ namespace DevLearning.Api.Services
             }
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task UpdateActiveAsync(Guid id)
         {
             try
             {

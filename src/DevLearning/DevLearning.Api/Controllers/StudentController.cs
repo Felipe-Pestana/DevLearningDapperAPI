@@ -103,7 +103,7 @@ namespace DevLearning.Api.Controllers
             try
             {
                 await _service.DeleteStudentAsync(id);
-                return NoContent(); 
+                return NoContent();
             }
             catch (KeyNotFoundException ex)
             {
@@ -115,9 +115,9 @@ namespace DevLearning.Api.Controllers
             }
         }
 
-        [HttpPost("{studentId}/course/{courseId}/")]
+        [HttpPost("{studentId}/courses/{courseId}")]
         public async Task<ActionResult> CreateStudentCourseAsync(Guid courseId, Guid studentId, CreateStudentCourseDto studentCourse)
-        { 
+        {
             try
             {
                 await _service.CreateStudentCourseAsync(courseId, studentId, studentCourse);
@@ -151,5 +151,23 @@ namespace DevLearning.Api.Controllers
         //    }
         //}
 
+        [HttpPut("{studentId}/courses/{courseId}/progress")]
+        public async Task<ActionResult> UpdateStudentCourseProgressAsync(Guid studentId, Guid courseId, UpdateStudentCourseDto student)
+        {
+            try
+            {
+                await _service.UpdateStudentCourseProgressAsync(studentId, courseId, student);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+        }
     }
 }
