@@ -36,18 +36,13 @@ namespace API.Repositories
             });
         }
 
-        public async Task<int> DeleteStudentAsync(Guid id)
+        public async Task DeleteStudentAsync(Guid id)
         {
-            var sql = "DELETE FROM Student WHERE Id = @Id";
-            var rowsAffected =  await _connection.ExecuteAsync(sql, new { Id = id });
+            var sql = "DELETE FROM StudentCourse WHERE StudentId = @Id";
+            await _connection.ExecuteAsync(sql, new { Id = id });
 
-            if (rowsAffected > 0)
-            {
-                sql = "DELETE FROM StudentCourse WHERE StudentId = @Id";
-                await _connection.ExecuteAsync(sql, new { Id = id });
-            }
-
-            return rowsAffected;
+            sql = "DELETE FROM Student WHERE Id = @Id";
+            await _connection.ExecuteAsync(sql, new { Id = id });
         }
 
         public async Task EnrollingStudentInCourseAsync(StudentCourse studentCourse)
@@ -80,7 +75,7 @@ namespace API.Repositories
                         FROM Student
                         WHERE Id = @Id";
 
-            var student = await _connection.QueryFirstOrDefaultAsync<StudentGetByIdResponseDTO>(sql, new {Id = id});
+            var student = await _connection.QueryFirstOrDefaultAsync<StudentGetByIdResponseDTO>(sql, new { Id = id });
             return student;
         }
 
@@ -126,6 +121,12 @@ namespace API.Repositories
             return student;
         }
 
+        public async Task<int> SearchStudentByDocument(string document)
+        {
+            var sql = @"SELECT COUNT(*) FROM Student WHERE Document = @Document";
+            return await _connection.QueryFirstOrDefaultAsync<int>(sql, new { Document = document });
+        }
+
         public async Task<StudentUpdateDTO?> SearchStudentToUpdateAsync(Guid id)
         {
             var sql = @"SELECT Name, Email, Phone FROM Student WHERE Id = @Id";
@@ -139,9 +140,9 @@ namespace API.Repositories
                             LastUpdateDate = @LastUpdateDate
                         WHERE StudentId = @StudentId AND CourseId = @CourseId";
 
-            await _connection.ExecuteAsync(sql , new 
+            await _connection.ExecuteAsync(sql, new
             {
-                Progress =  updateProgressDTO.Progress,
+                Progress = updateProgressDTO.Progress,
                 LastUpdateDate = updateProgressDTO.LastUpdateDate,
                 StudentId = studentId,
                 CourseId = courseId

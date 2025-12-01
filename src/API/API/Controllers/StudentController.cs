@@ -28,6 +28,11 @@ namespace API.Controllers
                 await _studentService.CreateStudentAsync(dto);
                 return Created();
             }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Erro ao criar estudante!");
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro inesperado ao criar estudante!");
@@ -78,11 +83,14 @@ namespace API.Controllers
         {
             try
             {
-                var rowsAfected = await _studentService.DeleteStudentAsync(id);
-                if (rowsAfected > 0)
-                    return NoContent();
-                else
-                    return NotFound("Estudante não encontrado!");
+                await _studentService.DeleteStudentAsync(id);
+
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Erro ao deletar estudante!");
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {

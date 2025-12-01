@@ -1,4 +1,6 @@
-﻿namespace API.Models
+﻿using Blog.API.Models;
+
+namespace API.Models
 {
     public class Student
     {
@@ -9,7 +11,7 @@
         public string? Phone { get; private set; }
         public DateOnly Birthdate { get; private set; }
         public DateTime CreateDate { get; private set; }
-        //public List<Course> Courses { get; private set; } = new();
+        public List<Course> Courses { get; private set; } = new();
 
         public Student(
             string name,

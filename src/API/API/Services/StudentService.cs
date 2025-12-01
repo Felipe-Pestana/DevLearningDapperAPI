@@ -17,6 +17,9 @@ namespace API.Services
 
         public async Task CreateStudentAsync(StudentRequestDTO dto)
         {
+            if (await _studentRepository.SearchStudentByDocument(dto.Document) == 1)
+                throw new ArgumentException("Este estudante já está cadastrado no sistema!");
+
             var student = new Student(
                 dto.Name,
                 dto.Email,
@@ -28,10 +31,12 @@ namespace API.Services
             await _studentRepository.CreateStudentAsync(student);
         }
 
-        public async Task<int> DeleteStudentAsync(Guid id)
+        public async Task DeleteStudentAsync(Guid id)
         {
-            var rowsAffected = await _studentRepository.DeleteStudentAsync(id);
-            return rowsAffected;
+            if (!await _studentRepository.VerifyExistStudentAsync(id))
+                throw new ArgumentException("Estudante não encontrado!");
+
+            await _studentRepository.DeleteStudentAsync(id);
         }
 
         public async Task EnrollingStudentInCourseAsync(Guid studentId, Guid courseId, StudentCourseRequestDTO dto)
@@ -89,7 +94,7 @@ namespace API.Services
                 throw new ArgumentException("Esse curso não existe!");
 
             if (!await _studentRepository.VerifyStudentEnrollingInCourseAsync(studentId, courseId))
-                throw new ArgumentException("O Estudante não está cadastrado em nenhum curso!");
+                throw new ArgumentException("Este Estudante não está matriculado em nenhum curso!");
 
             var currentProgress = await _studentRepository.VerifyProgressToStudentInCourseAsync(studentId, courseId);
 
