@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
-
-namespace DevLearningAPI.Models;
+﻿namespace DevLearningAPI.Models;
 
 public class Career {
         public Guid Id { get; private set; }

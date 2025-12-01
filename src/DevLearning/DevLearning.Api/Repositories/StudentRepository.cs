@@ -249,7 +249,7 @@ namespace DevLearning.Api.Repositories
             }
         }
 
-        public async Task<List<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id) 
+        public async Task<List<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id)
         {
             var sql = @"SELECT s.Id, s.Name, s.Email, c.Id, c.Title, c.Summary, c.DurationInMinutes, c.Active
                 FROM Student s 

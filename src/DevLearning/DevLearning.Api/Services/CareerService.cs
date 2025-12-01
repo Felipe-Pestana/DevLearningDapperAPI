@@ -1,11 +1,8 @@
-﻿using DevLearning.Api.Data;
-using DevLearning.Api.Models.Dtos.CareerItem;
+﻿using DevLearning.Api.Models.Dtos.CareerItem;
 using DevLearningAPI.Models;
 using DevLearningAPI.Models.Dtos.Career;
 using DevLearningAPI.Repositories;
-using DevLearningAPI.Repositories.Interfaces;
 using DevLearningAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
 namespace DevLearningAPI.Services
 {
@@ -85,7 +82,7 @@ namespace DevLearningAPI.Services
             }
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task UpdateActiveAsync(Guid id)
         {
             try
             {
