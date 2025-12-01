@@ -25,7 +25,5 @@
         public string? Phone { get; private set; }
         public DateTime Birthdate { get; private set; }
         public DateTime CreateDate { get; private set; }
-        public Course Courses { get; private set; } = new();
-
     }
 }

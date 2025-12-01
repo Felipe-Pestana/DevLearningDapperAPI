@@ -1,5 +1,6 @@
 ﻿using DevLearning.API.Models;
 using DevLearning.API.Models.DTOs.Course;
+using DevLearning.API.Models.Enums.Course;
 using DevLearning.API.Repositories;
 using DevLearning.API.Services.Interfaces;
 
@@ -17,6 +18,10 @@ namespace DevLearning.API.Services
 
         public async Task CreateCourseAsync(CourseRequestDTO course)
         {
+            if(!Enum.IsDefined(typeof(CourseLevel), course.Level))
+            {
+                throw new ArgumentException("Nível de curso inválido.");
+            }
             var newCourse = new Course(Guid.NewGuid(), course.Tag, course.Title, course.Summary, course.Url, course.Level, course.DurationInMinutes, DateTime.UtcNow, DateTime.UtcNow, true, false, false, course.AuthorId, course.CategoryId, course.Tags);
             await _courseRepository.CreateCourseAsync(newCourse);
         }

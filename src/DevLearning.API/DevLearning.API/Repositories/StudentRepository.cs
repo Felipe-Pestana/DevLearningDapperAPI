@@ -33,169 +33,6 @@ namespace DevLearning.API.Repositories
                 throw new Exception(ex.Message);
             }
         }
-
-        public async Task DeleteStudent(Guid id)
-        {
-            try
-            {
-                var sqlDeleteStudentCourse = @"DELETE FROM StudentCourse WHERE StudentId = @StudentId";
-                await _connection.ExecuteAsync(sqlDeleteStudentCourse, new { Id = id });
-
-                var sql = @"DELETE FROM Student WHERE Id = @Id";
-                await _connection.ExecuteAsync(sql, new { Id = id });
-            }
-            catch (SqlException ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<List<StudentResponseDTO>> GetAllStudents()
-        {
-            try
-            {
-                var sql = @"SELECT Id, Name, Email, Document, Phone, Birthdate, CreateDate FROM Student";
-                var students = (await _connection.QueryAsync<StudentResponseDTO>(sql)).ToList();
-                return students;
-            }
-            catch (SqlException ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<List<StudentWithCourseResponseDTO>> GetAllStudentsWithCourses()
-        {
-            try
-            {
-                var sql = @"SELECT s.Id as StudentId, Name, Email, Document, Phone, Birthdate, CreateDate,
-                            c.Id as CourseId, c.Title as Title, c.Summary as Summary, c.[Url] as Url, c.[Level] as Level, c.DurationInMinutes
-                            FROM Student s
-                            INNER JOIN StudentCourse sc
-                            ON sc.StudentId = s.Id
-                            INNER JOIN Course c
-                            ON sc.CourseId = c.Id";
-
-                var students = await _connection.QueryAsync<StudentWithCourseResponseDTO, CourseStudentDTO, StudentWithCourseResponseDTO>(sql, (student, course) =>
-                {
-                    student.Courses.Add(course);
-                    return student;
-                }, splitOn: "CourseId");
-
-                var result = students.GroupBy(s => s.Id).Select(g =>
-                {
-                    var groupedStudent = g.First();
-                    groupedStudent.Courses = g.Select(s => s.Courses.Single()).ToList();
-                    return groupedStudent;
-                });
-
-                return result.ToList();
-            } catch(SqlException ex)
-            {
-                throw new Exception(ex.Message);
-            } catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-        public async Task<Student> GetStudentByDocument(string document)
-        {
-            try
-            {
-                var sql = @"SELECT Id, Name, Email, Document, Phone, Birthdate, CreateDate FROM Student WHERE Document = @Document";
-                var student = await _connection.QueryFirstOrDefaultAsync<Student>(sql, new { Document = document });
-                return student;
-            }
-            catch (SqlException ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<Student> GetStudentByEmail(string email)
-        {
-            try
-            {
-                var sql = @"SELECT Id, Name, Email, Document, Phone, Birthdate, CreateDate FROM Student WHERE Email = @Email";
-                var student = await _connection.QueryFirstOrDefaultAsync<Student>(sql, new { Email = email });
-                return student;
-            }
-            catch (SqlException ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<Student> GetStudentById(Guid id)
-        {
-            try
-            {
-                var sql = @"SELECT Id, Name, Email, Document, Phone, Birthdate, CreateDate FROM Student WHERE Id = @Id";
-                var student = await _connection.QueryFirstOrDefaultAsync<Student>(sql, new { Id = id });
-                return student;
-            }
-            catch (SqlException ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<StudentWithCourseResponseDTO> GetStudentWithCoursesById(Guid studentId)
-        {
-            try
-            {
-                var sql = @"SELECT s.Id as StudentId, Name, Email, Document, Phone, Birthdate, CreateDate,
-                            c.Id as CourseId, c.Title as Title, c.Summary as Summary, c.[Url] as Url, c.[Level] as Level, c.DurationInMinutes
-                            FROM Student s
-                            INNER JOIN StudentCourse sc
-                            ON sc.StudentId = s.Id
-                            INNER JOIN Course c
-                            ON sc.CourseId = c.Id WHERE s.Id = @Id";
-
-                var student = await _connection.QueryAsync<StudentWithCourseResponseDTO, CourseStudentDTO, StudentWithCourseResponseDTO>(sql, (student, course) =>
-                {
-                    student.Courses.Add(course);
-                    return student;
-                }, new { Id = studentId }, splitOn: "CourseId");
-
-                var result = student.GroupBy(s => s.Id).Select(g =>
-                {
-                    var groupedStudent = g.First();
-                    groupedStudent.Courses = g.Select(s => s.Courses.Single()).ToList();
-                    return groupedStudent;
-                });
-
-                return result.FirstOrDefault();
-            }
-            catch (SqlException ex)
-            {
-                throw new Exception(ex.Message);
-            } catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
         public async Task InsertStudentCourse(Guid studentId, Guid courseId, StudentRequestInsertCourseDTO studentCourse)
         {
             try
@@ -212,19 +49,256 @@ namespace DevLearning.API.Repositories
                 throw new Exception(ex.Message);
             }
         }
-
-        public async Task UpdateStudent(Student student, Guid id)
+        public async Task<List<StudentResponseDTO>> GetAllStudents()
         {
             try
             {
-                var sql = @"UPDATE FROM Student SET
-                            Name = @Name,
-                            Email = @Email,
-                            Document = @Document,
-                            Phone = @Phone,
-                            Birthdate = @Birthdate
-                            WHERE Id = @id";
-                await _connection.ExecuteAsync(sql, new { Name = student.Name, Email = student.Email, Document = student.Document, Phone = student.Phone, Birthdate = student.Birthdate });
+                var sql = @"SELECT 
+                            s.Id AS StudentId, 
+                            s.Name AS [Name], 
+                            s.Email AS Email, 
+                            s.Document AS Document, 
+                            s.Phone AS Phone, 
+                            s.Birthdate AS BirthDate, 
+                            s.CreateDate AS CreateDate,
+                            c.Id AS CourseId, 
+                            c.Title AS Title, 
+                            c.Summary AS Summary, 
+                            c.Url AS [Url], 
+                            c.Level AS [Level], 
+                            sc.Progress as Progress,
+                            c.DurationInMinutes AS DurationInMinutes,
+                            sc.Favorite AS Favorite, 
+                            sc.StartDate AS StartDate, 
+                            sc.LastUpdateDate AS LastUpdateDate
+                            FROM Student s
+                            LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
+                            LEFT JOIN Course c ON sc.CourseId = c.Id;";
+                var students = await _connection.QueryAsync<StudentResponseDTO, CourseStudentDTO, StudentResponseDTO>(sql, (student, course) =>
+                {
+                    student.Courses ??= new List<CourseStudentDTO>();
+                    if (course != null && course.CourseId != Guid.Empty)
+                        student.Courses.Add(course);
+
+                    return student;
+                }, splitOn: "CourseId");
+
+                var result = students.GroupBy(s => s.StudentId).Select(g =>
+                {
+                    var groupedStudent = g.FirstOrDefault();
+                    groupedStudent.Courses = g.SelectMany(s => s.Courses ?? new List<CourseStudentDTO>()).ToList();
+                    return groupedStudent;
+                });
+
+                return result.ToList();
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<StudentResponseDTO> GetStudentByDocument(string document)
+        {
+            try
+            {
+                var sql = @"SELECT 
+            s.Id AS StudentId, 
+            s.Name AS [Name], 
+            s.Email AS Email, 
+            s.Document AS Document, 
+            s.Phone AS Phone, 
+            s.Birthdate AS BirthDate, 
+            s.CreateDate AS CreateDate,
+            c.Id AS CourseId, 
+            c.Title AS Title, 
+            c.Summary AS Summary, 
+            c.Url AS [Url], 
+            c.Level AS [Level], 
+            sc.Progress as Progress,
+            c.DurationInMinutes AS DurationInMinutes,
+            sc.Favorite AS Favorite, 
+            sc.StartDate AS StartDate, 
+            sc.LastUpdateDate AS LastUpdateDate
+            FROM Student s
+            LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
+            LEFT JOIN Course c ON sc.CourseId = c.Id WHERE Document = @Document";
+                var students = await _connection.QueryAsync<StudentResponseDTO, CourseStudentDTO, StudentResponseDTO>(sql, (student, course) =>
+                {
+                    student.Courses ??= new List<CourseStudentDTO>();
+                    if (course != null && course.CourseId != Guid.Empty)
+                        student.Courses.Add(course);
+
+                    return student;
+                }, new { Document = document }, splitOn: "CourseId");
+
+                var result = students.GroupBy(s => s.StudentId).Select(g =>
+                {
+                    var groupedStudent = g.FirstOrDefault();
+                    groupedStudent.Courses = g.SelectMany(s => s.Courses ?? new List<CourseStudentDTO>()).ToList();
+                    return groupedStudent;
+                });
+
+                return result.FirstOrDefault();
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<StudentResponseDTO> GetStudentByEmail(string email)
+        {
+            try
+            {
+                var sql = @"SELECT 
+            s.Id AS StudentId, 
+            s.Name AS [Name], 
+            s.Email AS Email, 
+            s.Document AS Document, 
+            s.Phone AS Phone, 
+            s.Birthdate AS BirthDate, 
+            s.CreateDate AS CreateDate,
+            c.Id AS CourseId, 
+            c.Title AS Title, 
+            c.Summary AS Summary, 
+            c.Url AS [Url], 
+            c.Level AS [Level], 
+            sc.Progress as Progress,
+            c.DurationInMinutes AS DurationInMinutes,
+            sc.Favorite AS Favorite, 
+            sc.StartDate AS StartDate, 
+            sc.LastUpdateDate AS LastUpdateDate
+            FROM Student s
+            LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
+            LEFT JOIN Course c ON sc.CourseId = c.Id WHERE Email = @Email";
+                var students = await _connection.QueryAsync<StudentResponseDTO, CourseStudentDTO, StudentResponseDTO>(sql, (student, course) =>
+                {
+                    student.Courses ??= new List<CourseStudentDTO>();
+                    if (course != null && course.CourseId != Guid.Empty)
+                        student.Courses.Add(course);
+
+                    return student;
+                }, new { Email = email }, splitOn: "CourseId");
+
+                var result = students.GroupBy(s => s.StudentId).Select(g =>
+                {
+                    var groupedStudent = g.FirstOrDefault();
+                    groupedStudent.Courses = g.SelectMany(s => s.Courses ?? new List<CourseStudentDTO>()).ToList();
+                    return groupedStudent;
+                });
+
+                return result.FirstOrDefault();
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<StudentResponseDTO> GetStudentById(Guid id)
+        {
+            try
+            {
+                var sql = @"SELECT 
+                            s.Id AS StudentId, 
+                            s.Name AS [Name], 
+                            s.Email AS Email, 
+                            s.Document AS Document, 
+                            s.Phone AS Phone, 
+                            s.Birthdate AS BirthDate, 
+                            s.CreateDate AS CreateDate,
+                            c.Id AS CourseId, 
+                            c.Title AS Title, 
+                            c.Summary AS Summary, 
+                            c.Url AS [Url], 
+                            c.Level AS [Level], 
+                            sc.Progress as Progress,
+                            c.DurationInMinutes AS DurationInMinutes,
+                            sc.Favorite AS Favorite, 
+                            sc.StartDate AS StartDate, 
+                            sc.LastUpdateDate AS LastUpdateDate
+                            FROM Student s
+                            LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
+                            LEFT JOIN Course c ON sc.CourseId = c.Id WHERE StudentId = @StudentId";
+                var students = await _connection.QueryAsync<StudentResponseDTO, CourseStudentDTO, StudentResponseDTO>(sql, (student, course) =>
+                {
+                    student.Courses ??= new List<CourseStudentDTO>();
+                    if (course != null && course.CourseId != Guid.Empty)
+                        student.Courses.Add(course);
+
+                    return student;
+                }, new { StudentId = id }, splitOn: "CourseId");
+
+                var result = students.GroupBy(s => s.StudentId).Select(g =>
+                {
+                    var groupedStudent = g.FirstOrDefault();
+                    groupedStudent.Courses = g.SelectMany(s => s.Courses ?? new List<CourseStudentDTO>()).ToList();
+                    return groupedStudent;
+                });
+
+                return result.FirstOrDefault();
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<StudentResponseDTO> GetStudentByEmailAndDocument(string email, string document)
+        {
+            try
+            {
+                var sql = @"SELECT 
+                            s.Id AS StudentId, 
+                            s.Name AS [Name], 
+                            s.Email AS Email, 
+                            s.Document AS Document, 
+                            s.Phone AS Phone, 
+                            s.Birthdate AS BirthDate, 
+                            s.CreateDate AS CreateDate,
+                            c.Id AS CourseId, 
+                            c.Title AS Title, 
+                            c.Summary AS Summary, 
+                            c.Url AS [Url], 
+                            c.Level AS [Level], 
+                            sc.Progress as Progress,
+                            c.DurationInMinutes AS DurationInMinutes,
+                            sc.Favorite AS Favorite, 
+                            sc.StartDate AS StartDate, 
+                            sc.LastUpdateDate AS LastUpdateDate
+                            FROM Student s
+                            LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
+                            LEFT JOIN Course c ON sc.CourseId = c.Id WHERE Document = @Document AND Email = @Email";
+                var students = await _connection.QueryAsync<StudentResponseDTO, CourseStudentDTO, StudentResponseDTO>(sql, (student, course) =>
+                {
+                    student.Courses ??= new List<CourseStudentDTO>();
+                    if (course != null && course.CourseId != Guid.Empty)
+                        student.Courses.Add(course);
+
+                    return student;
+                }, new { Document = document, Email = email }, splitOn: "CourseId");
+
+                var result = students.GroupBy(s => s.StudentId).Select(g =>
+                {
+                    var groupedStudent = g.FirstOrDefault();
+                    groupedStudent.Courses = g.SelectMany(s => s.Courses ?? new List<CourseStudentDTO>()).ToList();
+                    return groupedStudent;
+                });
+
+                return result.FirstOrDefault();
             }
             catch (SqlException ex)
             {
@@ -260,28 +334,52 @@ namespace DevLearning.API.Repositories
                             sc.LastUpdateDate AS LastUpdateDate
                         FROM StudentCourse sc
                         INNER JOIN Student s ON sc.StudentId = s.Id
-                        INNER JOIN Course c ON sc.CourseId = c.Id
+                        INNER JOIN Course c ON sc.CourseId = c.Id0
                         WHERE sc.StudentId = @StudentId
                           AND sc.CourseId = @CourseId;";
                 var studentCourse = await _connection.QueryAsync<
-                    StudentResponseDTO, 
-                    CourseStudentDTO, 
-                    StudentCourseResponseDTO, 
-                    StudentCourseResponseDTO>(sql,  (student, course, studentCourse) =>
+                    StudentResponseDTO,
+                    CourseStudentDTO,
+                    StudentCourseResponseDTO,
+                    StudentCourseResponseDTO>(sql, (student, course, studentCourse) =>
                 {
                     studentCourse.Student = student;
                     studentCourse.Course = course;
                     return studentCourse;
-                }, 
+                },
                 param: new { StudentId = studentId, CourseId = courseId },
                 splitOn: "CourseId, Progress"
                 );
 
                 return studentCourse.FirstOrDefault();
-            } catch(SqlException ex)
+            }
+            catch (SqlException ex)
             {
                 throw new Exception(ex.Message);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task UpdateStudent(Student student, Guid id)
+        {
+            try
+            {
+                var sql = @"UPDATE Student SET
+                            Name = @Name,
+                            Email = @Email,
+                            Document = @Document,
+                            Phone = @Phone,
+                            Birthdate = @Birthdate
+                            WHERE Id = @id";
+                await _connection.ExecuteAsync(sql, new { Name = student.Name, Email = student.Email, Document = student.Document, Phone = student.Phone, Birthdate = student.Birthdate, id = id });
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -304,18 +402,21 @@ namespace DevLearning.API.Repositories
                 throw new Exception(ex.Message);
             }
         }
-
-        public async Task<Student> GetStudentByEmailAndDocument(string email, string document)
+        public async Task DeleteStudent(Guid id)
         {
             try
             {
-                var sql = @"select  Id, Name, Email, Document, Phone, Birthdate, CreateDate from Student s
-                            WHERE s.Email = @Email AND s.Document = @Document;";
-                return await _connection.QueryFirstOrDefaultAsync<Student>(sql, new { Email = email, Document = document });
-            } catch(SqlException ex )
+                var sqlDeleteStudentCourse = @"DELETE FROM StudentCourse WHERE StudentId = @StudentId";
+                await _connection.ExecuteAsync(sqlDeleteStudentCourse, new { Id = id });
+
+                var sql = @"DELETE FROM Student WHERE Id = @Id";
+                await _connection.ExecuteAsync(sql, new { Id = id });
+            }
+            catch (SqlException ex)
             {
                 throw new Exception(ex.Message);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
