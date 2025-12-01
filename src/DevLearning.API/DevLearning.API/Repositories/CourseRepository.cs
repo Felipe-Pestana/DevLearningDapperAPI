@@ -74,7 +74,7 @@ namespace DevLearning.API.Repositories
         {
             try
             {
-                var sql = @"SELECT c.Tag, c.Title, c.Summary, c.[Url], c.[Level], c.DurationInMinutes,
+                var sql = @"SELECT c.Id as CourseId, c.Tag, c.Title, c.Summary, c.[Url], c.[Level], c.DurationInMinutes,
                        c.CreateDate, c.LastUpdateDate, c.Active, c.Free, c.Featured, a.[Name] AS authorName, 
                        ca.Title AS categoryName, c.Tags FROM Course c
                        JOIN Author a ON a.Id = c.AuthorId
