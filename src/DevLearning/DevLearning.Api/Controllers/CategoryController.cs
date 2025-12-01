@@ -51,7 +51,7 @@ namespace DevLearning.Api.Controllers
                 var category = await _categoryService.GetCategoryByIdAsync(id);
 
                 if (category == null)
-                    return NotFound("Categoria não encontrada");
+                    return NotFound("Category not found!");
 
                 return Ok(category);
             }
@@ -90,7 +90,7 @@ namespace DevLearning.Api.Controllers
             }
         }
 
-        [HttpGet("categories/{id})/courses")]
+        [HttpGet("categories/{id}/courses")]
         public async Task<ActionResult<List<CoursesCategoryDTO>>> GetAllCoursesByCategoryIdAsync(Guid categoryId)
         {
             try

@@ -75,7 +75,7 @@ namespace DevLearning.Api.Services
             try
             {
                 var oldCategory = await _categoryRepository.GetCategoryByIdAsync(id) ??
-                    throw new KeyNotFoundException("Categoria não encontrada!");
+                    throw new KeyNotFoundException("Category not found!");
 
                 var updateCategory = new Category(
                     oldCategory.Title,
@@ -121,10 +121,10 @@ namespace DevLearning.Api.Services
             try
             {
                 var category = await _categoryRepository.GetCategoryByIdAsync(categoryId) ??
-                   throw new KeyNotFoundException("Categoria não encontrada!");
+                   throw new KeyNotFoundException("Category not found!");
 
                 var coursesWithCategory = await _categoryRepository.GetAllCoursesByCategoryIdAsync(categoryId) ??
-                    throw new KeyNotFoundException("Não há cursos com essa categoria!");
+                    throw new KeyNotFoundException("There is no course in this category!");
 
                 return coursesWithCategory;
             }
