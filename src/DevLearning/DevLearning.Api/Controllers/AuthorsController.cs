@@ -8,7 +8,7 @@ namespace DevLearning.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AuthorsController : ControllerBase, IAuthorController
+    public class AuthorsController : ControllerBase, IAuthorsController
     {
         private IAuthorService _authorService;
         private ILogger<AuthorsController> _logger;

@@ -9,7 +9,7 @@ namespace DevLearning.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CareersController : ControllerBase, ICareerController
+    public class CareersController : ControllerBase, ICareersController
     {
         private readonly ICareerService _service;
 
