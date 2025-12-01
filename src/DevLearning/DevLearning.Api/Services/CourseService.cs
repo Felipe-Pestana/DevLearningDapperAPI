@@ -1,18 +1,18 @@
 ﻿using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos.Course;
 using DevLearning.Api.Models.Enum;
-using DevLearning.Api.Repositories;
+using DevLearning.Api.Repositories.Interfaces;
 using DevLearning.Api.Services.Interfaces;
 
 namespace DevLearning.Api.Services
 {
     public class CourseService : ICourseService
     {
-        private readonly CourseRepository _courseRepository;
-        private readonly CareerService _careerService;
-        private readonly StudentService _studentService;
+        private readonly ICourseRepository _courseRepository;
+        private readonly ICareerService _careerService;
+        private readonly IStudentService _studentService;
 
-        public CourseService(CourseRepository courseRepository, CareerService careerService, StudentService studentService)
+        public CourseService(ICourseRepository courseRepository, ICareerService careerService, IStudentService studentService)
         {
             _courseRepository = courseRepository;
             _careerService = careerService;

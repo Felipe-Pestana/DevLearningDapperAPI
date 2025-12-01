@@ -1,4 +1,4 @@
-﻿namespace DevLearningAPI.Models;
+﻿namespace DevLearning.Api.Models;
 
 public class Career {
         public Guid Id { get; private set; }

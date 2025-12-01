@@ -1,8 +1,6 @@
-﻿using DevLearning.Api.Data;
-using DevLearning.Api.Models;
+﻿using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos.Student;
 using DevLearning.Api.Models.Dtos.StudentCourse;
-using DevLearning.Api.Repositories;
 using DevLearning.Api.Repositories.Interfaces;
 using DevLearning.Api.Services.Interfaces;
 
@@ -10,11 +8,11 @@ namespace DevLearning.Api.Services
 {
     public class StudentService : IStudentService
     {
-        public StudentRepository _repository;
-        private readonly CourseRepository _courseRepository;
+        public IStudentRepository _repository;
+        private readonly ICourseRepository _courseRepository;
 
 
-        public StudentService(StudentRepository repository, CourseRepository courseRepository)
+        public StudentService(IStudentRepository repository, ICourseRepository courseRepository)
         {
             _repository = repository;
             _courseRepository = courseRepository;
