@@ -421,5 +421,20 @@ namespace DevLearning.API.Repositories
                 throw new Exception(ex.Message);
             }
         }
+
+        public Task<int> GetCountStudentCourse(Guid courseId)
+        {
+            try
+            {
+                var sql = @"SELECT COUNT(*) FROM StudentCourse WHERE CourseId = @CourseId";
+                return _connection.ExecuteScalarAsync<int>(sql, new { CourseId = courseId });
+            } catch(SqlException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
     }
 }
