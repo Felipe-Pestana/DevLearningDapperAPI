@@ -51,7 +51,7 @@ namespace DevLearning.Api.Controllers
                 var category = await _categoryService.GetCategoryByIdAsync(id);
 
                 if (category == null)
-                    return NotFound("Categoria não encontrada");
+                    return NotFound("Category not found!");
 
                 return Ok(category);
             }
