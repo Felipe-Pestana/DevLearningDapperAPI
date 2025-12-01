@@ -97,6 +97,9 @@ namespace DevLearning.Api.Services
         {
             try
             {
+                var category = await _categoryRepository.GetCategoryByIdAsync(id) ??
+                   throw new KeyNotFoundException("Category not found!");
+
                 var courses = await _courseRepository.GetCourseByCategoryIdAsync(id);
 
                 if (courses != null && courses.Any())
