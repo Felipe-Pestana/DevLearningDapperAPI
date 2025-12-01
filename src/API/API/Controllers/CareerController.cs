@@ -1,4 +1,5 @@
-﻿using API.Models.DTOs.Career;
+﻿using API.Controllers.Interfaces;
+using API.Models.DTOs.Career;
 using API.Services;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace API.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class CareerController : ControllerBase
+    public class CareerController : ControllerBase, ICareerController
     {
         private readonly CareerService _service;
         public CareerController(CareerService service)
