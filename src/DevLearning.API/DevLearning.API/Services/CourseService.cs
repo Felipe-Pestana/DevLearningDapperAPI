@@ -98,7 +98,19 @@ namespace DevLearning.API.Services
         {
             try
             {
-                await _courseRepository.UpdateCourseByTitleAsync(title, update.Active, update.Free, update.Featured, DateTime.UtcNow);
+                await _courseRepository.UpdateCourseByTitleAsync(title, update.Free, update.Featured, DateTime.UtcNow);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task UpdateActiveCourseByTitleAsync(string title, CourseActiveDTO update)
+        {
+            try
+            {
+                await _courseRepository.UpdateActiveCourseByTitleAsync(title, update.Active, DateTime.UtcNow);
             }
             catch (Exception ex)
             {
