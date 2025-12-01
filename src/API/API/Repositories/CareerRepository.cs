@@ -140,25 +140,7 @@ namespace API.Repositories
                 career.Active, career.Featured, career.Tags
             });
 
-            if (linhasAfetadas == 0)
-                return false;
-
-            // Remove items antigos
-            await connection.ExecuteAsync("DELETE FROM CareerItem WHERE CareerId = @Id", new { Id = id });
-
-            // Reinsere
-            var sqlItem = @" INSERT INTO CareerItem (CareerId, CourseId, Title, Description, [Order])
-                          VALUES (@CareerId, @CourseId, @Title, @Description, @Order)";
-
-            foreach (var item in career.Items)
-            {
-                await connection.ExecuteAsync(sqlItem, new
-                {
-                    CareerId = id, item.CourseId, item.Title,
-                    item.Description, item.Order
-                });
-            }
-            return true;
+            return linhasAfetadas > 0;
         }
 
         public async Task<int> SumDurationByCareerIdAsync(Guid careerId)
