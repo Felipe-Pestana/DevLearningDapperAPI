@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using DevLearning.Api.Data;
 using DevLearning.Api.Models;
-using DevLearning.Api.Models.Dtos;
+using DevLearning.Api.Models.Dtos.Category;
 using DevLearning.Api.Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
 

@@ -1,4 +1,4 @@
-﻿namespace DevLearningAPI.Models.Dtos.Career
+﻿namespace DevLearning.Api.Models.Dtos.Career
 {
     public class UpdateCareerDto
     {

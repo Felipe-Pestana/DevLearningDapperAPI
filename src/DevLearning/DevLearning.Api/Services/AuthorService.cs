@@ -9,9 +9,9 @@ namespace DevLearning.Api.Services
     public class AuthorService : IAuthorService
     {
         private readonly IAuthorRepository _authorRepository;
-        private readonly CourseService _courseService;
+        private readonly ICourseService _courseService;
 
-        public AuthorService(IAuthorRepository authorRepository, CourseService courseService)
+        public AuthorService(IAuthorRepository authorRepository, ICourseService courseService)
         {
             _authorRepository = authorRepository;
             _courseService = courseService;

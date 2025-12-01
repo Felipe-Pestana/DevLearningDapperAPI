@@ -1,16 +1,16 @@
-﻿using DevLearning.Api.Models.Dtos.CareerItem;
-using DevLearningAPI.Models;
-using DevLearningAPI.Models.Dtos.Career;
-using DevLearningAPI.Repositories;
-using DevLearningAPI.Services.Interfaces;
+﻿using DevLearning.Api.Models;
+using DevLearning.Api.Models.Dtos.Career;
+using DevLearning.Api.Models.Dtos.CareerItem;
+using DevLearning.Api.Repositories.Interfaces;
+using DevLearning.Api.Services.Interfaces;
 
-namespace DevLearningAPI.Services
+namespace DevLearning.Api.Services
 {
     public class CareerService : ICareerService
     {
 
-        private readonly CareerRepository _careerRepository;
-        public CareerService(CareerRepository careerRepository)
+        private readonly ICareerRepository _careerRepository;
+        public CareerService(ICareerRepository careerRepository)
         {
             _careerRepository = careerRepository;
         }
@@ -33,7 +33,7 @@ namespace DevLearningAPI.Services
             {
                 var career = await _careerRepository.GetByIdAsync(id);
                 if (career is null)
-                    throw new KeyNotFoundException("Carreira não encontrada!");
+                    throw new KeyNotFoundException("Career not found!");
 
                 return career;
             }
@@ -47,7 +47,7 @@ namespace DevLearningAPI.Services
         public async Task CreateAsync(CreateCareerDTO dto)
         {
             if (string.IsNullOrEmpty(dto.Title))
-                throw new ArgumentException("O título é obrigatório!");
+                throw new ArgumentException("This title is required!");
 
             var career = new Career(dto.Title, dto.Summary, dto.Url, dto.Tags, dto.Featured);
 
@@ -67,7 +67,7 @@ namespace DevLearningAPI.Services
             {
                 var existing = await _careerRepository.GetByIdAsync(id);
                 if (existing is null)
-                    throw new KeyNotFoundException("Carreira não encontrada!");
+                    throw new KeyNotFoundException("Career not found!");
 
             
                 var updated = new Career(id, dto.Title, dto.Summary, dto.Url,
@@ -88,7 +88,7 @@ namespace DevLearningAPI.Services
             {
                 var existing = await _careerRepository.GetByIdAsync(id);
                 if (existing is null)
-                    throw new KeyNotFoundException("Carreira não encontrada!");
+                    throw new KeyNotFoundException("Career not found!");
 
                 await _careerRepository.SoftDeleteAsync(id);
             }
@@ -101,13 +101,13 @@ namespace DevLearningAPI.Services
         public async Task AddItemAsync(Guid careerId, CreateCareerItemDTO dto)
         {
             if (dto.Order <= 0)
-                throw new ArgumentException("A ordem deve ser maior que zero!");
+                throw new ArgumentException("Order must be greater than 0!");
 
             try
             {
                 var existing = await _careerRepository.GetByIdAsync(careerId);
                 if (existing is null)
-                    throw new KeyNotFoundException("Carreira não encontrada!");
+                    throw new KeyNotFoundException("Career not found!");
 
                 var item = new CareerItem(careerId, dto.CourseId, dto.Title, dto.Description, dto.Order);
 
@@ -123,18 +123,18 @@ namespace DevLearningAPI.Services
         public async Task RemoveItemAsync(Guid careerId, Guid courseId)
         {
             if (careerId == Guid.Empty || courseId == Guid.Empty)
-                throw new ArgumentException("IDs inválidos fornecidos.");
+                throw new ArgumentException("Invalid IDs .");
 
             try
             {
                 var existingCareer = await _careerRepository.GetByIdAsync(careerId);
                 if (existingCareer is null)
-                    throw new KeyNotFoundException("Carreira não encontrada!");
+                    throw new KeyNotFoundException("Career not found!");
 
                 var removed = await _careerRepository.RemoveItemAsync(careerId, courseId);
 
                 if (!removed)
-                    throw new KeyNotFoundException("O curso informado não pertence a esta carreira.");
+                    throw new KeyNotFoundException("This course doesn't belong to this career.");
             }
             catch (KeyNotFoundException) { throw; } 
             catch (ArgumentException) { throw; }    
@@ -142,6 +142,16 @@ namespace DevLearningAPI.Services
             {
 
                 throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task RemoveItemByCourseAsync(Guid courseId)
+        {
+            var careerIds = await _careerRepository.GetItemByCourseAsync(courseId);
+
+            foreach(var careerId in careerIds)
+            {
+                await _careerRepository.RemoveItemAsync(careerId, courseId);
             }
         }
     }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DevLearning.Api.Controllers.Interfaces
 {
-    public interface IAuthorController
+    public interface IAuthorsController
     {
         Task<ActionResult<List<AuthorResponseDto>>> GetAllAuthorsAsync();
 

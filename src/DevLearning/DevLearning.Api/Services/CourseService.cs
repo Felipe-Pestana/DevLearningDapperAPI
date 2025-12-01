@@ -1,42 +1,62 @@
 ﻿using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos.Course;
 using DevLearning.Api.Models.Enum;
-using DevLearning.Api.Repositories;
+using DevLearning.Api.Repositories.Interfaces;
 using DevLearning.Api.Services.Interfaces;
 
 namespace DevLearning.Api.Services
 {
     public class CourseService : ICourseService
     {
-        private readonly CourseRepository _courseRepository;
-        public CourseService(CourseRepository courseRepository)
+        private readonly ICourseRepository _courseRepository;
+        private readonly Lazy<ICareerService> _careerService;
+        private readonly Lazy<IStudentService> _studentService;
+        private readonly Lazy<IAuthorService> _authorService;
+        private readonly Lazy<ICategoryService> _categoryService;
+
+        public CourseService(
+            ICourseRepository courseRepository, Lazy<ICareerService> careerService, 
+            Lazy<IStudentService> studentService, Lazy<IAuthorService> authorService, 
+            Lazy<ICategoryService> categoryService
+            )
         {
             _courseRepository = courseRepository;
+            _careerService = careerService;
+            _studentService = studentService;
+            _authorService = authorService;
+            _categoryService = categoryService;
         }
 
         public async Task CreateCourseAsync(CreateCourseDto course)
         {
             if (string.IsNullOrWhiteSpace(course.Tag))
-                throw new ArgumentException("The field 'Tag' must not be comprised of only empty spaces!");
+                throw new ArgumentException("The field 'Tag' is mandatory!");
             if (string.IsNullOrWhiteSpace(course.Title))
-                throw new ArgumentException("The field 'Title' must not be comprised of only empty spaces!");
+                throw new ArgumentException("The field 'Title' is mandatory!");
             if (string.IsNullOrWhiteSpace(course.Summary))
-                throw new ArgumentException("The field 'Summary' must not be comprised of only empty spaces!");
+                throw new ArgumentException("The field 'Summary' is mandatory!");
             if (string.IsNullOrWhiteSpace(course.Url))
-                throw new ArgumentException("The field 'Url' must not be comprised of only empty spaces!");
+                throw new ArgumentException("The field 'Url' is mandatory!");
             if (course.DurationInMinutes < 1)
                 throw new ArgumentException("The field 'DurationInMinutes' must be over 0!");
             if (string.IsNullOrWhiteSpace(course.Tag))
-                throw new ArgumentException("The field 'Tags' must not be comprised of only empty spaces!");
+                throw new ArgumentException("The field 'Tags' is mandatory!");
 
             if (await _courseRepository.GetCourseTitleAsync(course.Title))
                 throw new ArgumentException("There is already a course with this title.");
             if (await _courseRepository.GetCourseUrlAsync(course.Url))
                 throw new ArgumentException("There is already a course with this url.");
 
-            //TODO: implement author and category service to check if id's exist and if author is active
+            var author = await _authorService.Value.GetAuthorByIdAsync(course.AuthorId);
+            if (author.Type == ETypeAuthor.Inativo)
+                throw new KeyNotFoundException("Author is inactive!");
+
+            var category = await _categoryService.Value.GetCategoryByIdAsync(course.CategoryId);
+            if (category is null)
+                throw new KeyNotFoundException("Category not found!");
+
             if (!Enum.TryParse<ELevelCourse>(course.Level, true, out ELevelCourse level)) {
-                throw new ArgumentException("The field 'Level' must be either 'Beginner', 'Basic', 'Intermediate' or 'Advanced'.");
+                throw new ArgumentException("The field 'Level' must be either 'Beginner', 'Intermediate' or 'Advanced'.");
             }
 
             var newCourse = new Course(
@@ -103,7 +123,11 @@ namespace DevLearning.Api.Services
         {
             var course = await _courseRepository.GetCourseByIdAsync(id) ??
                 throw new KeyNotFoundException($"No course was found with this ID.");
-            
+
+            await _careerService.Value.RemoveItemByCourseAsync(id);
+
+            await _studentService.Value.DeleteStudentCourseByCourseAsync(id);
+
             await _courseRepository.DeleteCourseAsync(id);
         }
 

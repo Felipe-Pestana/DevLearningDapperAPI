@@ -1,6 +1,6 @@
 ﻿using DevLearning.Api.Controllers.Interfaces;
 using DevLearning.Api.Models.Dtos.Course;
-using DevLearning.Api.Services;
+using DevLearning.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevLearning.Api.Controllers
@@ -9,8 +9,8 @@ namespace DevLearning.Api.Controllers
     [ApiController]
     public class CoursesController : ControllerBase, ICoursesController
     {
-        private readonly CourseService _courseService;
-        public CoursesController(CourseService courseService)
+        private readonly ICourseService _courseService;
+        public CoursesController(ICourseService courseService)
         {
             _courseService = courseService;
         }
@@ -26,7 +26,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (ArgumentException ex)
             {
-                return Problem(ex.Message, null, 400, "Invalid Input");
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -40,12 +40,14 @@ namespace DevLearning.Api.Controllers
             try
             {
                 var courses = await _courseService.GetAllCoursesAsync();
+                if (courses.Count < 1)
+                    return Ok("No courses registered!");
 
                 return Ok(courses);
             }
             catch (Exception ex)
             {
-                return Problem();
+                return Problem(ex.Message);
             }
         }
 
@@ -77,11 +79,11 @@ namespace DevLearning.Api.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                return Problem(ex.Message, null, 404, "Course Not Found");
+                return NotFound(ex.Message);
             }
             catch (ArgumentException ex)
             {
-                return Problem(ex.Message, null, 400, "Invalid Input");
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -100,7 +102,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                return Problem(ex.Message, null, 404, "Course Not Found");
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {

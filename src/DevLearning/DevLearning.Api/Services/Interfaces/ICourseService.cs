@@ -5,14 +5,18 @@ namespace DevLearning.Api.Services.Interfaces
 {
     public interface ICourseService
     {
-        public Task CreateCourseAsync(CreateCourseDto course);
+        Task CreateCourseAsync(CreateCourseDto course);
 
-        public Task<List<CourseResponseDto>> GetAllCoursesAsync();
+        Task<List<CourseResponseDto>> GetAllCoursesAsync();
 
-        public Task<CourseResponseDto?> GetCourseByIdAsync(Guid id);
+        Task<CourseResponseDto?> GetCourseByIdAsync(Guid id);
 
-        public Task UpdateCourseAsync(Guid id, UpdateCourseDto update);
+        Task UpdateCourseAsync(Guid id, UpdateCourseDto update);
 
-        public Task DeleteCourseAsync(Guid id);
+        Task DeleteCourseAsync(Guid id);
+
+        Task<int> DeleteCourseByAuthorIdAsync(Guid id);
+
+        Task<int> DeleteCourseByCategoryIdAsync(Guid id);
     }
 }

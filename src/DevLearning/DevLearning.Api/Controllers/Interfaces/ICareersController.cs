@@ -1,11 +1,11 @@
 ﻿using DevLearning.Api.Models.Dtos.CareerItem;
-using DevLearningAPI.Models;
-using DevLearningAPI.Models.Dtos.Career;
+using DevLearning.Api.Models;
+using DevLearning.Api.Models.Dtos.Career;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevLearning.Api.Controllers.Interfaces
 {
-    public interface ICareerController
+    public interface ICareersController
     {
         Task<ActionResult<List<Career>>> GetAllCareer();
 
