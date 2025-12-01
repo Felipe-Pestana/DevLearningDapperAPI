@@ -46,10 +46,6 @@ namespace DevLearning.API.Services
             }
         }
 
-        public async Task DeleteAuthorAsync(Guid id)
-        {
-            await _authorRepository.DeleteAuthorAsync(id);
-        }
 
         public async Task UpdatePatchAuthorAsync(Guid id, UpdateAuthorParcialDTO dto)
         {
@@ -60,10 +56,21 @@ namespace DevLearning.API.Services
             await _authorRepository.UpdatePutAuthorAsync(dto, id);
         }
 
-        public async Task UpdateAuthorTypeAsync(Guid id, AuthorType type)
+        public async Task UpdateAuthorTypeAsync(Guid id, AuthorType newType)
         {
+            // valida enum
+            if (!Enum.IsDefined(typeof(AuthorType), newType))
+                throw new ArgumentOutOfRangeException(nameof(newType), "Tipo inválido. Use 1 ou 2.");
 
-            await _authorRepository.UpdateAuthorTypeAsync(id, type);
+            // regra: se inativo (2), precisa verificar cursos
+            if (newType == AuthorType.Inativo)
+            {
+                var count = await _authorRepository.CountCoursesAsync(id);
+                if (count > 0)
+                    throw new InvalidOperationException("Não é possível inativar o autor pois ele possui cursos.");
+            }
+
+            await _authorRepository.UpdateAuthorTypeAsync(id, newType);
         }
 
 
