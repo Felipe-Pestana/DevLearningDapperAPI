@@ -12,12 +12,13 @@ namespace API.Repositories.Interfaces
         public Task<StudentWithCoursesResponseDTO?> GetStudentCoursesAsync(Guid studentId);
         public Task<StudentUpdateDTO?> SearchStudentToUpdateAsync(Guid id);
         public Task UpdateStudentAsync(Guid id, StudentUpdateDTO student);
-        public Task<int> DeleteStudentAsync(Guid id);
+        public Task DeleteStudentAsync(Guid id);
         public Task<bool> VerifyExistCourseAsync(Guid courseId);
         public Task<bool> VerifyExistStudentAsync(Guid studentId);
         public Task EnrollingStudentInCourseAsync(StudentCourse studentCourse);
         public Task<byte> VerifyProgressToStudentInCourseAsync(Guid studentId, Guid courseId);
         public Task<bool> VerifyStudentEnrollingInCourseAsync(Guid studentId, Guid courseId);
         public Task UpdateProgressStudentCourseAsync(Guid studentId, Guid courseId, StudentUpdateProgressDTO updateProgressDTO);
+        public Task<int> SearchStudentByDocument(string document);
     }
 }
