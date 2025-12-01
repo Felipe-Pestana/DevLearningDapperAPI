@@ -1,4 +1,6 @@
-﻿namespace DevLearning.Api.Models.Dtos.Student
+﻿using DevLearning.Api.Models.Dtos.Course;
+
+namespace DevLearning.Api.Models.Dtos.Student
 {
     public class StudentAllCourseResponseDto
     {

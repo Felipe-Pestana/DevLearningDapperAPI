@@ -216,5 +216,25 @@ namespace DevLearning.Api.Repositories
                 throw new Exception(sqlex.Message);
             }
         }
+
+        public async Task<IEnumerable<Course>> GetCourseByCategoryIdAsync(Guid categoryId)
+        {
+            var sql = "SELECT * FROM [Course] WHERE CategoryId = @CategoryId";
+
+            try
+            {
+                var courses = await _connection.QueryAsync<Course>(sql, new { CategoryId = categoryId });
+                return courses;
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception(sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

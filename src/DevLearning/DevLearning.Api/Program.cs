@@ -23,7 +23,7 @@ builder.Services.AddSingleton<StudentService>();
 
 builder.Services.AddTransient<ConnectionDB>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
-builder.Services.AddScoped<IAuthorService, AuthorService>();
+//builder.Services.AddScoped<IAuthorService, AuthorService>();
 
 builder.Services.AddSingleton<ConnectionDB>();
 

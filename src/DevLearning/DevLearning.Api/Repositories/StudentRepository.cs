@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using DevLearning.Api.Data;
 using DevLearning.Api.Models;
+using DevLearning.Api.Models.Dtos.Course;
 using DevLearning.Api.Models.Dtos.Student;
 using DevLearning.Api.Models.Dtos.StudentCourse;
 using DevLearning.Api.Repositories.Interfaces;
