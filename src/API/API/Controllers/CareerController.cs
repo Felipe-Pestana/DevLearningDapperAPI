@@ -22,6 +22,12 @@ namespace API.Controllers
         public async Task<IActionResult> GetAllCareerAsync()
         {
             var careers = await _service.GetAllCareerAsync();
+
+            if (careers is null || careers.Count() == 0)
+            {
+                return NotFound();
+            }
+
             return Ok(careers);
         }
 
