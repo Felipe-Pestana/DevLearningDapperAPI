@@ -1,6 +1,6 @@
 ﻿using DevLearning.Api.Models;
-using DevLearning.Api.Models.Dtos;
-using DevLearning.Api.Repositories;
+using DevLearning.Api.Models.Dtos.Category;
+using DevLearning.Api.Repositories.Interfaces;
 using DevLearning.Api.Services.Interfaces;
 using Microsoft.Data.SqlClient;
 
@@ -8,18 +8,16 @@ namespace DevLearning.Api.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly CategoryRepository _categoryRepository;
-        //private readonly CourseRepository _courseRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly ICourseService _courseService;
 
-        public CategoryService(CategoryRepository categoryRepository)
+        public CategoryService(ICategoryRepository categoryRepository, ICourseService courseService)
         {
             _categoryRepository = categoryRepository;
+            _courseService = courseService;
         }
 
-        //public CourseService(CourseRepository courseRepository)
-        //{
-        //    _courseRepository = courseRepository;
-        //}
+
 
         public async Task CreateCategoryAsync(CreateCategoryDTO category)
         {
@@ -99,10 +97,7 @@ namespace DevLearning.Api.Services
         {
             try
             {
-                var category = await _categoryRepository.GetCategoryByIdAsync(id) ??
-                   throw new KeyNotFoundException("Categoria não encontrada!");
-
-                //await _courseRepository.DeleteCourseByCategoryAsync(id);
+                await _courseService.DeleteCourseByCategoryIdAsync(id);
 
                 await _categoryRepository.DeleteCategoryByIdAsync(id);
             }
@@ -111,6 +106,7 @@ namespace DevLearning.Api.Services
                 throw new Exception(ex.Message);
             }
         }
+
 
         public async Task<List<CoursesCategoryDTO>> GetAllCoursesByCategoryIdAsync(Guid categoryId)
         {

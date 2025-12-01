@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
-
-namespace DevLearningAPI.Models;
+﻿namespace DevLearning.Api.Models;
 
 public class Career {
         public Guid Id { get; private set; }
@@ -13,7 +10,7 @@ public class Career {
         public bool Featured { get; private set; }
         public string Tags { get; private set; }
 
-    private readonly List<CareerItem> _items;
+    public List<CareerItem> _items;
     public Career(Guid id, string title, string summary, string url, int durationInMinutes, bool active, bool featured, string tags)
     {
         Id = id;
@@ -40,7 +37,7 @@ public class Career {
         _items = new List<CareerItem>();
     }
 
-    public IReadOnlyCollection<CareerItem> Items => _items;
+    public ICollection<CareerItem> Items => _items;
 
     public void AddItem(CareerItem item) => _items.Add(item);
 

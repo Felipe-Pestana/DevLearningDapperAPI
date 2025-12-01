@@ -1,7 +1,6 @@
-﻿using DevLearningAPI.Models;
-using DevLearningAPI.Models.Dtos.Career;
+﻿using DevLearning.Api.Models;
 
-namespace DevLearningAPI.Repositories.Interfaces
+namespace DevLearning.Api.Repositories.Interfaces
 {
     public interface ICareerRepository
     {
@@ -12,5 +11,6 @@ namespace DevLearningAPI.Repositories.Interfaces
         Task SoftDeleteAsync(Guid id); 
         Task AddItemAsync(CareerItem item);
         Task<bool> RemoveItemAsync(Guid careerId, Guid courseId);
+        Task<List<Guid>> GetItemByCourseAsync(Guid courseId);
     }
 }

@@ -1,16 +1,15 @@
-﻿using DevLearning.Api.Models.Dtos;
-using DevLearning.Api.Services;
-using Microsoft.AspNetCore.Http;
+﻿using DevLearning.Api.Models.Dtos.Category;
+using DevLearning.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevLearning.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
-        private readonly CategoryService _categoryService;
-        public CategoryController(CategoryService categoryService)
+        private readonly ICategoryService _categoryService;
+        public CategoriesController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
         }
@@ -91,12 +90,12 @@ namespace DevLearning.Api.Controllers
             }
         }
 
-        [HttpGet("categories/{id})/courses")]
-        public async Task<ActionResult<List<CoursesCategoryDTO>>> GetAllCoursesByCategoryIdAsync(Guid categoryId)
+        [HttpGet("{id}/courses")]
+        public async Task<ActionResult<List<CoursesCategoryDTO>>> GetAllCoursesByCategoryIdAsync(Guid id)
         {
             try
             {
-                var courses = await _categoryService.GetAllCoursesByCategoryIdAsync(categoryId);
+                var courses = await _categoryService.GetAllCoursesByCategoryIdAsync(id);
 
                 return Ok(courses);
             }

@@ -1,17 +1,30 @@
 ﻿using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos.Course;
 using DevLearning.Api.Models.Enum;
-using DevLearning.Api.Repositories;
+using DevLearning.Api.Repositories.Interfaces;
 using DevLearning.Api.Services.Interfaces;
 
 namespace DevLearning.Api.Services
 {
     public class CourseService : ICourseService
     {
-        private readonly CourseRepository _courseRepository;
-        public CourseService(CourseRepository courseRepository)
+        private readonly ICourseRepository _courseRepository;
+        private readonly Lazy<ICareerService> _careerService;
+        private readonly Lazy<IStudentService> _studentService;
+        private readonly Lazy<IAuthorService> _authorService;
+        private readonly Lazy<ICategoryService> _categoryService;
+
+        public CourseService(
+            ICourseRepository courseRepository, Lazy<ICareerService> careerService, 
+            Lazy<IStudentService> studentService, Lazy<IAuthorService> authorService, 
+            Lazy<ICategoryService> categoryService
+            )
         {
             _courseRepository = courseRepository;
+            _careerService = careerService;
+            _studentService = studentService;
+            _authorService = authorService;
+            _categoryService = categoryService;
         }
 
         public async Task CreateCourseAsync(CreateCourseDto course)
@@ -34,9 +47,16 @@ namespace DevLearning.Api.Services
             if (await _courseRepository.GetCourseUrlAsync(course.Url))
                 throw new ArgumentException("There is already a course with this url.");
 
-            //TODO: implement author and category service to check if id's exist and if author is active
+            var author = await _authorService.Value.GetAuthorByIdAsync(course.AuthorId);
+            if (author.Type == ETypeAuthor.Inativo)
+                throw new ArgumentException("Author is inactive!");
+
+            var category = await _categoryService.Value.GetCategoryByIdAsync(course.CategoryId);
+            if (category is null)
+                throw new ArgumentException("Category not found!");
+
             if (!Enum.TryParse<ELevelCourse>(course.Level, true, out ELevelCourse level)) {
-                throw new ArgumentException("The field 'Level' must be either 'Beginner', 'Basic', 'Intermediate' or 'Advanced'.");
+                throw new ArgumentException("The field 'Level' must be either 'Beginner', 'Intermediate' or 'Advanced'.");
             }
 
             var newCourse = new Course(
@@ -103,7 +123,11 @@ namespace DevLearning.Api.Services
         {
             var course = await _courseRepository.GetCourseByIdAsync(id) ??
                 throw new KeyNotFoundException($"No course was found with this ID.");
-            
+
+            await _careerService.Value.RemoveItemByCourseAsync(id);
+
+            await _studentService.Value.DeleteStudentCourseByCourseAsync(id);
+
             await _courseRepository.DeleteCourseAsync(id);
         }
 

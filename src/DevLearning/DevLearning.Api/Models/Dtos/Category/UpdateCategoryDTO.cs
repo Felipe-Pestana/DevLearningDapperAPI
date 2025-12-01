@@ -1,4 +1,4 @@
-﻿namespace DevLearning.Api.Models.Dtos
+﻿namespace DevLearning.Api.Models.Dtos.Category
 {
     public class UpdateCategoryDTO
     {

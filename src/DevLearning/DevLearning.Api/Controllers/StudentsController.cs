@@ -1,12 +1,8 @@
 ﻿using DevLearning.Api.Controllers.Interfaces;
-using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos.Student;
 using DevLearning.Api.Models.Dtos.StudentCourse;
-using DevLearning.Api.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
+using DevLearning.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace DevLearning.Api.Controllers
 {
@@ -14,9 +10,9 @@ namespace DevLearning.Api.Controllers
     [ApiController]
     public class StudentsController : ControllerBase, IStudentsController
     {
-        public StudentService _service;
+        public IStudentService _service;
 
-        public StudentsController(StudentService service)
+        public StudentsController(IStudentService service)
         {
             _service = service;
         }

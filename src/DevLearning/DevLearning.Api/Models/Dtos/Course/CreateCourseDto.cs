@@ -1,6 +1,4 @@
-﻿using DevLearning.Api.Models.Enum;
-
-namespace DevLearning.Api.Models.Dtos.Course
+﻿namespace DevLearning.Api.Models.Dtos.Course
 {
     public class CreateCourseDto
     {
