@@ -1,0 +1,6 @@
+@DevLearning.Api_HostAddress = http://localhost:5192
+
+GET {{DevLearning.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
