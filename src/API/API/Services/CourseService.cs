@@ -30,11 +30,14 @@ namespace API.Services
                 url: dto.Url,
                 level: dto.Level,
                 durationInMinutes: dto.DurationInMinutes,
+                createDate: dto.CreateDate,
+                lastUpdateDate: dto.LastUpdateDate,
                 active: dto.Active,
                 free: dto.Free,
                 featured: dto.Featured,
                 authorId: dto.AuthorId,
-                categoryId: dto.CategoryId
+                categoryId: dto.CategoryId,
+                tags: dto.Tags
             );
 
             await _courseRepository.CreateCourseAsync(course);
@@ -49,11 +52,14 @@ namespace API.Services
                 url: dto.Url,
                 level: dto.Level,
                 durationInMinutes: dto.DurationInMinutes,
+                createDate: dto.CreateDate,
+                lastUpdateDate: dto.LastUpdateDate,
                 active: dto.Active,
                 free: dto.Free,
                 featured: dto.Featured,
                 authorId: dto.AuthorId,
-                categoryId: dto.CategoryId
+                categoryId: dto.CategoryId,
+                tags: dto.Tags
             );
 
             await _courseRepository.UpdateCourseAsync(id, course);
