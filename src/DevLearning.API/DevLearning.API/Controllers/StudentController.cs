@@ -16,6 +16,7 @@ namespace DevLearning.API.Controllers
         {
             _studentService = studentService;
         }
+
         [HttpPost()]
         public async Task CreateStudent([FromBody] StudentRequestDTO student)
         {
@@ -26,6 +27,34 @@ namespace DevLearning.API.Controllers
             } catch (Exception ex)
             {
                 StatusCode(500, new { error = ex.Message }); 
+            }
+        }
+
+        [HttpPost("/api/students/{studentId}/courses/{courseId}")]
+        public async Task<ActionResult> InsertStudentCourse([FromBody] StudentRequestInsertCourseDTO student, string studentId, string courseId)
+        {
+            try
+            {
+                await _studentService.InsertStudentCourse(Guid.Parse(studentId), Guid.Parse(courseId), student);
+                return StatusCode(201, new { message = "Estudante adicionado com sucesso no curso" });
+            }
+            catch (Exception ex)
+            {
+               return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        [HttpPut("/api/students/{studentId}/courses/{courseId}")]
+        public async Task<ActionResult> UpdateStudentCourse([FromBody] StudentRequestInsertCourseDTO student, string studentId, string courseId)
+        {
+            try
+            {
+                await _studentService.InsertStudentCourse(Guid.Parse(studentId), Guid.Parse(courseId), student);
+                return StatusCode(201, new { message = "Estudante adicionado com sucesso no curso" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
             }
         }
 

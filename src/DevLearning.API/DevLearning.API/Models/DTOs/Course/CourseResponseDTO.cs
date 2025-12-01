@@ -1,4 +1,4 @@
-﻿using DevLearning.API.Enums;
+﻿using DevLearning.API.Models.Enums.Course;
 
 namespace DevLearning.API.Models.DTOs.Course
 {

@@ -16,14 +16,14 @@ namespace DevLearning.API.Controllers
             _courseService = service;
         }
 
-        [HttpGet("GetAllCourses")]
+        [HttpGet("")]
         public async Task<ActionResult<List<CourseResponseDTO>>> GetAllCoursesAsync()
         {
             var courses = await _courseService.GetAllCoursesAsync();
             return Ok(courses);
         }
 
-        [HttpDelete("Delete/{title}")]
+        [HttpDelete("{title}")]
         public async Task<ActionResult> DeleteCourseByIdAsync(string title)
         {
             await _courseService.DeleteCourseByIdAsync(title);
@@ -31,21 +31,21 @@ namespace DevLearning.API.Controllers
             return Ok("Apagado!");
         }
 
-        [HttpGet("GetOneCourse/{title}")]
-        public async Task<ActionResult<CourseResponseDTO>> GetOneCourseByIdAsync(string title)
+        [HttpGet("{title}")]
+        public async Task<ActionResult<CourseResponseDTO>> GetOneCourseByTitleAsync(string title)
         {
-            var user = await _courseService.GetOneCourseByIdAsync(title);
+            var user = await _courseService.GetOneCourseByTitleAsync(title);
             return Ok(user);
         }
 
-        [HttpPost("CreateCourse")]
+        [HttpPost("")]
         public async Task<ActionResult> CreateUserAsync(CourseRequestDTO course)
         {
             await _courseService.CreateCourseAsync(course);
             return Created();
         }
 
-        [HttpPut("UpdateCourse/{title}")]
+        [HttpPut("{title}")]
         public async Task<IActionResult> UpdateCourseAsync(string title, CourseUpdateDTO update)
         {
             await _courseService.UpdateCourseAsync(title, update);

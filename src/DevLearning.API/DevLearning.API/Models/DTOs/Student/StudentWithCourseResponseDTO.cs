@@ -2,7 +2,7 @@
 
 namespace DevLearning.API.Models.DTOs.Student
 {
-    public class StudentResponseDTO
+    public class StudentWithCourseResponseDTO
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -11,5 +11,6 @@ namespace DevLearning.API.Models.DTOs.Student
         public string? Phone { get; set; }
         public DateTime Birthdate { get; set; }
         public DateTime CreateDate { get; set; }
+        public List<CourseStudentDTO> Courses { get; set; }
     }
 }

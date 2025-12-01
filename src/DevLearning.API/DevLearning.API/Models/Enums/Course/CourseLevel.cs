@@ -1,4 +1,4 @@
-﻿namespace DevLearning.API.Enums
+﻿namespace DevLearning.API.Models.Enums.Course
 {
     public enum CourseLevel : byte
     {

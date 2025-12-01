@@ -12,5 +12,7 @@ namespace DevLearning.API.Services.Interfaces
         public Task<Student> GetStudentById(string id);
         public Task<Student> GetStudentByDocument(string document);
         public Task<Student> GetStudentByEmail(string email);
+        public Task InsertStudentCourse(Guid studentId, Guid courseId, StudentRequestInsertCourseDTO studentCourse);
+        public Task UpdateStudentCourse(Guid studentId, Guid courseId, StudentCourseRequestUpdateDTO studentCourse);
     }
 }

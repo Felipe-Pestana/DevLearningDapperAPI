@@ -31,9 +31,14 @@ namespace DevLearning.API.Services
             return await _courseRepository.GetAllCoursesAsync();
         }
 
-        public async Task<CourseResponseDTO> GetOneCourseByIdAsync(string title)
+        public async Task<CourseResponseDTO> GetOneCourseByTitleAsync(string title)
         {
-            return await _courseRepository.GetOneCourseByIdAsync(title);
+            return await _courseRepository.GetOneCourseByTitleAsync(title);
+        }
+
+        public async Task<CourseResponseDTO> GetOneCourseByIdAsync(string id)
+        {
+            return await _courseRepository.GetOneCourseByIdAsync(Guid.Parse(id));
         }
 
         public async Task UpdateCourseAsync(string title, CourseUpdateDTO update)

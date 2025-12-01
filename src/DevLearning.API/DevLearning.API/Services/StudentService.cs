@@ -8,9 +8,11 @@ namespace DevLearning.API.Services
     public class StudentService : IStudentService
     {
         private StudentRepository _studentRepository;
-        public StudentService(StudentRepository studentRepository)
+        private CourseRepository _courseRepository;
+        public StudentService(StudentRepository studentRepository, CourseRepository courseRepository)
         {
             _studentRepository = studentRepository;
+            _courseRepository = courseRepository;
         }
         public async Task CreateStudent(StudentRequestDTO student)
         {
@@ -107,6 +109,37 @@ namespace DevLearning.API.Services
                 await _studentRepository.UpdateStudent(newStudent, Guid.Parse(id));
             }
             catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task InsertStudentCourse(Guid studentId, Guid courseId, StudentRequestInsertCourseDTO studentCourse)
+        {
+            try
+            {
+                if (await _studentRepository.GetStudentById(studentId) is null)
+                    throw new Exception("Estudante não encontrado");
+                if (await _courseRepository.GetOneCourseByIdAsync(courseId) is null)
+                    throw new Exception("Curso não encontrado");
+                await _studentRepository.InsertStudentCourse(studentId, courseId, studentCourse);
+            } catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task UpdateStudentCourse(Guid studentId, Guid courseId, StudentCourseRequestUpdateDTO studentCourse)
+        {
+            try
+            {
+
+                if (await _studentRepository.GetStudentById(studentId) is null)
+                    throw new Exception("Estudante não encontrado");
+                if (await _courseRepository.GetOneCourseByIdAsync(courseId) is null)
+                    throw new Exception("Curso não encontrado");
+                await _studentRepository.UpdateStudentCourse(studentId, courseId, studentCourse);
+            } catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }

@@ -9,7 +9,8 @@ namespace DevLearning.API.Services.Interfaces
 
         Task<List<CourseResponseDTO>> GetAllCoursesAsync();
 
-        Task<CourseResponseDTO> GetOneCourseByIdAsync(string title);
+        Task<CourseResponseDTO> GetOneCourseByTitleAsync(string title);
+        Task<CourseResponseDTO> GetOneCourseByIdAsync(string id);
 
         Task<CourseResponseDTO> DeleteCourseByIdAsync(string title);
 
