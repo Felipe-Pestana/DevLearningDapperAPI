@@ -15,9 +15,12 @@ namespace DevLearning.Api.Repositories
     public class StudentRepository : IStudentRepository
     {
         private readonly SqlConnection _connection;
+        private readonly CourseRepository _courseRepository;
+
         public StudentRepository(ConnectionDB connection)
         {
             _connection = connection.GetConnection();
+            _courseRepository = new CourseRepository(connection);
         }
 
         public async Task CreateStudentAsync(Student student) 
@@ -190,7 +193,7 @@ namespace DevLearning.Api.Repositories
                         WHERE CourseId = @courseId
                         AND StudentId = @StudentId";
 
-                return await _connection.QueryFirstOrDefaultAsync(sql, new
+                return await _connection.QueryFirstOrDefaultAsync<StudentCourseResponseDto?>(sql, new
                 { @CourseId = courseId, @StudentId = studentId });
             }
             catch (SqlException sqlEx)
@@ -208,14 +211,11 @@ namespace DevLearning.Api.Repositories
         {
             try
             {
-                var sql = @"UPDATE StudentCourse 
-                            SET Progress = @Progress
-                            WHERE CourseId = @courseId
-                            AND StudentId = @StudentId";
+                var sql = @"UPDATE StudentCourse SET Progress = @Progress WHERE CourseId = @courseId AND StudentId = @StudentId";
 
                 await _connection.ExecuteAsync(sql, new
                 {
-                    student.Progress,
+                    @Progress = student.Progress,
                     @CourseId = courseId,
                     @StudentId = studentId
                 });
@@ -249,9 +249,28 @@ namespace DevLearning.Api.Repositories
             }
         }
 
+        public async Task DeleteStudentCourseByCourseAsync(Guid courseId)
+        {
+            try
+            {
+                var sql = @"DELETE FROM StudentCourse 
+                            WHERE CourseId = @CourseId";
+
+                await _connection.ExecuteAsync(sql, new { @CourseId = courseId });
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
+        }
+
         public async Task<List<StudentAllCourseResponseDto>> GetStudentAllCoursesAsync(Guid id) 
         {
-            var sql = @"SELECT s.Id, s.Name, s.Email, c.Id, c.Title, c.Summary, c.DurationInMinutes, c.Active
+            var sql = @"SELECT s.Id, s.Name, s.Email, c.Id, c.Title, c.Level, c.DurationInMinutes, c.Active, sc.Progress
                 FROM Student s 
                 JOIN StudentCourse sc 
                 ON s.Id = sc.StudentId 
@@ -261,7 +280,7 @@ namespace DevLearning.Api.Repositories
 
             try
             {
-                var student = await _connection.QueryAsync<StudentAllCourseResponseDto, CourseResponseDto, StudentAllCourseResponseDto>(sql, (student, course) =>
+                var student = await _connection.QueryAsync<StudentAllCourseResponseDto, CoursePerStudentDto, StudentAllCourseResponseDto>(sql, (student, course) =>
                     {
                         student.Courses.Add(course);
                         return student;

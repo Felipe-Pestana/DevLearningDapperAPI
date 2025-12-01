@@ -125,7 +125,11 @@ namespace DevLearning.Api.Services
             }
         }
 
-        //TODO: NÃO EXISTIR O GUID DO CURSO
+        public async Task DeleteStudentCourseByCourseAsync(Guid id)
+        {
+            await _repository.DeleteStudentCourseByCourseAsync(id);
+        }
+
         public async Task CreateStudentCourseAsync(Guid courseId, Guid studentId, CreateStudentCourseDto studentCourse)
         {
 

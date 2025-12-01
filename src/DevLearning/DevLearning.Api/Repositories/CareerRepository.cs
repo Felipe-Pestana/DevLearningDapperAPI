@@ -258,5 +258,19 @@ namespace DevLearning.Api.Repositories
             }
         
         }
+
+        public async Task<List<Guid>> GetItemByCourseAsync(Guid courseId)
+        {
+            var sql = "SELECT CarrerId FROM CareerItem WHERE CourseId = @CourseId";
+
+            try
+            {
+                return (await _connection.QueryAsync<Guid>(sql, new { CourseId = courseId })).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

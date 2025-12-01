@@ -144,5 +144,15 @@ namespace DevLearning.Api.Services
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task RemoveItemByCourseAsync(Guid courseId)
+        {
+            var careerIds = await _careerRepository.GetItemByCourseAsync(courseId);
+
+            foreach(var careerId in careerIds)
+            {
+                await _careerRepository.RemoveItemAsync(careerId, courseId);
+            }
+        }
     }
 }

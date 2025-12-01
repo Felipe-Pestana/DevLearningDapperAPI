@@ -9,9 +9,14 @@ namespace DevLearning.Api.Services
     public class CourseService : ICourseService
     {
         private readonly CourseRepository _courseRepository;
-        public CourseService(CourseRepository courseRepository)
+        private readonly CareerService _careerService;
+        private readonly StudentService _studentService;
+
+        public CourseService(CourseRepository courseRepository, CareerService careerService, StudentService studentService)
         {
             _courseRepository = courseRepository;
+            _careerService = careerService;
+            _studentService = studentService;
         }
 
         public async Task CreateCourseAsync(CreateCourseDto course)
@@ -103,7 +108,11 @@ namespace DevLearning.Api.Services
         {
             var course = await _courseRepository.GetCourseByIdAsync(id) ??
                 throw new KeyNotFoundException($"No course was found with this ID.");
-            
+
+            await _careerService.RemoveItemByCourseAsync(id);
+
+            await _studentService.DeleteStudentCourseByCourseAsync(id);
+
             await _courseRepository.DeleteCourseAsync(id);
         }
 
