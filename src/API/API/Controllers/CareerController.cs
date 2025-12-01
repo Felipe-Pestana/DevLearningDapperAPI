@@ -1,4 +1,5 @@
 ﻿using API.Models.DTOs.Career;
+using API.Services;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Numerics;
@@ -10,8 +11,8 @@ namespace API.Controllers
 
     public class CareerController : ControllerBase
     {
-        private readonly ICareerService _service;
-        public CareerController(ICareerService service)
+        private readonly CareerService _service;
+        public CareerController(CareerService service)
         {
             _service = service;
         }

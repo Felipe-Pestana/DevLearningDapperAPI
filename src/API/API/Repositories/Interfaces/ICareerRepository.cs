@@ -7,8 +7,8 @@ namespace API.Repositories.Interfaces
     {
         Task<IEnumerable<CareerResponseDTO>> GetAllCareerAsync();
         Task<CareerResponseDTO> GetCareerByIdAsync(Guid id);
-        Task<Guid> CreateCareerAsync(CareerRequestDTO career);
-        Task<bool> UpdateCareerAsync(Guid id, CareerRequestDTO career);
+        Task<Guid> CreateCareerAsync(CareerRequestDTO career, int duration);
+        Task<bool> UpdateCareerAsync(Guid id, CareerRequestDTO career, int duration);
 
         //Task<int> SumDurationByCareerIdAsync(Guid careerId);
 

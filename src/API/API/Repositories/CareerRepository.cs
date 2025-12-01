@@ -87,14 +87,14 @@ namespace API.Repositories
             };
         }
 
-        public async Task<Guid> CreateCareerAsync(CareerRequestDTO career)
+        public async Task<Guid> CreateCareerAsync(CareerRequestDTO career, int duration)
         {
             using var connection = _connectionFactory.GetConnection();
 
             var id = Guid.NewGuid();
 
             var sqlCareer = @" INSERT INTO Career (Id, Title, Summary, Url, DurationInMinutes, Active, Featured, Tags)
-                            VALUES (@Id, @Title, @Summary, @Url, @DurationInMinutes, @Active, @Featured, @Tags)";
+                            VALUES (@Id, @Title, @Summary, @Url,@DurationMinutes, @Active, @Featured, @Tags)";
 
             await connection.ExecuteAsync(sqlCareer, new
             {
@@ -102,7 +102,7 @@ namespace API.Repositories
                 career.Title,
                 career.Summary,
                 career.Url,
-                career.DurationInMinutes,
+                DurationInMinutes = duration,
                 career.Active,
                 career.Featured,
                 career.Tags
@@ -126,7 +126,7 @@ namespace API.Repositories
             return id;
         }
 
-        public async Task<bool> UpdateCareerAsync(Guid id, CareerRequestDTO career)
+        public async Task<bool> UpdateCareerAsync(Guid id, CareerRequestDTO career, int duration)
         {
             using var connection = _connectionFactory.GetConnection();
 
@@ -135,7 +135,8 @@ namespace API.Repositories
 
             var linhasAfetadas = await connection.ExecuteAsync(sqlUpdate, new
             {
-                Id = id, career.Title, career.Summary, career.Url, career.DurationInMinutes,
+                Id = id, career.Title, career.Summary, career.Url,
+                DurationInMinutes = duration,
                 career.Active, career.Featured, career.Tags
             });
 
@@ -160,7 +161,7 @@ namespace API.Repositories
             return true;
         }
 
-        /*public async Task<int> SumDurationByCareerIdAsync(Guid careerId)
+        public async Task<int> SumDurationByCareerIdAsync(Guid careerId)
         {
             using var connection = _connectionFactory.GetConnection();
 
@@ -170,6 +171,6 @@ namespace API.Repositories
                       WHERE ci.CareerId = @CareerId";
 
             return await connection.ExecuteScalarAsync<int>(sql, new { CareerId = careerId });
-        }*/
+        }
     }
 }

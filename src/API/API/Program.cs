@@ -23,8 +23,10 @@ builder.Services.AddSingleton<IAuthorRepository, AuthorRepository>();
 builder.Services.AddSingleton<StudentRepository>();
 builder.Services.AddSingleton<StudentService>();
 
-builder.Services.AddSingleton<ICareerRepository, CareerRepository>();
-builder.Services.AddSingleton<ICareerService, CareerService>();
+builder.Services.AddSingleton<CareerRepository>();
+builder.Services.AddSingleton<CareerService>();
+
+
 
 var app = builder.Build();
 

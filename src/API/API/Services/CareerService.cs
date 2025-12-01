@@ -8,13 +8,13 @@ namespace API.Services
 {
     public class CareerService : ICareerService
     {
-        private readonly ICareerRepository _repository;
-        //private readonly ICourseRepository _courseRepository;
+        private readonly CareerRepository _repository;
+        private readonly CourseRepository _courseRepository;
 
-        public CareerService(ICareerRepository repository /*ICourseRepository courseRepository*/)
+        public CareerService(CareerRepository repository, CourseRepository courseRepository)
         {
             _repository = repository;
-            //_courseRepository = courseRepository;
+            _courseRepository = courseRepository;
         }
         public async Task<IEnumerable<CareerResponseDTO>> GetAllCareerAsync()
         {
@@ -41,10 +41,7 @@ namespace API.Services
             if (string.IsNullOrWhiteSpace(career.Title))
                 throw new ArgumentException("O título é obrigatório.");
 
-            if (career.DurationInMinutes <= 0)
-                throw new ArgumentException("A duração deve ser maior que zero.");
-
-            /*int totalDuration = 0;
+            int totalDuration = 0;
 
             foreach (var item in career.Items)
             {
@@ -56,9 +53,7 @@ namespace API.Services
                 totalDuration += course.DurationInMinutes;
             }
 
-            career.DurationInMinutes = totalDuration;*/
-
-            return await _repository.CreateCareerAsync(career);
+            return await _repository.CreateCareerAsync(career, totalDuration);
         }
 
         public async Task<bool> UpdateCareerAsync(Guid id, CareerRequestDTO career)
@@ -72,14 +67,20 @@ namespace API.Services
             if (string.IsNullOrWhiteSpace(career.Title))
                 throw new ArgumentException("O título é obrigatório.");
 
-            /*if (career.DurationInMinutes <= 0)
-                throw new ArgumentException("A duração deve ser maior que zero.");
 
-            var existing = await _repository.GetCareerByIdAsync(id);
-            if (existing == null)
-                return false;*/
+            int totalDuration = 0;
 
-            return await _repository.UpdateCareerAsync(id, career);
+            foreach (var item in career.Items)
+            {
+                var course = await _courseRepository.GetCourseByIdAsync(item.CourseId);
+
+                if (course == null)
+                    throw new ArgumentException("O curso não existe.");
+
+                totalDuration += course.DurationInMinutes;
+            }
+
+            return await _repository.UpdateCareerAsync(id, career, totalDuration);
         }
     }
 }

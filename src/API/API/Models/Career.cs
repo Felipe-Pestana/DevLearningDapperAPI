@@ -28,9 +28,9 @@ namespace API.Models
             Tags = tags;
         }
 
-       /* public void SetDuration(int minutes)
+        public void SetDuration(int minutes)
         {
             DurationInMinutes = minutes;
-        }*/
+        }
     }
 }
