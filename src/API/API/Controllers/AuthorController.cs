@@ -1,4 +1,5 @@
-﻿using API.Models.DTOs.Author;
+﻿using API.Controllers.Interfaces;
+using API.Models.DTOs.Author;
 using API.Models.DTOs.Category;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +9,7 @@ namespace API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AuthorController : ControllerBase
+    public class AuthorController : ControllerBase, IAuthorController
     {
 
         private IAuthorService _authorService;

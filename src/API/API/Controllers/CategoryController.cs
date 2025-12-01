@@ -1,4 +1,5 @@
-﻿using API.Models.DTOs.Category;
+﻿using API.Controllers.Interfaces;
+using API.Models.DTOs.Category;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ namespace API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoryController : ControllerBase, ICategoryController
     {
         private ICategoryService _categoryService;
 
