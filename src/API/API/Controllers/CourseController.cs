@@ -27,7 +27,7 @@ namespace API.Controllers
                 var courses = await _courseService.GetAllCoursesAsync();
 
                 if (courses == null || !courses.Any())
-                    return NoContent();     // 204
+                    return NotFound();     // 404
 
                 return Ok(courses);         // 200
             }
