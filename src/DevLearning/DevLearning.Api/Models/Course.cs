@@ -45,7 +45,5 @@ namespace DevLearning.Api.Models
             CategoryId = categoryId;
             Tags = tags;
         }
-
-        public Course() { }
     }
 }

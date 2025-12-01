@@ -9,12 +9,12 @@ namespace DevLearning.Api.Services
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
-        private readonly ICourseRepository _courseRepository;
+        private readonly ICourseService _courseService;
 
-        public CategoryService(ICategoryRepository categoryRepository, ICourseRepository courseRepository)
+        public CategoryService(ICategoryRepository categoryRepository, ICourseService courseService)
         {
             _categoryRepository = categoryRepository;
-            _courseRepository = courseRepository;
+            _courseService = courseService;
         }
 
 
@@ -97,15 +97,7 @@ namespace DevLearning.Api.Services
         {
             try
             {
-                var courses = await _courseRepository.GetCourseByCategoryIdAsync(id);
-
-                if (courses != null && courses.Any())
-                {
-                    foreach (var course in courses)
-                    {
-                        await _courseRepository.DeleteCourseAsync(course.Id);
-                    }
-                }
+                await _courseService.DeleteCourseByCategoryIdAsync(id);
 
                 await _categoryRepository.DeleteCategoryByIdAsync(id);
             }
