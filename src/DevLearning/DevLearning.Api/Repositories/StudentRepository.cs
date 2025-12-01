@@ -135,14 +135,12 @@ namespace DevLearning.Api.Repositories
             try
             {
                 var sql = @"UPDATE Student 
-                            SET Email = @Email,
-                            Document = @Document,
+                            SET Document = @Document,
                             Phone = @Phone
                             WHERE Id = @Id";
 
                 await _connection.ExecuteAsync(sql, new 
-                    {student.Email,
-                    Document = student.Document == null ? (object)DBNull.Value : student.Document,
+                    {Document = student.Document == null ? (object)DBNull.Value : student.Document,
                     Phone = student.Phone == null ? (object)DBNull.Value : student.Phone,
                     @Id = id });
             }
