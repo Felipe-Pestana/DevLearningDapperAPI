@@ -3,7 +3,6 @@ using DevLearning.Api.Data;
 using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos;
 using DevLearning.Api.Repositories.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Data.SqlClient;
 
 namespace DevLearning.Api.Repositories

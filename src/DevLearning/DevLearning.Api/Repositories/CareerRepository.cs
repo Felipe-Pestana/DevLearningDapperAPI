@@ -1,11 +1,8 @@
 ﻿using Dapper;
 using DevLearning.Api.Data;
 using DevLearningAPI.Models;
-using DevLearningAPI.Models.Dtos.Career;
 using DevLearningAPI.Repositories.Interfaces;
-using Microsoft.AspNetCore.Connections;
 using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Tokens;
 using System.Data;
 
 namespace DevLearningAPI.Repositories
@@ -57,8 +54,7 @@ namespace DevLearningAPI.Repositories
         {
             var sql = @"SELECT [Id], [Title], [Summary], [Url], [DurationInMinutes], 
                                [Active], [Featured], [Tags]
-                        FROM [Career] 
-                        WHERE [Active] = 1";
+                        FROM [Career]";
 
             try
             {
