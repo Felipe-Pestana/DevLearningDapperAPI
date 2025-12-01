@@ -9,6 +9,7 @@ namespace DevLearning.API.Models.DTOs.Course
         public string Summary { get; init; }
         public string Url { get; init; }
         public CourseLevel Level { get; init; }
+        public string LevelLabel => Level.ToString();
         public int DurationInMinutes { get; init; }
         public DateTime CreateDate { get; init; }
         public DateTime LastUpdateDate { get; init; }

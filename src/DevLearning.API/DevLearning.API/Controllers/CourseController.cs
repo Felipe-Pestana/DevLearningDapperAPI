@@ -2,6 +2,7 @@
 using DevLearning.API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 
 namespace DevLearning.API.Controllers
 {
@@ -16,40 +17,115 @@ namespace DevLearning.API.Controllers
             _courseService = service;
         }
 
-        [HttpGet("")]
-        public async Task<ActionResult<List<CourseResponseDTO>>> GetAllCoursesAsync()
+        [HttpGet()]
+        public async Task<ActionResult<List<CourseResponseDTO>>> GetAllCoursesAsync([FromQuery] string? category)
         {
-            var courses = await _courseService.GetAllCoursesAsync();
-            return Ok(courses);
+            try
+            {
+                var courses = await _courseService.GetAllCoursesAsync(category);
+                return Ok(courses);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { error = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(400, new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         [HttpDelete("{title}")]
-        public async Task<ActionResult> DeleteCourseByIdAsync(string title)
+        public async Task<ActionResult> DeleteCourseByTitleAsync(string title)
         {
-            await _courseService.DeleteCourseByIdAsync(title);
-
-            return Ok("Apagado!");
+            try
+            {
+                await _courseService.DeleteCourseByTitleAsync(title);
+                return Ok("Apagado!");
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { error = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(400, new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
-        [HttpGet("{title}")]
-        public async Task<ActionResult<CourseResponseDTO>> GetOneCourseByTitleAsync(string title)
+        [HttpGet("get-by-title")]
+        public async Task<ActionResult<CourseResponseDTO>> GetOneCourseByTitleAsync([FromBody]CourseRequestTitleDTO course)
         {
-            var user = await _courseService.GetOneCourseByTitleAsync(title);
-            return Ok(user);
+            try
+            {
+                var user = await _courseService.GetOneCourseByTitleAsync(course.Title);
+                return Ok(user);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { error = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(400, new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
-        [HttpPost("")]
+        [HttpPost()]
         public async Task<ActionResult> CreateUserAsync(CourseRequestDTO course)
         {
-            await _courseService.CreateCourseAsync(course);
-            return Created();
+            try
+            {
+                await _courseService.CreateCourseAsync(course);
+                return Created();
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { error = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(400, new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         [HttpPut("{title}")]
-        public async Task<IActionResult> UpdateCourseAsync(string title, CourseUpdateDTO update)
+        public async Task<IActionResult> UpdateCourseByTitleAsync(string title, CourseUpdateDTO update)
         {
-            await _courseService.UpdateCourseAsync(title, update);
-            return Ok();
+            try
+            {
+                await _courseService.UpdateCourseByTitleAsync(title, update);
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, new { error = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(400, new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+
         }
     }
 }

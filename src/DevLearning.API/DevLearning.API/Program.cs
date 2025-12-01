@@ -11,15 +11,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddSingleton<ConnectionDB>();
 builder.Services.AddSingleton<CourseRepository>();
 builder.Services.AddSingleton<CourseService>();
 
-builder.Services.AddSingleton<ConnectionDB>();
 builder.Services.AddSingleton<CareerRepository>();
 builder.Services.AddSingleton<CareerService>();
+builder.Services.AddSingleton<CareerItemRepository>();
+builder.Services.AddSingleton<CareerItemService>();
 
 
-builder.Services.AddSingleton<ConnectionDB>();
 
 builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
 builder.Services.AddSingleton<ICategoryService, CategoryService>();

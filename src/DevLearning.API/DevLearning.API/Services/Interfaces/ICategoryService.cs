@@ -9,5 +9,6 @@ namespace DevLearning.API.Services.Interfaces
         Task<CategoryResponseDTO> GetCategoryByIdAsync(Guid id);
         Task UpdateCategoryAsync(Guid id, CategoryUpdateDTO categoryDto);
         Task DeleteCategoryAsync(Guid id);
+        Task<CategoryWithCoursesDTO> GetCategoryCoursesAsync(Guid categoryId);
     }
 }

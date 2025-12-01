@@ -138,6 +138,9 @@ namespace DevLearning.API.Repositories
 
         public async Task UpdateAuthorTypeAsync(Guid id, AuthorType newType)
         {
+            if (!Enum.IsDefined(typeof(AuthorType), newType))
+                throw new ArgumentOutOfRangeException(nameof(newType), "Tipo inválido. Só é permitido 1 ou 2.");
+
             var sql = "UPDATE Author SET Type = @Type WHERE Id = @Id";
 
             await _connection.ExecuteAsync(sql, new
@@ -147,12 +150,13 @@ namespace DevLearning.API.Repositories
             });
         }
 
+
         public async Task<(string AuthorName, List<string> Courses)> GetAuthorCoursesAsync(Guid authorId)
         {
             var sql = @"
             SELECT a.Name AS AuthorName, c.Title AS CourseTitle
-            FROM Author a
-            LEFT JOIN Course c ON a.Id = c.AuthorId
+            FROM [Author] a
+            LEFT JOIN [Course] c ON a.Id = c.AuthorId
             WHERE a.Id = @AuthorId";
 
             var rows = await _connection.QueryAsync(sql, new { AuthorId = authorId });

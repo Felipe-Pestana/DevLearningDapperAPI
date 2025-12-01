@@ -11,5 +11,7 @@ namespace DevLearning.API.Repositories.Interfaces
         Task CreateCareerAsync(Career career);
         Task<bool> DeleteCareerAsync(Guid careerId);
         Task<bool> UpdateCareerAsync(Guid id, List<string> updates, DynamicParameters parameters);
+        Task<List<CareerWhitCareerItemResponseDTO>> GetAllCareerWithCareerItem();
+        Task<CareerWhitCareerItemResponseDTO> GetOneCareerWithCareerItem(Guid careerId);
     }
 }
