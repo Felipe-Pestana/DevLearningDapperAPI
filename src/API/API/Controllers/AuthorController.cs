@@ -1,4 +1,5 @@
-﻿using API.Models.DTOs.Author;
+﻿using API.Controllers.Interfaces;
+using API.Models.DTOs.Author;
 using API.Models.DTOs.Category;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +9,7 @@ namespace API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AuthorController : ControllerBase
+    public class AuthorController : ControllerBase, IAuthorController
     {
 
         private IAuthorService _authorService;
@@ -18,7 +19,7 @@ namespace API.Controllers
             _authorService = authorService;
         }
 
-        [HttpGet("GetAllAuthorsAsync")]
+        [HttpGet]
         public async Task<ActionResult<List<AuthorResponseDTO>>> GetAllAuthorsAsync()
         {
             try
@@ -32,7 +33,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GetAuthorByIdAsync/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<AuthorResponseDTO>> GetAuthorByIdAsync(Guid id)
         {
             try
@@ -51,7 +52,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("CreateAuthorAsync")]
+        [HttpPost]
         public async Task<ActionResult> CreateAuthorAsync(AuthorRequestDTO author)
         {
             try
@@ -65,7 +66,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("UpdateAuthorAsync/{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateAuthorAsync(AuthorRequestDTO author, Guid id)
         {
             try
@@ -85,7 +86,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("DeleteAuthorAsync/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAuthorAsync(Guid id)
         {
             try

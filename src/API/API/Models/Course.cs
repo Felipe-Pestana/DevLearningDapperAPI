@@ -14,8 +14,8 @@
         public bool Active { get; private set; }
         public bool Free { get; private set; }
         public bool Featured { get; private set; }
-        public int AuthorId { get; private set; }
-        public int CategoryId { get; private set; }
+        public Guid AuthorId { get; private set; }
+        public Guid CategoryId { get; private set; }
 
         public Course(
             string tag,
@@ -27,8 +27,8 @@
             bool active,
             bool free,
             bool featured,
-            int authorId,
-            int categoryId)
+            Guid authorId,
+            Guid categoryId)
         {
             this.Id = Guid.NewGuid();
             this.Tag = tag;
