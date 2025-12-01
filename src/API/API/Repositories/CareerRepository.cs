@@ -94,7 +94,7 @@ namespace API.Repositories
             var id = Guid.NewGuid();
 
             var sqlCareer = @" INSERT INTO Career (Id, Title, Summary, Url, DurationInMinutes, Active, Featured, Tags)
-                            VALUES (@Id, @Title, @Summary, @Url,@DurationMinutes, @Active, @Featured, @Tags)";
+                            VALUES (@Id, @Title, @Summary, @Url,@DurationInMinutes, @Active, @Featured, @Tags)";
 
             await connection.ExecuteAsync(sqlCareer, new
             {
