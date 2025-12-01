@@ -30,17 +30,17 @@ namespace DevLearning.Api.Services
         public async Task CreateCourseAsync(CreateCourseDto course)
         {
             if (string.IsNullOrWhiteSpace(course.Tag))
-                throw new ArgumentException("The field 'Tag' must not be comprised of only empty spaces!");
+                throw new ArgumentException("The field 'Tag' is mandatory!");
             if (string.IsNullOrWhiteSpace(course.Title))
-                throw new ArgumentException("The field 'Title' must not be comprised of only empty spaces!");
+                throw new ArgumentException("The field 'Title' is mandatory!");
             if (string.IsNullOrWhiteSpace(course.Summary))
-                throw new ArgumentException("The field 'Summary' must not be comprised of only empty spaces!");
+                throw new ArgumentException("The field 'Summary' is mandatory!");
             if (string.IsNullOrWhiteSpace(course.Url))
-                throw new ArgumentException("The field 'Url' must not be comprised of only empty spaces!");
+                throw new ArgumentException("The field 'Url' is mandatory!");
             if (course.DurationInMinutes < 1)
                 throw new ArgumentException("The field 'DurationInMinutes' must be over 0!");
             if (string.IsNullOrWhiteSpace(course.Tag))
-                throw new ArgumentException("The field 'Tags' must not be comprised of only empty spaces!");
+                throw new ArgumentException("The field 'Tags' is mandatory!");
 
             if (await _courseRepository.GetCourseTitleAsync(course.Title))
                 throw new ArgumentException("There is already a course with this title.");
@@ -49,11 +49,11 @@ namespace DevLearning.Api.Services
 
             var author = await _authorService.Value.GetAuthorByIdAsync(course.AuthorId);
             if (author.Type == ETypeAuthor.Inativo)
-                throw new ArgumentException("Author is inactive!");
+                throw new KeyNotFoundException("Author is inactive!");
 
             var category = await _categoryService.Value.GetCategoryByIdAsync(course.CategoryId);
             if (category is null)
-                throw new ArgumentException("Category not found!");
+                throw new KeyNotFoundException("Category not found!");
 
             if (!Enum.TryParse<ELevelCourse>(course.Level, true, out ELevelCourse level)) {
                 throw new ArgumentException("The field 'Level' must be either 'Beginner', 'Intermediate' or 'Advanced'.");

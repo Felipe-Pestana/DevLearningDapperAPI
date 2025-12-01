@@ -40,6 +40,8 @@ namespace DevLearning.Api.Controllers
             try
             {
                 var courses = await _courseService.GetAllCoursesAsync();
+                if (courses.Count < 1)
+                    return Ok("No courses registered!");
 
                 return Ok(courses);
             }
@@ -77,7 +79,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                return Problem(ex.Message);
+                return NotFound(ex.Message);
             }
             catch (ArgumentException ex)
             {
