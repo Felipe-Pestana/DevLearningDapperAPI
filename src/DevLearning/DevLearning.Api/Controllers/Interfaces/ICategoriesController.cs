@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DevLearning.Api.Controllers.Interfaces
 {
-    public interface ICategoryController
+    public interface ICategoriesController
     {
         Task<IActionResult> CreateCategoryAsync(CreateCategoryDTO category);
         Task<ActionResult<List<CategoryResponseDTO>>> GetAllCategories();

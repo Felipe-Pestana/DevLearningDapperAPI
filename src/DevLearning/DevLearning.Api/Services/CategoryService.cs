@@ -9,17 +9,15 @@ namespace DevLearning.Api.Services
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
-        //private readonly ICourseRepository _courseRepository;
+        private readonly ICourseService _courseService;
 
-        public CategoryService(ICategoryRepository categoryRepository)
+        public CategoryService(ICategoryRepository categoryRepository, ICourseService courseService)
         {
             _categoryRepository = categoryRepository;
+            _courseService = courseService;
         }
 
-        //public CourseService(CourseRepository courseRepository)
-        //{
-        //    _courseRepository = courseRepository;
-        //}
+
 
         public async Task CreateCategoryAsync(CreateCategoryDTO category)
         {
@@ -99,10 +97,7 @@ namespace DevLearning.Api.Services
         {
             try
             {
-                var category = await _categoryRepository.GetCategoryByIdAsync(id) ??
-                   throw new KeyNotFoundException("Categoria não encontrada!");
-
-                //await _courseRepository.DeleteCourseByCategoryAsync(id);
+                await _courseService.DeleteCourseByCategoryIdAsync(id);
 
                 await _categoryRepository.DeleteCategoryByIdAsync(id);
             }
@@ -111,6 +106,7 @@ namespace DevLearning.Api.Services
                 throw new Exception(ex.Message);
             }
         }
+
 
         public async Task<List<CoursesCategoryDTO>> GetAllCoursesByCategoryIdAsync(Guid categoryId)
         {

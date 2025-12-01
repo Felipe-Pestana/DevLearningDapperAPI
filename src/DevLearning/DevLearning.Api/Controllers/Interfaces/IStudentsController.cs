@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DevLearning.Api.Controllers.Interfaces
 {
-    public interface IStudentController
+    public interface IStudentsController
     {
         Task<ActionResult> CreateStudentAsync(CreateStudentDto student);
         Task<ActionResult<List<StudentResponseDto>>> GetAllStudentsAsync();

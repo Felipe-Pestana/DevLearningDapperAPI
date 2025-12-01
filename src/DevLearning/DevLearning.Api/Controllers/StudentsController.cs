@@ -8,11 +8,11 @@ namespace DevLearning.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class StudentController : ControllerBase, IStudentController
+    public class StudentsController : ControllerBase, IStudentsController
     {
         public IStudentService _service;
 
-        public StudentController(IStudentService service)
+        public StudentsController(IStudentService service)
         {
             _service = service;
         }

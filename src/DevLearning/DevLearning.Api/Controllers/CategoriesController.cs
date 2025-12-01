@@ -6,10 +6,10 @@ namespace DevLearning.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
-        public CategoryController(ICategoryService categoryService)
+        public CategoriesController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
         }
@@ -90,12 +90,12 @@ namespace DevLearning.Api.Controllers
             }
         }
 
-        [HttpGet("categories/{id})/courses")]
-        public async Task<ActionResult<List<CoursesCategoryDTO>>> GetAllCoursesByCategoryIdAsync(Guid categoryId)
+        [HttpGet("{id}/courses")]
+        public async Task<ActionResult<List<CoursesCategoryDTO>>> GetAllCoursesByCategoryIdAsync(Guid id)
         {
             try
             {
-                var courses = await _categoryService.GetAllCoursesByCategoryIdAsync(categoryId);
+                var courses = await _categoryService.GetAllCoursesByCategoryIdAsync(id);
 
                 return Ok(courses);
             }
