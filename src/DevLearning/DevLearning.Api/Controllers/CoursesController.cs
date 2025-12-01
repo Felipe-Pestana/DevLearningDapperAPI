@@ -26,7 +26,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (ArgumentException ex)
             {
-                return Problem(ex.Message, null, 400, "Invalid Input");
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -40,6 +40,8 @@ namespace DevLearning.Api.Controllers
             try
             {
                 var courses = await _courseService.GetAllCoursesAsync();
+                if (courses.Count < 1)
+                    return Ok("No courses registered!");
 
                 return Ok(courses);
             }
@@ -77,11 +79,11 @@ namespace DevLearning.Api.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                return Problem(ex.Message, null, 404, "Course Not Found");
+                return NotFound(ex.Message);
             }
             catch (ArgumentException ex)
             {
-                return Problem(ex.Message, null, 400, "Invalid Input");
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -100,7 +102,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                return Problem(ex.Message, null, 404, "Course Not Found");
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {

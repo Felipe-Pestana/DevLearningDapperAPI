@@ -39,11 +39,11 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException sqlEx)
             {
-                throw new Exception(sqlEx.StackTrace);
+                throw new Exception(sqlEx.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace); 
+                throw new Exception(ex.Message); 
             }
         }
 
@@ -59,11 +59,11 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException sqlEx)
             {
-                throw new Exception(sqlEx.StackTrace);
+                throw new Exception(sqlEx.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             } 
         }
 
@@ -80,11 +80,11 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException sqlEx)
             {
-                throw new Exception(sqlEx.StackTrace);
+                throw new Exception(sqlEx.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -101,11 +101,32 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException sqlEx)
             {
-                throw new Exception(sqlEx.StackTrace);
+                throw new Exception(sqlEx.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<StudentResponseDto?> GetStudentByDocumentAsync(string document)
+        {
+            try
+            {
+                var sql = @"SELECT Id, Name, Email, Document, Phone, BirthDate, CreateDate 
+                            FROM Student
+                            WHERE Document = @Document";
+
+                return await _connection.QueryFirstOrDefaultAsync<StudentResponseDto>(sql, new { @Document = document });
+
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
@@ -114,24 +135,22 @@ namespace DevLearning.Api.Repositories
             try
             {
                 var sql = @"UPDATE Student 
-                            SET Email = @Email,
-                            Document = @Document,
+                            SET Document = @Document,
                             Phone = @Phone
                             WHERE Id = @Id";
 
                 await _connection.ExecuteAsync(sql, new 
-                    {student.Email,
-                    Document = student.Document == null ? (object)DBNull.Value : student.Document,
+                    {Document = student.Document == null ? (object)DBNull.Value : student.Document,
                     Phone = student.Phone == null ? (object)DBNull.Value : student.Phone,
                     @Id = id });
             }
             catch (SqlException sqlEx)
             {
-                throw new Exception(sqlEx.StackTrace);
+                throw new Exception(sqlEx.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -146,11 +165,11 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException sqlEx)
             {
-                throw new Exception(sqlEx.StackTrace);
+                throw new Exception(sqlEx.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -173,11 +192,11 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException sqlEx)
             {
-                throw new Exception(sqlEx.StackTrace);
+                throw new Exception(sqlEx.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -195,11 +214,11 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException sqlEx)
             {
-                throw new Exception(sqlEx.StackTrace);
+                throw new Exception(sqlEx.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
 
         }
@@ -219,11 +238,11 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException sqlEx)
             {
-                throw new Exception(sqlEx.StackTrace);
+                throw new Exception(sqlEx.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
         
@@ -238,11 +257,11 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException sqlEx)
             {
-                throw new Exception(sqlEx.StackTrace);
+                throw new Exception(sqlEx.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -293,11 +312,11 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException sqlEx)
             {
-                throw new Exception(sqlEx.StackTrace);
+                throw new Exception(sqlEx.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
     }

@@ -19,15 +19,27 @@ builder.Services.AddScoped<ConnectionDB>();
 
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<Lazy<IStudentService>>(provider =>
+    new Lazy<IStudentService>(() => provider.GetRequiredService<IStudentService>())
+);
 
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
-//builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<Lazy<IAuthorService>>(provider =>
+    new Lazy<IAuthorService>(() => provider.GetRequiredService<IAuthorService>())
+);
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<Lazy<ICategoryService>>(provider =>
+    new Lazy<ICategoryService>(() => provider.GetRequiredService<ICategoryService>())
+);
 
 builder.Services.AddScoped<ICareerRepository, CareerRepository>();
 builder.Services.AddScoped<ICareerService, CareerService>();
+builder.Services.AddScoped<Lazy<ICareerService>>(provider =>
+    new Lazy<ICareerService>(() => provider.GetRequiredService<ICareerService>())
+);
 
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ICourseService, CourseService>();

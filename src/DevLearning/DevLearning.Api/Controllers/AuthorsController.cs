@@ -8,10 +8,10 @@ namespace DevLearning.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AuthorsController : ControllerBase, IAuthorController
+    public class AuthorsController : ControllerBase, IAuthorsController
     {
-        private IAuthorService _authorService;
-        private ILogger<AuthorsController> _logger;
+        private readonly IAuthorService _authorService;
+        private readonly ILogger<AuthorsController> _logger;
 
         public AuthorsController(IAuthorService authorService, ILogger<AuthorsController> logger)
         {
@@ -33,7 +33,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro inesperado durante a busca dos professores em {time}", DateTime.UtcNow);
+                _logger.LogError(ex, "Unexpected error while searching for teachers in {time}", DateTime.UtcNow);
                 return Problem(ex.Message);
             }
         }
@@ -54,7 +54,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocorreu um erro inesperado durante a busca do professor");
+                _logger.LogError(ex, "An unexpected error occurred while searching for the professor in {time}", DateTime.UtcNow);
                 return Problem(ex.Message);
             }
         }
@@ -75,7 +75,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocorreu um erro inesperado durante a busca do professor");
+                _logger.LogError(ex, "An unexpected error occurred while searching for the professor in {time}", DateTime.UtcNow);
                 return Problem(ex.Message);
             }
         }
@@ -96,7 +96,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocorreu um erro inesperado durante o cadastro do professor");
+                _logger.LogError(ex, "An unexpected error occurred during teacher registration in {time}", DateTime.UtcNow);
                 return Problem(ex.Message);
             }
         }
@@ -121,7 +121,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocorreu um erro inesperado durante o update do professor");
+                _logger.LogError(ex, "An unexpected error occurred during the professor update in {time}", DateTime.UtcNow);
                 return Problem(ex.Message);
             }
         }
@@ -142,7 +142,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocorreu um erro inesperado durante o delete do professor");
+                _logger.LogError(ex, "An unexpected error occurred while deleting the professor in {time}", DateTime.UtcNow);
                 return Problem(ex.Message);
             }
         }
@@ -163,7 +163,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocorreu um erro inesperado durante a busca de cursos do professor");
+                _logger.LogError(ex, "An unexpected error occurred while searching for the professor's courses in {time}", DateTime.UtcNow);
                 return Problem(ex.Message);
             }
         }

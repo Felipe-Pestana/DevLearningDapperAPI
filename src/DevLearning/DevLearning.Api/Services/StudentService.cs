@@ -20,24 +20,27 @@ namespace DevLearning.Api.Services
 
         public async Task CreateStudentAsync(CreateStudentDto student)
         {
+            if(string.IsNullOrEmpty(student.Name))
+                throw new ArgumentException("Name is mandatory!");
+
+            if (string.IsNullOrEmpty(student.Document))
+                throw new ArgumentException("Document is mandatory!");
 
             if (student.BirthDate >= DateTime.Now.Date)
-            {
-                throw new ArgumentException("Data de nascimento não pode ser atual ou futura!");
-            }
+                throw new ArgumentException("Date of birth cannot be current or future!");
 
             int number = 0;
             bool canConvert = int.TryParse(student.Phone, out number);
             if (canConvert == false)
-            {
-                throw new ArgumentException("Número de telefone inválido!");
-            }
+                throw new ArgumentException("Invalid phone number!");
 
             var emailExist = await _repository.GetStudentByEmailAsync(student.Email);
             if (emailExist is not null) 
-            {
-                throw new ArgumentException("Email já cadastrado!");
-            }
+                throw new ArgumentException("Email already registered!");
+
+            var documentExist = await _repository.GetStudentByDocumentAsync(student.Document);
+            if (documentExist is not null)
+                throw new ArgumentException("Document already registered!");
 
             try
             {
@@ -54,7 +57,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -62,7 +65,7 @@ namespace DevLearning.Api.Services
         {
             var students = await _repository.GetAllStudentsAsync();
             if (students is null)
-                throw new ArgumentException("Lista Vazia!");
+                throw new ArgumentException("Empty List!");
 
             try
             {
@@ -70,7 +73,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -78,7 +81,7 @@ namespace DevLearning.Api.Services
         {
             var studentExist = await _repository.GetStudentByIdAsync(id);
             if (studentExist is null)
-                throw new KeyNotFoundException("Estudante não encontrado!");
+                throw new KeyNotFoundException("Student not found!");
 
             try
             {
@@ -86,7 +89,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -94,12 +97,16 @@ namespace DevLearning.Api.Services
         {
             var studentExist = await _repository.GetStudentByIdAsync(id);
             if (studentExist is null)
-                throw new KeyNotFoundException("Estudante não encontrado!");
+                throw new KeyNotFoundException("Student not found!");
+
+            var documentExist = await _repository.GetStudentByDocumentAsync(student.Document);
+            if (documentExist is not null)
+                throw new ArgumentException("Document already registered!");
 
             int number = 0;
             bool canConvert = int.TryParse(student.Phone, out number);
             if (canConvert == false)
-                throw new ArgumentException("Número de telefone inválido!");
+                throw new ArgumentException("Invalid phone number!");
 
             try
             {
@@ -107,7 +114,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -115,7 +122,7 @@ namespace DevLearning.Api.Services
         {
             var studentExist = await _repository.GetStudentByIdAsync(id);
             if (studentExist is null)
-                throw new KeyNotFoundException("Estudante não encontrado!");
+                throw new KeyNotFoundException("Student not found!");
 
             try
             {
@@ -124,7 +131,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -137,12 +144,12 @@ namespace DevLearning.Api.Services
         {
             var courseExist = await _courseRepository.GetCourseByIdAsync(courseId);
             if (courseExist is null)
-                throw new KeyNotFoundException("Curso não encontrado!");
+                throw new KeyNotFoundException("Course not found!");
 
 
             var studentExist = await _repository.GetStudentByIdAsync(studentId);
             if (studentExist is null)
-                throw new KeyNotFoundException("Estudante não encontrado!");
+                throw new KeyNotFoundException("Student not found!");
 
             try
             {
@@ -158,7 +165,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -170,7 +177,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -178,16 +185,18 @@ namespace DevLearning.Api.Services
         {
             var courseExist = await _courseRepository.GetCourseByIdAsync(courseId);
             if (courseExist is null)
-                throw new KeyNotFoundException("Curso não encontrado!");
+                throw new KeyNotFoundException("Course not found!");
 
             var studentExist = await _repository.GetStudentByIdAsync(studentId);
             if (studentExist is null)
-                throw new KeyNotFoundException("Estudante não encontrado!");
+                throw new KeyNotFoundException("Student not found!");
 
             var studentCourseExist = await _repository.GetStudentCourseAsync(courseId, studentId);
             if (studentCourseExist is null)
-                throw new KeyNotFoundException("Estudante não está cadastrado no curso informado!");
+                throw new KeyNotFoundException("The student is not enrolled in the course indicated!");
 
+            if(student.Progress < studentCourseExist.Progress)
+                throw new ArgumentException("Progress cannot be any less than the current progress!");
 
             try
             {
@@ -195,7 +204,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -203,11 +212,11 @@ namespace DevLearning.Api.Services
         {
             var studentExist = await _repository.GetStudentByIdAsync(id);
             if (studentExist is null)
-                throw new KeyNotFoundException("Estudante não encontrado!");
+                throw new KeyNotFoundException("Student not found!");
 
             var studentCourse = await _repository.GetStudentAllCoursesAsync(id);
             if (studentCourse is null)
-                throw new KeyNotFoundException("Estudante não está matriculado em nenhum curso!");
+                throw new KeyNotFoundException("The student is not enrolled in any course!");
 
             try
             {
@@ -215,7 +224,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
