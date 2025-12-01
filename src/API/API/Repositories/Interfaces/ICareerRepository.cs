@@ -9,5 +9,8 @@ namespace API.Repositories.Interfaces
         Task<CareerResponseDTO> GetCareerByIdAsync(Guid id);
         Task<Guid> CreateCareerAsync(CareerRequestDTO career);
         Task<bool> UpdateCareerAsync(Guid id, CareerRequestDTO career);
+
+        //Task<int> SumDurationByCareerIdAsync(Guid careerId);
+
     }
 }

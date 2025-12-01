@@ -27,5 +27,10 @@ namespace API.Models
             Featured = featured;
             Tags = tags;
         }
+
+       /* public void SetDuration(int minutes)
+        {
+            DurationInMinutes = minutes;
+        }*/
     }
 }

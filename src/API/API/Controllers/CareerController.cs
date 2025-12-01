@@ -1,6 +1,7 @@
 ﻿using API.Models.DTOs.Career;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Numerics;
 
 namespace API.Controllers
 {
@@ -23,7 +24,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<IActionResult> GetCareerByIdAsync(Guid id)
+        public async Task<IActionResult> GetCareerById(Guid id)
         {
             var career = await _service.GetCareerByIdAsync(id);
 
@@ -38,7 +39,12 @@ namespace API.Controllers
         public async Task<IActionResult> CreateCareerAsync([FromBody] CareerRequestDTO career)
         {
             var newCareerId = await _service.CreateCareerAsync(career);
-            return CreatedAtAction(nameof(GetCareerByIdAsync), new { id = newCareerId }, null);
+            var createdCareer = await _service.GetCareerByIdAsync(newCareerId);
+
+            return CreatedAtAction(     
+            actionName: "GetCareerById",                  //endpoint usado para buscar esse item
+            routeValues: new { id = newCareerId },        //Preenche a rota automaticamente
+            value: createdCareer);                        //Retorna o objeto criado no corpo
         }
 
         [HttpPut("{id:guid}")]

@@ -23,6 +23,9 @@ builder.Services.AddSingleton<IAuthorRepository, AuthorRepository>();
 builder.Services.AddSingleton<StudentRepository>();
 builder.Services.AddSingleton<StudentService>();
 
+builder.Services.AddSingleton<ICareerRepository, CareerRepository>();
+builder.Services.AddSingleton<ICareerService, CareerService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,4 +37,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-// devTeste1/////
+// devTeste1////////

@@ -159,5 +159,17 @@ namespace API.Repositories
             }
             return true;
         }
+
+        /*public async Task<int> SumDurationByCareerIdAsync(Guid careerId)
+        {
+            using var connection = _connectionFactory.GetConnection();
+
+            var sql = @" SELECT SUM(c.DurationInMinutes)
+                      FROM CareerItem ci
+                      INNER JOIN Course c ON ci.CourseId = c.Id
+                      WHERE ci.CareerId = @CareerId";
+
+            return await connection.ExecuteScalarAsync<int>(sql, new { CareerId = careerId });
+        }*/
     }
 }
