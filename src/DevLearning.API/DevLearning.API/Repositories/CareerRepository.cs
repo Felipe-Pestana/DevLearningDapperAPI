@@ -135,6 +135,9 @@ namespace DevLearning.API.Repositories
             {
                 var sql = @"DELETE FROM Career WHERE Id = @Id";
                 var rows = await connection.ExecuteAsync(sql, new { Id = Id });
+                sql = @"DELETE FROM CareerItem WHERE CareerId = @CareerId";
+                Guid CareerId = Id;
+                await connection.ExecuteAsync(sql, new { CareerId = CareerId });
                 return rows > 0 ? true : false;
             }
             catch (SqlException ex)
