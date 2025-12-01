@@ -52,13 +52,33 @@ namespace DevLearning.Api.Repositories
 
         public async Task<IEnumerable<Career>> GetAllAsync()
         {
-            var sql = @"SELECT [Id], [Title], [Summary], [Url], [DurationInMinutes], 
-                               [Active], [Featured], [Tags]
-                        FROM [Career]";
+            var sql = @"SELECT 
+                            c.[Id], c.[Title], c.[Summary], c.[Url], c.[DurationInMinutes], 
+                            c.[Active], c.[Featured], c.[Tags],
+                            ci.[CareerId], ci.[CourseId], ci.[Title], ci.[Description], ci.[Order]
+                        FROM [Career] c
+                        LEFT JOIN [CareerItem] ci ON c.[Id] = ci.[CareerId]
+                        ORDER BY ci.[Order]";
 
             try
             {
-                return await _connection.QueryAsync<Career>(sql);
+                var careerItems = await _connection.QueryAsync<Career, CareerItem, Career>(sql,
+                    (career, careerItem) =>
+                    {
+                        if (careerItem != null) career.AddItem(careerItem);
+                        return career;
+                    },
+                    splitOn: "CareerId"
+                    );
+
+                var groupItems = careerItems.GroupBy(c => c.Id).Select(c =>
+                {
+                    var listcareer = c.First();
+                    listcareer._items = c.Select(car => car.Items.Single()).ToList();
+                    return listcareer;
+                });
+
+                return groupItems;
             }
             catch (SqlException sqlex)
             {
@@ -257,7 +277,7 @@ namespace DevLearning.Api.Repositories
 
         public async Task<List<Guid>> GetItemByCourseAsync(Guid courseId)
         {
-            var sql = "SELECT CarrerId FROM CareerItem WHERE CourseId = @CourseId";
+            var sql = "SELECT CareerId FROM CareerItem WHERE CourseId = @CourseId";
 
             try
             {

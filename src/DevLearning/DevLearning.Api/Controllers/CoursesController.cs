@@ -26,7 +26,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (ArgumentException ex)
             {
-                return Problem(ex.Message, null, 400, "Invalid Input");
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -77,11 +77,11 @@ namespace DevLearning.Api.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                return Problem(ex.Message, null, 404, "Course Not Found");
+                return Problem(ex.Message);
             }
             catch (ArgumentException ex)
             {
-                return Problem(ex.Message, null, 400, "Invalid Input");
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -100,7 +100,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                return Problem(ex.Message, null, 404, "Course Not Found");
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
