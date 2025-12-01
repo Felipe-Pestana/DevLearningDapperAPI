@@ -4,7 +4,6 @@ using DevLearning.Api.Models;
 using DevLearning.Api.Models.Dtos.Author;
 using DevLearning.Api.Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
-using System.Data;
 
 namespace DevLearning.Api.Repositories
 {

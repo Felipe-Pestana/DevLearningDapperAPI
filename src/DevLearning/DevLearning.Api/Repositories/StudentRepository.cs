@@ -6,16 +6,13 @@ using DevLearning.Api.Models.Dtos.Student;
 using DevLearning.Api.Models.Dtos.StudentCourse;
 using DevLearning.Api.Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace DevLearning.Api.Repositories
 {
     public class StudentRepository : IStudentRepository
     {
         private readonly SqlConnection _connection;
-        private readonly CourseRepository _courseRepository;
+        private readonly ICourseRepository _courseRepository;
 
         public StudentRepository(ConnectionDB connection)
         {

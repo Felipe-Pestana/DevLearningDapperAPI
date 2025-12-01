@@ -1,16 +1,16 @@
-﻿using DevLearning.Api.Models.Dtos.CareerItem;
-using DevLearningAPI.Models;
-using DevLearningAPI.Models.Dtos.Career;
-using DevLearningAPI.Repositories;
-using DevLearningAPI.Services.Interfaces;
+﻿using DevLearning.Api.Models;
+using DevLearning.Api.Models.Dtos.Career;
+using DevLearning.Api.Models.Dtos.CareerItem;
+using DevLearning.Api.Repositories.Interfaces;
+using DevLearning.Api.Services.Interfaces;
 
 namespace DevLearning.Api.Services
 {
     public class CareerService : ICareerService
     {
 
-        private readonly CareerRepository _careerRepository;
-        public CareerService(CareerRepository careerRepository)
+        private readonly ICareerRepository _careerRepository;
+        public CareerService(ICareerRepository careerRepository)
         {
             _careerRepository = careerRepository;
         }

@@ -1,10 +1,7 @@
 ﻿using Dapper;
 using DevLearning.Api.Data;
+using DevLearning.Api.Models;
 using DevLearning.Api.Repositories.Interfaces;
-using DevLearningAPI.Models;
-using DevLearningAPI.Models.Dtos.Career;
-using Microsoft.AspNetCore.Connections;
-using DevLearningAPI.Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
 using System.Data;
 

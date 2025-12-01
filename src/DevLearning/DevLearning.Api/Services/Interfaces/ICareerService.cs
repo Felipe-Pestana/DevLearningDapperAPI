@@ -1,6 +1,6 @@
 ﻿using DevLearning.Api.Models.Dtos.CareerItem;
-using DevLearningAPI.Models;
-using DevLearningAPI.Models.Dtos.Career;
+using DevLearning.Api.Models;
+using DevLearning.Api.Models.Dtos.Career;
 
 namespace DevLearning.Api.Services.Interfaces
 {
@@ -13,5 +13,6 @@ namespace DevLearning.Api.Services.Interfaces
         Task UpdateActiveAsync(Guid id);
         Task AddItemAsync(Guid careerId, CreateCareerItemDTO dto);
         Task RemoveItemAsync(Guid careerId, Guid courseId);
+        Task RemoveItemByCourseAsync(Guid courseId);
     }
 }
