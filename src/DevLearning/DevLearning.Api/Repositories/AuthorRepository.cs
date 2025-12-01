@@ -26,7 +26,7 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException ex)
             {
-                throw new Exception("Erro ao consultar o banco de dados", ex);
+                throw new Exception("Error querying the database.", ex);
             }
         }
 
@@ -43,7 +43,7 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException ex)
             {
-                throw new Exception("Erro ao consultar o banco de dados", ex);
+                throw new Exception("Erro querying the database.", ex);
             }
 
         }
@@ -60,7 +60,7 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException ex)
             {
-                throw new Exception("Erro ao consultar o banco de dados", ex);
+                throw new Exception("Error querying the database.", ex);
             }
         }
 
@@ -76,7 +76,7 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException ex)
             {
-                throw new Exception("Erro ao consultar o banco de dados", ex);
+                throw new Exception("Error querying the database.", ex);
             }
         }
 
@@ -90,7 +90,7 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException ex)
             {
-                throw new Exception("Erro ao consultar o banco de dados", ex);
+                throw new Exception("Error querying the database.", ex);
             }
         }
 
@@ -104,7 +104,7 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException ex)
             {
-                throw new Exception("Erro ao consultar o banco de dados", ex);
+                throw new Exception("Error querying the database.", ex);
             }
         }
 
@@ -125,7 +125,6 @@ namespace DevLearning.Api.Repositories
                 var courses = await _connection.QueryAsync<AuthorWithCoursesDto, CourseAuthorResponseDto, AuthorWithCoursesDto>(
                         sql, (author, course) =>
                         {
-                            // garante apenas 1 instância de Author
                             if (!authorDictionary.TryGetValue(author.Email, out var currentAuthor))
                             {
                                 currentAuthor = author;
@@ -133,7 +132,6 @@ namespace DevLearning.Api.Repositories
                                 authorDictionary.Add(currentAuthor.Email, currentAuthor);
                             }
 
-                            // se houver course, adiciona
                             if (course != null && course.Id != Guid.Empty)
                                 currentAuthor.Courses.Add(course);
 
@@ -147,7 +145,7 @@ namespace DevLearning.Api.Repositories
             }
             catch (SqlException ex)
             {
-                throw new Exception("Erro ao consultar o banco de dados", ex);
+                throw new Exception("Error querying the database.", ex);
             }
         }
 
