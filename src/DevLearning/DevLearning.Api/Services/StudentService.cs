@@ -41,6 +41,12 @@ namespace DevLearning.Api.Services
                 throw new ArgumentException("Email já cadastrado!");
             }
 
+            var documentExist = await _repository.GetStudentByDocumentAsync(student.Document);
+            if (documentExist is not null)
+            {
+                throw new ArgumentException("Documento já cadastrado!");
+            }
+
             try
             {
                 var newStudent = new Student
@@ -56,7 +62,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -72,7 +78,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -88,7 +94,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -97,6 +103,10 @@ namespace DevLearning.Api.Services
             var studentExist = await _repository.GetStudentByIdAsync(id);
             if (studentExist is null)
                 throw new KeyNotFoundException("Estudante não encontrado!");
+
+            var documentExist = await _repository.GetStudentByDocumentAsync(student.Document);
+            if (documentExist is not null)
+                throw new ArgumentException("Documento já cadastrado!");
 
             int number = 0;
             bool canConvert = int.TryParse(student.Phone, out number);
@@ -109,7 +119,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -126,7 +136,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -155,7 +165,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -167,7 +177,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -185,6 +195,8 @@ namespace DevLearning.Api.Services
             if (studentCourseExist is null)
                 throw new KeyNotFoundException("Estudante não está cadastrado no curso informado!");
 
+            if(student.Progress < studentCourseExist.Progress)
+                throw new ArgumentException("O progresso não pode ser menor que o progresso atual!");
 
             try
             {
@@ -192,7 +204,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -212,7 +224,7 @@ namespace DevLearning.Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw new Exception(ex.Message);
             }
         }
 

@@ -10,6 +10,7 @@ namespace DevLearning.Api.Repositories.Interfaces
         Task<List<StudentResponseDto>> GetAllStudentsAsync();
         Task<StudentResponseDto?> GetStudentByIdAsync(Guid id);
         Task<StudentResponseDto?> GetStudentByEmailAsync(string email);
+        Task<StudentResponseDto?> GetStudentByDocumentAsync(string document);
         Task UpdateStudentAsync(Guid id, UpdateStudentDto student);
         Task DeleteStudentAsync(Guid id);
         Task CreateStudentCourseAsync(StudentCourse studentCourse);

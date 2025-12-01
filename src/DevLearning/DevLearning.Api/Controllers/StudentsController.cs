@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace DevLearning.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
-    public class StudentController : ControllerBase, IStudentController
+    public class StudentsController : ControllerBase, IStudentsController
     {
         public StudentService _service;
 
-        public StudentController(StudentService service)
+        public StudentsController(StudentService service)
         {
             _service = service;
         }
@@ -169,5 +169,11 @@ namespace DevLearning.Api.Controllers
             }
 
         }
+
+
+
+
+        //validar document igual
+        //tirar api do controller. e mudar para students
     }
 }
