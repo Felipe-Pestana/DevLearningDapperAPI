@@ -14,5 +14,6 @@ namespace DevLearning.API.Repositories.Interfaces
         Task<Category> GetCategoryByIdAsync(Guid id);
         Task UpdateCategoryAsync(Category category);
         Task DeleteCategoryAsync(Guid id);
+        Task<(string CategoryTitle, List<string> Courses)> GetCategoryCoursesAsync(Guid categoryId);
     }
 }

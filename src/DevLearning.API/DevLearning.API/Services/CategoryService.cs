@@ -133,5 +133,18 @@ namespace DevLearning.API.Services
 
             await _categoryRepository.DeleteCategoryAsync(id);
         }
+        public async Task<CategoryWithCoursesDTO> GetCategoryCoursesAsync(Guid categoryId)
+        {
+            var (categoryTitle, courses) = await _categoryRepository.GetCategoryCoursesAsync(categoryId);
+
+            if (categoryTitle == null)
+                return null;
+
+            return new CategoryWithCoursesDTO
+            {
+                CategoryTitle = categoryTitle,
+                Courses = courses
+            };
+        }
     }
 }
