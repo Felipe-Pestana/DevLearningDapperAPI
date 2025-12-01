@@ -229,7 +229,7 @@ namespace DevLearning.API.Repositories
                             sc.LastUpdateDate AS LastUpdateDate
                             FROM Student s
                             LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
-                            LEFT JOIN Course c ON sc.CourseId = c.Id WHERE StudentId = @StudentId";
+                            LEFT JOIN Course c ON sc.CourseId = c.Id WHERE s.Id = @StudentId";
                 var students = await _connection.QueryAsync<StudentResponseDTO, CourseStudentDTO, StudentResponseDTO>(sql, (student, course) =>
                 {
                     student.Courses ??= new List<CourseStudentDTO>();
