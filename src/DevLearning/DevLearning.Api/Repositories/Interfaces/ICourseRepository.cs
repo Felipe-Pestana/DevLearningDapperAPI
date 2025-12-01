@@ -24,6 +24,5 @@ namespace DevLearning.Api.Repositories.Interfaces
         Task<int> DeleteCourseByAuthorIdAsync(Guid id);
 
         Task<int> DeleteCourseByCategoryIdAsync(Guid id);
-        Task<IEnumerable<Course>> GetCourseByCategoryIdAsync(Guid categoryId);
     }
 }

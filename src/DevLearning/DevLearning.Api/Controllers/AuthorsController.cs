@@ -59,28 +59,6 @@ namespace DevLearning.Api.Controllers
             }
         }
 
-
-        // Get by Email
-        [HttpGet("{email}")]
-        public async Task<ActionResult<AuthorResponseDto>> GetAuthorByEmailAsync(string email)
-        {
-            try
-            {
-                var author = await _authorService.GetAuthorByEmailAsync(email);
-                return Ok(author);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An unexpected error occurred while searching for the professor in {time}", DateTime.UtcNow);
-                return Problem(ex.Message);
-            }
-        }
-
-
         // Post from author
         [HttpPost]
         public async Task<ActionResult> CreateAuthorAsync(CreateAuthorDto author)
