@@ -1,6 +1,6 @@
 ﻿using DevLearning.Api.Controllers.Interfaces;
 using DevLearning.Api.Models.Dtos.Course;
-using DevLearning.Api.Services;
+using DevLearning.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevLearning.Api.Controllers
@@ -9,8 +9,8 @@ namespace DevLearning.Api.Controllers
     [ApiController]
     public class CoursesController : ControllerBase, ICoursesController
     {
-        private readonly CourseService _courseService;
-        public CoursesController(CourseService courseService)
+        private readonly ICourseService _courseService;
+        public CoursesController(ICourseService courseService)
         {
             _courseService = courseService;
         }
@@ -45,7 +45,7 @@ namespace DevLearning.Api.Controllers
             }
             catch (Exception ex)
             {
-                return Problem();
+                return Problem(ex.Message);
             }
         }
 

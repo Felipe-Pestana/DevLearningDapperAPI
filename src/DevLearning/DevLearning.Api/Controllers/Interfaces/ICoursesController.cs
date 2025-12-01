@@ -5,14 +5,14 @@ namespace DevLearning.Api.Controllers.Interfaces
 {
     public interface ICoursesController
     {
-        public Task<IActionResult> CreateCourseAsync(CreateCourseDto course);
+        Task<IActionResult> CreateCourseAsync(CreateCourseDto course);
 
-        public Task<ActionResult<List<CourseResponseDto>>> GetAllCoursesAsync();
+        Task<ActionResult<List<CourseResponseDto>>> GetAllCoursesAsync();
 
-        public Task<ActionResult<CourseResponseDto?>> GetCourseByIdAsync(Guid id);
+        Task<ActionResult<CourseResponseDto?>> GetCourseByIdAsync(Guid id);
 
-        public Task<IActionResult> UpdateCourseAsync(Guid id, UpdateCourseDto update);
+        Task<IActionResult> UpdateCourseAsync(Guid id, UpdateCourseDto update);
         
-        public Task<IActionResult> DeleteCourseAsync(Guid id);
+        Task<IActionResult> DeleteCourseAsync(Guid id);
     }
 }

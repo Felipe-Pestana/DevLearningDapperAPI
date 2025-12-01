@@ -3,10 +3,6 @@ using DevLearning.Api.Repositories;
 using DevLearning.Api.Repositories.Interfaces;
 using DevLearning.Api.Services;
 using DevLearning.Api.Services.Interfaces;
-using DevLearningAPI.Repositories;
-using DevLearningAPI.Repositories.Interfaces;
-using DevLearningAPI.Services;
-using DevLearningAPI.Services.Interfaces;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,23 +13,24 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
+builder.Services.AddControllers();
+
 builder.Services.AddScoped<ConnectionDB>();
 
-builder.Services.AddScoped<CourseRepository>();
-builder.Services.AddScoped<CourseService>();
-
-builder.Services.AddScoped<StudentRepository>();
-builder.Services.AddScoped<StudentService>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IStudentService, StudentService>();
 
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
-builder.Services.AddScoped<IAuthorService, AuthorService>();
+//builder.Services.AddScoped<IAuthorService, AuthorService>();
 
-builder.Services.AddScoped<CategoryService>();
-builder.Services.AddScoped<CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
-builder.Services.AddScoped<CareerRepository>();
 builder.Services.AddScoped<ICareerRepository, CareerRepository>();
 builder.Services.AddScoped<ICareerService, CareerService>();
+
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ICourseService, CourseService>();
 
 var app = builder.Build();
 

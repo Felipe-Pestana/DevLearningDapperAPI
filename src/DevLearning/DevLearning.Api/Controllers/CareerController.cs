@@ -1,14 +1,14 @@
-﻿
-using DevLearning.Api.Controllers.Interfaces;
+﻿using DevLearning.Api.Controllers.Interfaces;
+using DevLearning.Api.Models;
+using DevLearning.Api.Models.Dtos.Career;
 using DevLearning.Api.Models.Dtos.CareerItem;
 using DevLearning.Api.Services.Interfaces;
-using DevLearningAPI.Models.Dtos.Career;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevLearning.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class CareersController : ControllerBase, ICareerController
     {
         private readonly ICareerService _service;
@@ -19,12 +19,12 @@ namespace DevLearning.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllCareer()
+        public async Task<ActionResult<List<Career>>> GetAllCareer()
         {
             try
             {
                 var result = await _service.GetAllAsync();
-                return Ok(result);
+                return Ok(result.ToList());
             }
             catch (Exception ex)
             {
@@ -33,7 +33,7 @@ namespace DevLearning.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetCareerById(Guid id)
+        public async Task<ActionResult<Career>> GetCareerById(Guid id)
         {
             try
             {
@@ -91,11 +91,11 @@ namespace DevLearning.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteCareer(Guid id)
+        public async Task<ActionResult> UpdateActiveCareer(Guid id)
         {
             try
             {
-                await _service.DeleteAsync(id);
+                await _service.UpdateActiveAsync(id);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)

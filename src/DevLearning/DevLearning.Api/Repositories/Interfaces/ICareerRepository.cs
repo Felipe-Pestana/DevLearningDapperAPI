@@ -1,5 +1,4 @@
-﻿using DevLearningAPI.Models;
-using DevLearningAPI.Models.Dtos.Career;
+﻿using DevLearning.Api.Models;
 
 namespace DevLearning.Api.Repositories.Interfaces
 {
@@ -12,5 +11,6 @@ namespace DevLearning.Api.Repositories.Interfaces
         Task SoftDeleteAsync(Guid id); 
         Task AddItemAsync(CareerItem item);
         Task<bool> RemoveItemAsync(Guid careerId, Guid courseId);
+        Task<List<Guid>> GetItemByCourseAsync(Guid courseId);
     }
 }

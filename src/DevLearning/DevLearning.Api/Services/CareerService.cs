@@ -1,16 +1,16 @@
-﻿using DevLearning.Api.Models.Dtos.CareerItem;
-using DevLearning.Api.Repositories;
+﻿using DevLearning.Api.Models;
+using DevLearning.Api.Models.Dtos.Career;
+using DevLearning.Api.Models.Dtos.CareerItem;
+using DevLearning.Api.Repositories.Interfaces;
 using DevLearning.Api.Services.Interfaces;
-using DevLearningAPI.Models;
-using DevLearningAPI.Models.Dtos.Career;
 
 namespace DevLearning.Api.Services
 {
     public class CareerService : ICareerService
     {
 
-        private readonly CareerRepository _careerRepository;
-        public CareerService(CareerRepository careerRepository)
+        private readonly ICareerRepository _careerRepository;
+        public CareerService(ICareerRepository careerRepository)
         {
             _careerRepository = careerRepository;
         }
@@ -82,7 +82,7 @@ namespace DevLearning.Api.Services
             }
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task UpdateActiveAsync(Guid id)
         {
             try
             {
@@ -142,6 +142,16 @@ namespace DevLearning.Api.Services
             {
 
                 throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task RemoveItemByCourseAsync(Guid courseId)
+        {
+            var careerIds = await _careerRepository.GetItemByCourseAsync(courseId);
+
+            foreach(var careerId in careerIds)
+            {
+                await _careerRepository.RemoveItemAsync(careerId, courseId);
             }
         }
     }

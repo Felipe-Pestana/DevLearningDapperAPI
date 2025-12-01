@@ -1,11 +1,8 @@
 ﻿using Dapper;
 using DevLearning.Api.Data;
+using DevLearning.Api.Models;
 using DevLearning.Api.Repositories.Interfaces;
-using DevLearningAPI.Models;
-using DevLearningAPI.Models.Dtos.Career;
-using Microsoft.AspNetCore.Connections;
 using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Tokens;
 using System.Data;
 
 namespace DevLearning.Api.Repositories
@@ -57,8 +54,7 @@ namespace DevLearning.Api.Repositories
         {
             var sql = @"SELECT [Id], [Title], [Summary], [Url], [DurationInMinutes], 
                                [Active], [Featured], [Tags]
-                        FROM [Career] 
-                        WHERE [Active] = 1";
+                        FROM [Career]";
 
             try
             {
@@ -257,6 +253,20 @@ namespace DevLearning.Api.Repositories
                 if (_connection.State == ConnectionState.Open) await _connection.CloseAsync();
             }
         
+        }
+
+        public async Task<List<Guid>> GetItemByCourseAsync(Guid courseId)
+        {
+            var sql = "SELECT CarrerId FROM CareerItem WHERE CourseId = @CourseId";
+
+            try
+            {
+                return (await _connection.QueryAsync<Guid>(sql, new { CourseId = courseId })).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
